@@ -1,0 +1,76 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://example.org/stac/ome-ngff/v0.1.0/schema.json"
+  ],
+  "id": "v0.5-idr0033A-BR00109990_C2",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      0.0,
+      0.0
+    ]
+  },
+  "bbox": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "properties": {
+    "license": "CC-BY-4.0",
+    "idr:study": "idr0033",
+    "ome:version": "0.5",
+    "ome:axes": "XYC",
+    "ome:size_x": 2080,
+    "ome:size_y": 1552,
+    "ome:size_z": null,
+    "ome:size_c": 5,
+    "ome:size_t": null,
+    "ome:has_labels": false,
+    "ome:plate": false,
+    "datetime": "2025-09-22T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json"
+    }
+  ],
+  "assets": {
+    "data": {
+      "href": "https://livingobjects.ebi.ac.uk/idr/zarr/v0.5/idr0033A/BR00109990_C2.zarr",
+      "type": "application/vnd.zarr",
+      "roles": [
+        "data"
+      ]
+    },
+    "thumbnail": {
+      "href": "https://idr.openmicroscopy.org/webclient/render_thumbnail/14002892/",
+      "type": "image/jpeg",
+      "roles": [
+        "thumbnail"
+      ]
+    },
+    "metadata": {
+      "href": "https://livingobjects.ebi.ac.uk/idr/zarr/v0.5/idr0033A/BR00109990_C2.zarr/OME/METADATA.ome.xml",
+      "type": "application/xml",
+      "roles": [
+        "metadata"
+      ]
+    }
+  },
+  "collection": "ome-ngff-v0.5"
+}

@@ -1,0 +1,139 @@
+{
+  "type": "Collection",
+  "id": "ome-ngff-v0.5",
+  "stac_version": "1.1.0",
+  "description": "IDR sample images stored as OME-NGFF 0.5.",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0010-76-45/v0.5-idr0010-76-45.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0090-190129/v0.5-idr0090-190129.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0066-ExpD_chicken_embryo_MIP/v0.5-idr0066-ExpD_chicken_embryo_MIP.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0066-ExpA_VIP_ASLM_on/v0.5-idr0066-ExpA_VIP_ASLM_on.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0062A-6001240_labels/v0.5-idr0062A-6001240_labels.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0157-Asterella_gracilis_SWE-IMG_1033-1112_Asterella_gracilis_(Mannia_gracilis)_stature/v0.5-idr0157-Asterella_gracilis_SWE-IMG_1033-1112_Asterella_gracilis_(Mannia_gracilis)_stature.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0051-180712_H2B_22ss_Courtney1_20180712-163837_p00_c00_preview/v0.5-idr0051-180712_H2B_22ss_Courtney1_20180712-163837_p00_c00_preview.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0026-3.66.9-6.141020_15-41-29.00/v0.5-idr0026-3.66.9-6.141020_15-41-29.00.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0083-9822152/v0.5-idr0083-9822152.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0033A-BR00109990_C2/v0.5-idr0033A-BR00109990_C2.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    }
+  ],
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2024-11-21T00:00:00Z",
+          "2025-09-22T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "various",
+  "summaries": {
+    "license": [
+      "CC-BY-4.0"
+    ],
+    "idr:study": [
+      "idr0010",
+      "idr0090",
+      "idr0066",
+      "idr0062",
+      "idr0157",
+      "idr0051",
+      "idr0026",
+      "idr0083",
+      "idr0033"
+    ],
+    "ome:axes": [
+      "XYZCT",
+      "XYZC",
+      "XY",
+      "XYZ",
+      "XYC"
+    ],
+    "ome:size_x": {
+      "minimum": 271,
+      "maximum": 144384
+    },
+    "ome:has_labels": [
+      false
+    ],
+    "ome:plate": [
+      true,
+      false
+    ],
+    "ome:size_t": {
+      "minimum": 1,
+      "maximum": 79
+    },
+    "ome:size_z": {
+      "minimum": 1,
+      "maximum": 1937
+    },
+    "ome:size_c": {
+      "minimum": 1,
+      "maximum": 5
+    },
+    "ome:size_y": {
+      "minimum": 275,
+      "maximum": 93184
+    }
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "type": "Catalog",
+  "id": "idr-ome-zarr-demo",
+  "stac_version": "1.1.0",
+  "description": "Basic STAC catalog of IDR OME-Zarr samples. One Item per OME-Zarr.",
+  "links": [
+    {
+      "rel": "root",
+      "href": "./catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0073A-9798462/v0.4-idr0073A-9798462.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0072B-9512/v0.4-idr0072B-9512.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0083A-9822152/v0.4-idr0083A-9822152.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0062A-6001247/v0.4-idr0062A-6001247.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0044A-4007801/v0.4-idr0044A-4007801.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0056B-7361/v0.4-idr0056B-7361.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0128E-9701/v0.4-idr0128E-9701.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0013A-3451/v0.4-idr0013A-3451.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0054A-5025551/v0.4-idr0054A-5025551.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0054A-5025552/v0.4-idr0054A-5025552.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0054A-5025553/v0.4-idr0054A-5025553.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0076A-10501752/v0.4-idr0076A-10501752.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0047A-4496763/v0.4-idr0047A-4496763.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0062A-6001240/v0.4-idr0062A-6001240.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0052A-5514375/v0.4-idr0052A-5514375.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0001A-2551/v0.4-idr0001A-2551.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0101A-13457227/v0.4-idr0101A-13457227.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0101A-13457537/v0.4-idr0101A-13457537.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0101A-13457539/v0.4-idr0101A-13457539.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0048A-9846151/v0.4-idr0048A-9846151.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0048A-9846152/v0.4-idr0048A-9846152.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0138A-TimEmbryos-120919-HybCycle_29-MMStack_Pos9/v0.4-idr0138A-TimEmbryos-120919-HybCycle_29-MMStack_Pos9.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0010-76-45/v0.5-idr0010-76-45.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0090-190129/v0.5-idr0090-190129.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0066-ExpD_chicken_embryo_MIP/v0.5-idr0066-ExpD_chicken_embryo_MIP.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0066-ExpA_VIP_ASLM_on/v0.5-idr0066-ExpA_VIP_ASLM_on.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0062A-6001240_labels/v0.5-idr0062A-6001240_labels.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0157-Asterella_gracilis_SWE-IMG_1033-1112_Asterella_gracilis_(Mannia_gracilis)_stature/v0.5-idr0157-Asterella_gracilis_SWE-IMG_1033-1112_Asterella_gracilis_(Mannia_gracilis)_stature.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0051-180712_H2B_22ss_Courtney1_20180712-163837_p00_c00_preview/v0.5-idr0051-180712_H2B_22ss_Courtney1_20180712-163837_p00_c00_preview.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0026-3.66.9-6.141020_15-41-29.00/v0.5-idr0026-3.66.9-6.141020_15-41-29.00.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0083-9822152/v0.5-idr0083-9822152.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.5-idr0033A-BR00109990_C2/v0.5-idr0033A-BR00109990_C2.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0079A-idr0079_images/v0.4-idr0079A-idr0079_images.json",
+      "type": "application/geo+json"
+    }
+  ]
+}

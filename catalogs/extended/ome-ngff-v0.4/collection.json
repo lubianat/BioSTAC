@@ -1,0 +1,214 @@
+{
+  "type": "Collection",
+  "id": "ome-ngff-v0.4",
+  "stac_version": "1.1.0",
+  "description": "IDR sample images stored as OME-NGFF 0.4.",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0073A-9798462/v0.4-idr0073A-9798462.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0072B-9512/v0.4-idr0072B-9512.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0083A-9822152/v0.4-idr0083A-9822152.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0062A-6001247/v0.4-idr0062A-6001247.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0044A-4007801/v0.4-idr0044A-4007801.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0056B-7361/v0.4-idr0056B-7361.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0128E-9701/v0.4-idr0128E-9701.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0013A-3451/v0.4-idr0013A-3451.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0054A-5025551/v0.4-idr0054A-5025551.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0054A-5025552/v0.4-idr0054A-5025552.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0054A-5025553/v0.4-idr0054A-5025553.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0076A-10501752/v0.4-idr0076A-10501752.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0047A-4496763/v0.4-idr0047A-4496763.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0062A-6001240/v0.4-idr0062A-6001240.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0052A-5514375/v0.4-idr0052A-5514375.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0001A-2551/v0.4-idr0001A-2551.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0101A-13457227/v0.4-idr0101A-13457227.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0101A-13457537/v0.4-idr0101A-13457537.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0101A-13457539/v0.4-idr0101A-13457539.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0048A-9846151/v0.4-idr0048A-9846151.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0048A-9846152/v0.4-idr0048A-9846152.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0138A-TimEmbryos-120919-HybCycle_29-MMStack_Pos9/v0.4-idr0138A-TimEmbryos-120919-HybCycle_29-MMStack_Pos9.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./v0.4-idr0079A-idr0079_images/v0.4-idr0079A-idr0079_images.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    }
+  ],
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2022-05-05T00:00:00Z",
+          "2026-05-12T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "various",
+  "summaries": {
+    "license": [
+      "CC-BY-4.0",
+      "CC0-1.0"
+    ],
+    "idr:study": [
+      "idr0073",
+      "idr0072",
+      "idr0083",
+      "idr0062",
+      "idr0044",
+      "idr0056",
+      "idr0128",
+      "idr0013",
+      "idr0054",
+      "idr0076",
+      "idr0047",
+      "idr0052",
+      "idr0001",
+      "idr0101",
+      "idr0048",
+      "idr0138",
+      "idr0079"
+    ],
+    "ome:axes": [
+      "XYZCT",
+      "XYC",
+      "XYZC",
+      "XYT",
+      null
+    ],
+    "ome:has_labels": [
+      false,
+      true
+    ],
+    "ome:plate": [
+      false,
+      true
+    ],
+    "ome:size_t": {
+      "minimum": 1,
+      "maximum": 532
+    },
+    "ome:size_z": {
+      "minimum": 1,
+      "maximum": 1402
+    },
+    "ome:size_c": {
+      "minimum": 1,
+      "maximum": 50
+    },
+    "ome:size_x": {
+      "minimum": 190,
+      "maximum": 144384
+    },
+    "ome:size_y": {
+      "minimum": 189,
+      "maximum": 93184
+    }
+  }
+}

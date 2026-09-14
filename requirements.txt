@@ -1,0 +1,6 @@
+marimo
+pystac
+jsonschema
+cql2
+pystac-client
+pypgstac[psycopg]==0.9.11  # must match the pgstac image in api/docker-compose.yml
