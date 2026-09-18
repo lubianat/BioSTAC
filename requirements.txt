@@ -3,4 +3,11 @@ pystac
 jsonschema
 cql2
 pystac-client
+rustac
+duckdb
+zarr>=3
+numpy
+pillow
+fsspec
+aiohttp
 pypgstac[psycopg]==0.9.11  # must match the pgstac image in api/docker-compose.yml
