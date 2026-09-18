@@ -1,0 +1,3 @@
+[submodule "ome2024-ngff-challenge"]
+	path = ome2024-ngff-challenge
+	url = https://github.com/ome/ome2024-ngff-challenge
