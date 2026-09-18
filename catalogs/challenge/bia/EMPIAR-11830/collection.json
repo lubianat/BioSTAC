@@ -21,7 +21,7 @@
   "title": "EMPIAR-11830 — C. reinhardtii tomogram",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
-    "temporal": {"interval": [["2026-09-18T17:07:24Z", "2026-09-18T17:07:24Z"]]}
+    "temporal": {"interval": [["2026-09-18T17:30:24Z", "2026-09-18T17:30:24Z"]]}
   },
   "license": "CC-BY-4.0",
   "assets": {

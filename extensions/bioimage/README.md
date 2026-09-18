@@ -1,6 +1,6 @@
 # bioimage STAC extension (experimental)
 
-Describes a bioimage (OME-Zarr) asset in STAC Item properties: its axes and sizes, and ontology terms for the specimen and the imaging method.
+Describes a bioimage (OME-Zarr) asset in STAC Item properties: its size along each axis, and ontology terms for the specimen and the imaging method.
 
 Physical units and pixel sizes are left out: they live in the image's own `zarr.json`, one asset away.
 
@@ -9,7 +9,7 @@ Physical units and pixel sizes are left out: they live in the image's own `zarr.
 
 The identifier is a placeholder and is not hosted; the build validates against the local file. The `bioimage:` prefix was not in use on [stac-extensions.github.io](https://stac-extensions.github.io/) when this was written.
 
-The `ontology_term` and axes structures follow the shapes used by [bioparquet](https://github.com/bioparquet), so the two stay convertible.
+The `ontology_term` structure follows the shape used by [bioparquet](https://github.com/bioparquet), so the two stay convertible.
 
 ## Item properties
 
@@ -18,8 +18,7 @@ The `ontology_term` and axes structures follow the shapes used by [bioparquet](h
 | `bioimage:source` | string | Resource that published the image, e.g. `bia` |
 | `bioimage:ngff_version` | string \| null | OME-NGFF version from `zarr.json` |
 | `bioimage:size_bytes` | integer \| null | Size of the written Zarr |
-| `bioimage:axes` | array | One entry per axis, in storage order: `{name, type, size}` |
-| `bioimage:size_<name>` | integer | Flat size per axis (`bioimage:size_x`, …), for simple queries |
+| `bioimage:size_<name>` | integer | Size of each axis present, by OME-NGFF axis name: `bioimage:size_t`, `_c`, `_z`, `_y`, `_x` |
 | `bioimage:organism` | ontology term | Specimen taxon, e.g. `NCBITaxon:9606` |
 | `bioimage:imaging_method` | ontology term | Imaging method, e.g. `FBbi:00000251` |
 

@@ -12,25 +12,18 @@
     "bioimage:source": "bia",
     "bioimage:ngff_version": "0.5",
     "bioimage:size_bytes": 5390776103,
-    "bioimage:axes": [
-      {"name": "t", "type": "time", "size": 1},
-      {"name": "c", "type": "channel", "size": 3},
-      {"name": "z", "type": "space", "size": 1},
-      {"name": "y", "type": "space", "size": 39787},
-      {"name": "x", "type": "space", "size": 83663}
-    ],
+    "bioimage:size_t": 1,
+    "bioimage:size_c": 3,
+    "bioimage:size_z": 1,
+    "bioimage:size_y": 39787,
+    "bioimage:size_x": 83663,
     "bioimage:organism": {
       "ontology_source": "NCBITaxon",
       "term_id": "NCBITaxon:10116",
       "term_label": "Rattus norvegicus"
     },
     "bioimage:imaging_method": {"ontology_source": "FBbi", "term_id": "FBbi:00000243", "term_label": "bright-field microscopy"},
-    "bioimage:size_t": 1,
-    "bioimage:size_c": 3,
-    "bioimage:size_z": 1,
-    "bioimage:size_y": 39787,
-    "bioimage:size_x": 83663,
-    "datetime": "2026-09-18T17:07:24Z"
+    "datetime": "2026-09-18T17:30:24Z"
   },
   "links": [
     {

@@ -12,21 +12,14 @@
     "bioimage:source": "bia",
     "bioimage:ngff_version": "0.5",
     "bioimage:size_bytes": 441756,
-    "bioimage:axes": [
-      {"name": "t", "type": "time", "size": 1},
-      {"name": "c", "type": "channel", "size": 2},
-      {"name": "z", "type": "space", "size": 1},
-      {"name": "y", "type": "space", "size": 512},
-      {"name": "x", "type": "space", "size": 512}
-    ],
-    "bioimage:organism": {"ontology_source": "NCBITaxon", "term_id": "NCBITaxon:9601", "term_label": "Pongo abelii"},
-    "bioimage:imaging_method": {"ontology_source": "FBbi", "term_id": "FBbi:00000251", "term_label": "confocal microscopy"},
     "bioimage:size_t": 1,
     "bioimage:size_c": 2,
     "bioimage:size_z": 1,
     "bioimage:size_y": 512,
     "bioimage:size_x": 512,
-    "datetime": "2026-09-18T17:07:24Z"
+    "bioimage:organism": {"ontology_source": "NCBITaxon", "term_id": "NCBITaxon:9601", "term_label": "Pongo abelii"},
+    "bioimage:imaging_method": {"ontology_source": "FBbi", "term_id": "FBbi:00000251", "term_label": "confocal microscopy"},
+    "datetime": "2026-09-18T17:30:24Z"
   },
   "links": [
     {

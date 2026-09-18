@@ -196,16 +196,9 @@ def _(CACHE, LICENSES, SOURCE_CSV, csv, datetime, fetch_json, ontology_term, pys
         )
 
         ome = zarr_meta.get("attributes", {}).get("ome", {})
-        axes_meta = ome.get("multiscales", [{}])[0].get("axes", [])
+        axis_names = [a["name"] for a in ome.get("multiscales", [{}])[0].get("axes", [])]
+        # the CSV shape is positional: it only means something next to the axis names from zarr.json
         shape = [int(n) for n in row["shape"].split(",")] if row["shape"] else []
-        axes = [
-            {
-                "name": a["name"],
-                "type": a.get("type", "unknown"),
-                "size": shape[i] if i < len(shape) else None,
-            }
-            for i, a in enumerate(axes_meta)
-        ]
 
         # the crate says organism/method too, but the CSV columns are the challenge's own summary of it
         properties = {
@@ -215,10 +208,9 @@ def _(CACHE, LICENSES, SOURCE_CSV, csv, datetime, fetch_json, ontology_term, pys
             "bioimage:source": "bia",
             "bioimage:ngff_version": ome.get("version"),
             "bioimage:size_bytes": int(row["written"]) if row["written"] else None,
-            "bioimage:axes": axes,
+            **{f"bioimage:size_{name}": size for name, size in zip(axis_names, shape)},
             "bioimage:organism": ontology_term(row["organismId"], "ncbitaxon"),
             "bioimage:imaging_method": ontology_term(row["fbbiId"], "fbbi"),
-            **{f"bioimage:size_{a['name']}": a["size"] for a in axes if a["size"]},
         }
 
         item = pystac.Item(
@@ -585,7 +577,8 @@ def _(crates, items, mo, n_valid, rows):
         {
             "item": i.id,
             "title": i.properties["title"][:40],
-            "axes": "".join(a["name"] for a in i.properties["bioimage:axes"]),
+            "axes": "".join(k.removeprefix("bioimage:size_") for k in i.properties
+                            if k.startswith("bioimage:size_") and k != "bioimage:size_bytes"),
             "MB": round((i.properties["bioimage:size_bytes"] or 0) / 1e6, 1),
             "organism": term(i, "bioimage:organism"),
             "imaging method": term(i, "bioimage:imaging_method"),

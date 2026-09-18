@@ -21,7 +21,7 @@
   "title": "EMPIAR-10392 — Pladmodium falciparum schizont at parasitophorous vacuolar membrane (PVM) rupture",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
-    "temporal": {"interval": [["2026-09-18T17:07:24Z", "2026-09-18T17:07:24Z"]]}
+    "temporal": {"interval": [["2026-09-18T17:30:24Z", "2026-09-18T17:30:24Z"]]}
   },
   "license": "CC-BY-4.0",
   "assets": {

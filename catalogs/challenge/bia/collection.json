@@ -94,12 +94,12 @@
     "serial block face scanning electron microscopy",
     "tomography"
   ],
-  "bioimage:harvested": "2026-09-18T17:07:24+00:00",
+  "bioimage:harvested": "2026-09-18T17:30:24+00:00",
   "bioimage:source_csv": "https://github.com/ome/ome2024-ngff-challenge/blob/main/samples/ebi-ngff-challenge-samples.csv",
   "title": "BIA / EBI — OME 2024 NGFF challenge",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
-    "temporal": {"interval": [["2026-09-18T17:07:24Z", "2026-09-18T17:07:24Z"]]}
+    "temporal": {"interval": [["2026-09-18T17:30:24Z", "2026-09-18T17:30:24Z"]]}
   },
   "license": "various",
   "summaries": {

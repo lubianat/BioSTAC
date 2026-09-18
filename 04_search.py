@@ -100,8 +100,8 @@ def _(hits, mo):
         p = item.properties
         data = item.assets["data"].href
         meta = item.assets.get("metadata") or item.assets.get("ro-crate")
-        sizes = {a["name"].upper(): a["size"] for a in p.get("bioimage:axes", [])} or {
-            d: p.get(f"ome:size_{d.lower()}") for d in "XYZCT"}
+        # either extension: bioimage:size_x … or ome:size_x …
+        sizes = {d: p.get(f"bioimage:size_{d.lower()}") or p.get(f"ome:size_{d.lower()}") for d in "XYZCT"}
         dims = " × ".join(f"{d}{sizes[d]}" for d in "XYZCT" if sizes.get(d))
         thumbnail = item.assets.get("thumbnail")
         preview = (f'<img src="{thumbnail.href}" width="96">' if thumbnail
