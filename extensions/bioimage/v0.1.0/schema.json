@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.org/stac/bioimage/v0.1.0/schema.json",
+  "title": "Bioimage Extension (experimental)",
+  "description": "Describes a bioimage (OME-Zarr) asset: axes, sizes, and ontology terms for specimen and imaging method.",
+  "type": "object",
+  "required": ["stac_extensions", "properties"],
+  "properties": {
+    "stac_extensions": {
+      "type": "array",
+      "contains": {"const": "https://example.org/stac/bioimage/v0.1.0/schema.json"}
+    },
+    "properties": {
+      "type": "object",
+      "required": ["bioimage:source", "bioimage:axes"],
+      "properties": {
+        "bioimage:source": {"type": "string", "description": "Short id of the resource that published the image, e.g. bia."},
+        "bioimage:ngff_version": {"type": ["string", "null"]},
+        "bioimage:size_bytes": {"type": ["integer", "null"], "minimum": 0},
+        "bioimage:axes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "type", "size"],
+            "properties": {
+              "name": {"type": "string"},
+              "type": {"type": "string", "enum": ["space", "time", "channel", "unknown"]},
+              "unit": {"type": ["string", "null"]},
+              "size": {"type": ["integer", "null"], "minimum": 1}
+            }
+          }
+        },
+        "bioimage:organism": {"$ref": "#/definitions/ontology_term"},
+        "bioimage:imaging_method": {"$ref": "#/definitions/ontology_term"}
+      },
+      "patternProperties": {
+        "^bioimage:size_[a-z]$": {"type": "integer", "minimum": 1}
+      }
+    }
+  },
+  "definitions": {
+    "ontology_term": {
+      "type": ["object", "null"],
+      "required": ["ontology_source", "term_id"],
+      "properties": {
+        "ontology_source": {"type": "string", "description": "Ontology the term comes from, e.g. NCBITaxon, FBbi."},
+        "term_id": {"type": "string", "description": "CURIE of the term, e.g. NCBITaxon:9606."},
+        "term_label": {"type": ["string", "null"]}
+      }
+    }
+  }
+}
