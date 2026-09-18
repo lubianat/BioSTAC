@@ -1,0 +1,35 @@
+{
+  "type": "Collection",
+  "id": "EMPIAR-11830",
+  "stac_version": "1.1.0",
+  "description": "EMPIAR-11830. No GIDE study crate is available for this study.",
+  "links": [
+    {"rel": "root", "href": "../../catalog.json", "type": "application/json"},
+    {"rel": "via", "href": "https://www.ebi.ac.uk/empiar/EMPIAR-11830/", "title": "Study page"},
+    {
+      "rel": "item",
+      "href": "./bia-c-reinhardtii-tomogram/bia-c-reinhardtii-tomogram.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "BIA / EBI — OME 2024 NGFF challenge"
+    }
+  ],
+  "title": "EMPIAR-11830 — C. reinhardtii tomogram",
+  "extent": {
+    "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
+    "temporal": {"interval": [["2026-09-18T17:07:24Z", "2026-09-18T17:07:24Z"]]}
+  },
+  "license": "CC-BY-4.0",
+  "assets": {
+    "thumbnail": {
+      "href": "./bia-c-reinhardtii-tomogram/thumbnail.png",
+      "type": "image/png",
+      "title": "Thumbnail of C. reinhardtii tomogram",
+      "roles": ["thumbnail"]
+    }
+  }
+}

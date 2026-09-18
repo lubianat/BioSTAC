@@ -1,0 +1,78 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    "https://www.gide-project.org/ro-crate/search/1.0/context"
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "FIB-SEM of parapodia from Platynereis dumerilii",
+      "description": "Platynereis dumerilii images aligned using alignment to median smoothed template (AMST)",
+      "datePublished": "2026-09-18",
+      "hasPart": [
+        {
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/eea08413-3c5e-4fae-b4fb-02c7c5ebb8a4.zarr"
+        },
+        {
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/eea08413-3c5e-4fae-b4fb-02c7c5ebb8a4.zarr/zarr.json"
+        },
+        {
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/eea08413-3c5e-4fae-b4fb-02c7c5ebb8a4.zarr/ro-crate-metadata.json"
+        },
+        {"@id": "thumbnail.png"}
+      ],
+      "seeAlso": {"@id": "./bia-fib-sem-of-parapodia-from-platynereis.json"},
+      "thumbnailUrl": ["thumbnail.png"],
+      "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
+      "isPartOf": {"@id": "../"},
+      "about": [{"@id": "obo:NCBITaxon_6359"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00050000"}]
+    },
+    {
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/eea08413-3c5e-4fae-b4fb-02c7c5ebb8a4.zarr",
+      "@type": "Dataset",
+      "name": "OME-Zarr",
+      "encodingFormat": "application/vnd.zarr",
+      "contentSize": "11152056094"
+    },
+    {
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/eea08413-3c5e-4fae-b4fb-02c7c5ebb8a4.zarr/zarr.json",
+      "@type": "File",
+      "name": "OME-Zarr metadata",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/eea08413-3c5e-4fae-b4fb-02c7c5ebb8a4.zarr/ro-crate-metadata.json",
+      "@type": "File",
+      "name": "Image RO-Crate (NGFF challenge)",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "thumbnail.png", "@type": "File", "name": "Thumbnail", "encodingFormat": "image/png"},
+    {"@id": "obo:NCBITaxon_6359", "@type": "Taxon", "scientificName": "Platynereis dumerilii"},
+    {
+      "@id": "obo:FBbi_00050000",
+      "@type": "DefinedTerm",
+      "name": "focused ion beam scanning electron microscopy"
+    },
+    {
+      "@id": "../",
+      "@type": "Dataset",
+      "name": "FIB-SEM of parapodia from Platynereis dumerilii",
+      "url": "https://www.ebi.ac.uk/empiar/EMPIAR-10310/",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "../ro-crate-metadata.json"}
+    },
+    {
+      "@id": "../ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    }
+  ]
+}

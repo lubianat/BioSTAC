@@ -1,0 +1,61 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    "https://www.gide-project.org/ro-crate/search/1.0/context"
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "HeLa cells",
+      "description": "HeLa cells showing click chemistry and immunofluorescence",
+      "datePublished": "2026-09-18",
+      "hasPart": [
+        {
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/4ffaeed2-fa70-4907-820f-8a96ef683095.zarr"
+        },
+        {
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/4ffaeed2-fa70-4907-820f-8a96ef683095.zarr/zarr.json"
+        },
+        {
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/4ffaeed2-fa70-4907-820f-8a96ef683095.zarr/ro-crate-metadata.json"
+        },
+        {"@id": "thumbnail.png"}
+      ],
+      "seeAlso": {"@id": "./bia-hela-cells.json"},
+      "thumbnailUrl": ["thumbnail.png"],
+      "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
+      "isPartOf": {"@id": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD144"},
+      "about": [{"@id": "obo:NCBITaxon_9601"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00000251"}]
+    },
+    {
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/4ffaeed2-fa70-4907-820f-8a96ef683095.zarr",
+      "@type": "Dataset",
+      "name": "OME-Zarr",
+      "encodingFormat": "application/vnd.zarr",
+      "contentSize": "441756"
+    },
+    {
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/4ffaeed2-fa70-4907-820f-8a96ef683095.zarr/zarr.json",
+      "@type": "File",
+      "name": "OME-Zarr metadata",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/4ffaeed2-fa70-4907-820f-8a96ef683095.zarr/ro-crate-metadata.json",
+      "@type": "File",
+      "name": "Image RO-Crate (NGFF challenge)",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "thumbnail.png", "@type": "File", "name": "Thumbnail", "encodingFormat": "image/png"},
+    {"@id": "obo:NCBITaxon_9601", "@type": "Taxon", "scientificName": "Pongo abelii"},
+    {"@id": "obo:FBbi_00000251", "@type": "DefinedTerm", "name": "confocal microscopy"}
+  ]
+}

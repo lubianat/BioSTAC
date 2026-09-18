@@ -1,0 +1,50 @@
+{
+  "type": "Collection",
+  "id": "S-BIAD963",
+  "stac_version": "1.1.0",
+  "description": "In 2015, we launched the mesoSPIM initiative (www.mesospim.org), an open-source project for making light-sheet microscopy of large cleared tissues more accessible. Meanwhile, the demand for imaging larger samples at higher speed and resolution has increased, requiring major improvements in the capabilities of light-sheet microscopy. Here, we introduce the next-generation mesoSPIM (\"Benchtop\") with significantly increased field of view, improved resolution, higher throughput, more affordable cost and simpler assembly compared to the original version. We developed a new method for testing objectives, enabling us to select detection objectives optimal for light-sheet imaging with large-sensor sCMOS cameras. The new mesoSPIM achieves high spatial resolution (1.5 µm laterally, 3.3 µm axially) across the entire field of view, a magnification up to 20x, and supports sample sizes ranging from sub-mm up to several centimetres, while being compatible with multiple clearing techniques. The new microscope serves a broad range of applications in neuroscience, developmental biology, and even physics.",
+  "links": [
+    {"rel": "root", "href": "../../catalog.json", "type": "application/json"},
+    {
+      "rel": "via",
+      "href": "https://github.com/foundingGIDE/gide-data-deliverable/blob/main/data_deliverable/GIDE_crates/S-BIAD963-ro-crate-metadata.json",
+      "title": "GIDE study crate (source; context compacted)"
+    },
+    {
+      "rel": "via",
+      "href": "https://www.ebi.ac.uk/biostudies/BioImages/studies/S-BIAD963",
+      "title": "Study page"
+    },
+    {
+      "rel": "item",
+      "href": "./bia-mouse-cns-mesospim/bia-mouse-cns-mesospim.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "BIA / EBI — OME 2024 NGFF challenge"
+    }
+  ],
+  "title": "The Benchtop mesoSPIM: a next-generation open-source light-sheet microscope for large cleared samples",
+  "extent": {
+    "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
+    "temporal": {"interval": [["2023-12-15T00:00:00Z", "2023-12-15T00:00:00Z"]]}
+  },
+  "license": "CC-BY-4.0",
+  "keywords": ["light-sheet", "mesoSPIM", "tissue clearing"],
+  "assets": {
+    "ro-crate": {
+      "href": "./ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "GIDE study RO-Crate",
+      "roles": ["metadata"]
+    },
+    "thumbnail": {
+      "href": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD963/191b1803-0c6a-4fa5-9291-4b2c997e038e/b400b30d-84e2-4102-9df0-36b601422c40.png",
+      "type": "image/png",
+      "roles": ["thumbnail"]
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": ["https://example.org/stac/bioimage/v0.1.0/schema.json"],
+  "id": "bia-hela-cells",
+  "geometry": {"type": "Point", "coordinates": [0.0, 0.0]},
+  "bbox": [0.0, 0.0, 0.0, 0.0],
+  "properties": {
+    "title": "HeLa cells",
+    "description": "HeLa cells showing click chemistry and immunofluorescence",
+    "license": "CC-BY-4.0",
+    "bioimage:source": "bia",
+    "bioimage:ngff_version": "0.5",
+    "bioimage:size_bytes": 441756,
+    "bioimage:axes": [
+      {"name": "t", "type": "time", "size": 1},
+      {"name": "c", "type": "channel", "size": 2},
+      {"name": "z", "type": "space", "size": 1},
+      {"name": "y", "type": "space", "size": 512},
+      {"name": "x", "type": "space", "size": 512}
+    ],
+    "bioimage:organism": {"ontology_source": "NCBITaxon", "term_id": "NCBITaxon:9601", "term_label": "Pongo abelii"},
+    "bioimage:imaging_method": {"ontology_source": "FBbi", "term_id": "FBbi:00000251", "term_label": "confocal microscopy"},
+    "bioimage:size_t": 1,
+    "bioimage:size_c": 2,
+    "bioimage:size_z": 1,
+    "bioimage:size_y": 512,
+    "bioimage:size_x": 512,
+    "datetime": "2026-09-18T17:07:24Z"
+  },
+  "links": [
+    {
+      "rel": "via",
+      "href": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD144",
+      "title": "Original study"
+    },
+    {"rel": "license", "href": "https://creativecommons.org/licenses/by/4.0/", "title": "CC-BY-4.0"},
+    {
+      "rel": "alternate",
+      "href": "./ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "This item as an RO-Crate"
+    },
+    {"rel": "root", "href": "../../../catalog.json", "type": "application/json"},
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "S-BIAD144 — HeLa cells"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "S-BIAD144 — HeLa cells"
+    }
+  ],
+  "assets": {
+    "data": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/4ffaeed2-fa70-4907-820f-8a96ef683095.zarr",
+      "type": "application/vnd.zarr",
+      "title": "OME-Zarr",
+      "roles": ["data"]
+    },
+    "zarr-metadata": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/4ffaeed2-fa70-4907-820f-8a96ef683095.zarr/zarr.json",
+      "type": "application/json",
+      "title": "OME-Zarr metadata (zarr.json)",
+      "roles": ["metadata"]
+    },
+    "ro-crate": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/4ffaeed2-fa70-4907-820f-8a96ef683095.zarr/ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "RO-Crate metadata",
+      "roles": ["metadata"]
+    },
+    "thumbnail": {
+      "href": "./thumbnail.png",
+      "type": "image/png",
+      "title": "Lowest resolution level, middle Z plane",
+      "roles": ["thumbnail"]
+    }
+  },
+  "collection": "S-BIAD144"
+}

@@ -1,0 +1,60 @@
+{
+  "type": "Collection",
+  "id": "S-BIAD606",
+  "stac_version": "1.1.0",
+  "description": "µCT datasets of Pycnogonum litorale specimens that had been subjected to various degrees of posterior amputation.",
+  "links": [
+    {"rel": "root", "href": "../../catalog.json", "type": "application/json"},
+    {
+      "rel": "via",
+      "href": "https://github.com/foundingGIDE/gide-data-deliverable/blob/main/data_deliverable/GIDE_crates/S-BIAD606-ro-crate-metadata.json",
+      "title": "GIDE study crate (source; context compacted)"
+    },
+    {
+      "rel": "via",
+      "href": "https://www.ebi.ac.uk/biostudies/BioImages/studies/S-BIAD606",
+      "title": "Study page"
+    },
+    {
+      "rel": "item",
+      "href": "./bia-3d-micro-ct-image-of-sea-spider/bia-3d-micro-ct-image-of-sea-spider.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "BIA / EBI — OME 2024 NGFF challenge"
+    }
+  ],
+  "title": "The sea spider Pycnogonum litorale overturns the paradigm of the absence of axial regeneration in molting animals",
+  "extent": {
+    "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
+    "temporal": {"interval": [["2023-01-31T00:00:00Z", "2023-01-31T00:00:00Z"]]}
+  },
+  "license": "CC-BY-4.0",
+  "keywords": [
+    "Pycnogonida",
+    "sea spider",
+    "Pantopoda",
+    "Arthropoda",
+    "regeneration",
+    "evolution",
+    "µCT",
+    "development",
+    "segmentation"
+  ],
+  "assets": {
+    "ro-crate": {
+      "href": "./ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "GIDE study RO-Crate",
+      "roles": ["metadata"]
+    },
+    "thumbnail": {
+      "href": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD606/38026912-4a13-406d-9751-3bdb444f729b/cd1c3ba0-dd52-4b7c-9244-53689fc9ee76.png",
+      "type": "image/png",
+      "roles": ["thumbnail"]
+    }
+  }
+}
