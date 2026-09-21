@@ -127,14 +127,14 @@ def _(BIA, CRATE, ROCrate, ids, mo, props):
 
 
 @app.cell
-def _(JsonSchemaSTACValidator, json, mo, pystac, set_validator):
+def _(BIA, JsonSchemaSTACValidator, json, mo, pystac, set_validator):
     # the bioimage extension URI is not hosted: hand the local schema to the validator
     _validator = JsonSchemaSTACValidator()
     with open("extensions/bioimage/v0.1.0/schema.json") as _f:
         _validator.schema_cache["https://example.org/stac/bioimage/v0.1.0/schema.json"] = json.load(_f)
     set_validator(_validator)
 
-    stac_catalog = pystac.Catalog.from_file("catalogs/challenge/catalog.json")
+    stac_catalog = pystac.Collection.from_file(str(BIA / "collection.json"))  # the BIA resource only
     stac_items = {i.id: i for i in stac_catalog.get_items(recursive=True)}
     _collections = list(stac_catalog.get_all_collections())
     _validated = stac_catalog.validate_all()

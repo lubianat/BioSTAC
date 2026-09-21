@@ -422,7 +422,8 @@ def write_item_crate(item, extra_parts=()):
         "@id": "./",
         "@type": "Dataset",
         "name": p["title"],
-        "description": p["description"],
+        # RO-Crate requires a description; STAC forbids an empty one, so the Item may have none
+        "description": p.get("description") or f"{p['title']}. The source gives no description.",
         "datePublished": item.datetime.date().isoformat(),
         "hasPart": [{"@id": f"{zarr_url}/"}, {"@id": f"{zarr_url}/zarr.json"},
                     {"@id": f"{zarr_url}/ro-crate-metadata.json"}],
