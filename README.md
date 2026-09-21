@@ -94,15 +94,16 @@ The crates also link to each other, mirroring the STAC tree, with relative paths
 - **Down:** the study crate lists each image folder in its `hasPart` as a nested crate:
   `{"@id": "bia-mouse-cns-mesospim/", "@type": "Dataset", "conformsTo": {"@id": "https://w3id.org/ro/crate"},
   "subjectOf": {"@id": "bia-mouse-cns-mesospim/ro-crate-metadata.json"}}`. This is RO-Crate 1.2's
-  "Referencing other RO-Crates" pattern, and it only *adds* to GIDE's graph: every original triple is kept.
-- **Up:** each image crate has `isPartOf: {"@id": "../"}`, with `../` described the same way (`conformsTo`
-  plus `subjectOf: ../ro-crate-metadata.json`). The spec defines no parent link, so `isPartOf` is our
-  convention, kept symmetric with the link down.
+  "Referencing other RO-Crates" pattern.
+- **Up:** each image crate has `isPartOf: {"@id": "../"}`, where `../` is a `CreativeWork` with
+  `subjectOf: ../ro-crate-metadata.json`. It is not a `Dataset`, because a parent is not a data entity of
+  the image crate (the validator would then require it in the image crate's `hasPart`). The spec defines no
+  parent link, so this one is our convention.
 - Images in the five studies without a GIDE crate keep `isPartOf` pointing at the study web page.
 
-Relative folder ids were chosen over the crates' absolute root ids on purpose: those are BioStudies URLs,
-and their spelling is not stable (`…/bioimages/…` vs `…/BioImages/…` both appear), so matching on them breaks
-silently. Relative links also survive moving the catalog to another bucket.
+Relative folder ids were chosen over absolute ones on purpose: the BioStudies URLs are not spelled
+consistently (`…/bioimages/…` and `…/BioImages/…` both appear), so matching on them breaks silently.
+Relative links also survive moving the catalog to another bucket.
 
 ```
 catalogs/challenge/catalog.json
@@ -116,11 +117,43 @@ catalogs/challenge/catalog.json
          └─ thumbnail.png
 ```
 
-All crates use two published contexts instead of an inline term block:
-`["https://w3id.org/ro/crate/1.2/context", "https://www.gide-project.org/ro-crate/search/1.0/context"]`.
-For the GIDE study crates the swap is lossless: all of GIDE's triples are still there after it (checked with
-pyld / URDNA2015); the only additions are the 7 triples per study that link down to its image crates. With the readable layout used for all JSON here, they shrink by
-1.4–3.5 KB each. Item crates are about 2.6 KB.
+### Valid as both STAC and RO-Crate
+
+```bash
+.venv/bin/marimo edit 13_ro_crate.py
+```
+
+The notebook reads the tree with RO-Crate tooling only ([ro-crate-py](https://github.com/ResearchObject/ro-crate-py)),
+walking from the study crates down to the image crates, then validates the same tree as STAC and checks that,
+for every image, the STAC Item and its crate agree on title, license, taxon, imaging method and data location.
+It also links every crate into the [RO-Crate Explorer](https://arunaengine.github.io/ro-crate-explorer/),
+served from `localhost:8000`, where the nested image crates open as sub-crates.
+
+All 15 crates (5 study, 10 image) pass every REQUIRED check of the RO-Crate 1.2 profile of
+[rocrate-validator](https://github.com/crs4/rocrate-validator). The check is slow, so it is not in the notebook:
+
+```bash
+uv run --with roc-validator rocrate-validator validate --profile-identifier ro-crate-1.2 \
+  --requirement-severity REQUIRED catalogs/challenge/bia/S-BIAD963
+```
+
+Getting there took four changes, each forced by the validator:
+
+- **`@context`.** Every crate uses `["https://w3id.org/ro/crate/1.2/context", {…}]`, with only the GIDE term
+  definitions that crate uses inlined from GIDE's published context. GIDE's context URL cannot be used: on
+  its own, the crate fails the rule that the RO-Crate context URL must be listed; next to the RO-Crate URL,
+  rdflib (which the validator uses) fails with "recursive context inclusion", because GIDE's context itself
+  imports the RO-Crate one.
+- **Study crates are attached.** GIDE's root `@id` is the BioStudies URL, which makes a crate "detached", and a
+  detached crate cannot hold local entities such as the nested image folders. Shipped in a folder, the root
+  is `./`; the BioStudies URL is kept as `url`, and GIDE's `identifier` (the accession) is untouched. Apart
+  from that rename, every one of GIDE's triples is kept (checked with pyld), plus 8 new triples per study for
+  the links down. The shipped crates are 0.5–2.7 KB smaller than GIDE's originals.
+- **The Zarr is a folder.** Its id in the image crate ends in `/` (`….zarr/`), as RO-Crate expects for a
+  `Dataset`; ro-crate-py adds the slash anyway, so without it the two views seemed to disagree.
+- **Local files are references.** `thumbnailUrl` is `{"@id": "thumbnail.png"}`, not a plain string.
+
+Image crates are about 3 KB each.
 
 **Thumbnails.** The challenge has no thumbnail files: its site renders each image in the browser from the
 lowest-resolution pyramid level. The build does the same once, with `zarr` + Pillow: first timepoint, middle
@@ -193,15 +226,18 @@ flat, or query nested ones with DuckDB.
   Collections are titled from the image and carry no study description.
 - Each study contributes a single image here, so the study level adds structure but no grouping yet. It
   starts to pay off with sources such as IDR, where one study has hundreds of images.
-- The GIDE search context (`https://www.gide-project.org/ro-crate/search/1.0/context`) declares its own
-  `@id` as `https://gide-search/1.0/context`, not its URL, and is served as `application/json` rather than
-  `application/ld+json`. The GIDE crates inline `seeAlso` as `rdf:seeAlso` where the context says
+- The GIDE search context (`https://www.gide-project.org/ro-crate/search/1.0/context`) cannot be used by
+  URL in a crate that passes RO-Crate tooling: it imports the RO-Crate 1.2 context itself, so listing both
+  makes rdflib fail with "recursive context inclusion", and listing it alone drops the required RO-Crate
+  context URL. If GIDE's context stopped importing RO-Crate's, crates could list both URLs. It also declares
+  its own `@id` as `https://gide-search/1.0/context`, not its URL, and is served as `application/json` rather
+  than `application/ld+json`. The GIDE crates inline `seeAlso` as `rdf:seeAlso` where the context says
   `rdfs:seeAlso`. None of the shipped crates uses `seeAlso`, so nothing changes here, but the two should agree.
 - One image (mouse CNS, mesoSPIM) renders black with its own OMERO window; it needs auto-contrast, as the
   challenge site's `autoBoost` does.
 
-Still to do: the other six sources, stac-geoparquet per source, and hosting each Collection in its own
-bucket so the federation is structural rather than a folder convention.
+Still to do: the other six sources, and hosting each resource in its own bucket so the federation is
+structural rather than a folder convention.
 
 ## Repository layout
 
@@ -212,6 +248,7 @@ samples.csv                     input: IDR OME-Zarr samples (v0.4, v0.5)
 readable_stac_io.py             writes STAC JSON with short objects on one line
 11_parquet_build.py             writes stac-geoparquet per collection
 12_parquet_query.py             queries it with DuckDB and rustac
+13_ro_crate.py                  reads the same tree as RO-Crate; checks STAC and RO-Crate agree
 catalogs/basic/                 written by notebook 1
 catalogs/extended/              written by notebook 3
 extensions/ome-ngff/            experimental STAC extension for the IDR demo
