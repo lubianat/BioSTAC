@@ -1,7 +1,14 @@
 {
   "@context": [
     "https://w3id.org/ro/crate/1.2/context",
-    "https://www.gide-project.org/ro-crate/search/1.0/context"
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"},
+      "seeAlso": {"@id": "rdfs:seeAlso"}
+    }
   ],
   "@graph": [
     {
@@ -15,10 +22,10 @@
       "@type": "Dataset",
       "name": "3D micro-CT image of sea spider (Pycnogonum litorale)",
       "description": "The sea spider Pycnogonum litorale overturns the paradigm of the absence of axial regeneration in molting animals, micro computed tomography image",
-      "datePublished": "2026-09-18",
+      "datePublished": "2026-09-21",
       "hasPart": [
         {
-          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/79ad519b-0aa6-4d64-85a9-6cea2318b980.zarr"
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/79ad519b-0aa6-4d64-85a9-6cea2318b980.zarr/"
         },
         {
           "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/79ad519b-0aa6-4d64-85a9-6cea2318b980.zarr/zarr.json"
@@ -29,14 +36,14 @@
         {"@id": "thumbnail.png"}
       ],
       "seeAlso": {"@id": "./bia-3d-micro-ct-image-of-sea-spider.json"},
-      "thumbnailUrl": ["thumbnail.png"],
+      "thumbnailUrl": [{"@id": "thumbnail.png"}],
       "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
       "isPartOf": {"@id": "../"},
       "about": [{"@id": "obo:NCBITaxon_261975"}],
       "measurementMethod": [{"@id": "obo:FBbi_00001002"}]
     },
     {
-      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/79ad519b-0aa6-4d64-85a9-6cea2318b980.zarr",
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/79ad519b-0aa6-4d64-85a9-6cea2318b980.zarr/",
       "@type": "Dataset",
       "name": "OME-Zarr",
       "encodingFormat": "application/vnd.zarr",
@@ -59,10 +66,9 @@
     {"@id": "obo:FBbi_00001002", "@type": "DefinedTerm", "name": "X-ray computed tomography"},
     {
       "@id": "../",
-      "@type": "Dataset",
+      "@type": "CreativeWork",
       "name": "The sea spider Pycnogonum litorale overturns the paradigm of the absence of axial regeneration in molting animals",
       "url": "https://www.ebi.ac.uk/biostudies/BioImages/studies/S-BIAD606",
-      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
       "subjectOf": {"@id": "../ro-crate-metadata.json"}
     },
     {

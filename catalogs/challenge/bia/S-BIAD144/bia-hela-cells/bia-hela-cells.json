@@ -19,7 +19,7 @@
     "bioimage:size_x": 512,
     "bioimage:organism": {"ontology_source": "NCBITaxon", "term_id": "NCBITaxon:9601", "term_label": "Pongo abelii"},
     "bioimage:imaging_method": {"ontology_source": "FBbi", "term_id": "FBbi:00000251", "term_label": "confocal microscopy"},
-    "datetime": "2026-09-18T17:30:24Z"
+    "datetime": "2026-09-21T09:44:24Z"
   },
   "links": [
     {

@@ -1,17 +1,27 @@
 {
   "@context": [
     "https://w3id.org/ro/crate/1.2/context",
-    "https://www.gide-project.org/ro-crate/search/1.0/context"
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "vernacularName": {"@id": "dwc:vernacularName"},
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"},
+      "BioSample": {"@id": "http://schema.org/BioSample"},
+      "LabProtocol": {"@id": "http://schema.org/LabProtocol"},
+      "labEquipment": {"@id": "http://schema.org/labEquipment"}
+    }
   ],
   "@graph": [
     {
       "@id": "ro-crate-metadata.json",
       "@type": "CreativeWork",
       "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
-      "about": {"@id": "https://www.ebi.ac.uk/biostudies/bioimages/studies/EMPIAR-10310"}
+      "about": {"@id": "./"}
     },
     {
-      "@id": "https://www.ebi.ac.uk/biostudies/bioimages/studies/EMPIAR-10310",
+      "@id": "./",
       "@type": ["Dataset"],
       "measurementMethod": [{"@id": "#56073628-0574-48af-9c42-512ea7530911"}, {"@id": "obo:FBbi_00050000"}],
       "about": [{"@id": "#282e55ee-d0ae-4eae-97ad-890b1d49d5d2"}, {"@id": "obo:NCBITaxon_6359"}],
@@ -39,6 +49,7 @@
       "thumbnailUrl": [
         "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10310/2e32dd1d-864b-449b-ae23-3fdc4abdb1e8/79965e61-3248-49f3-a4fd-407a3be350d5.png"
       ],
+      "url": "https://www.ebi.ac.uk/biostudies/bioimages/studies/EMPIAR-10310",
       "hasPart": [{"@id": "bia-fib-sem-of-parapodia-from-platynereis/"}]
     },
     {

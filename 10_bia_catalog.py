@@ -360,10 +360,15 @@ def _(CACHE, GIDE_TERMS, HARVESTED, LICENSES, crate_json, datetime, fetch_json, 
         graph_text = json.dumps(crate["@graph"])
         dropped = {k for k in (crate["@context"][1:] or [{}])[0] if k not in GIDE_TERMS}
         assert not any(f'"{k}"' in graph_text or f'"{k}:' in graph_text for k in dropped), (study.id, dropped)
-        # down to the item crates, as nested crates: additions only, GIDE's own nodes are untouched
         graph = crate["@graph"]
-        root = next(n for n in graph if n["@id"] == next(
-            d["about"]["@id"] for d in graph if d["@id"] == "ro-crate-metadata.json"))
+        # shipped in a folder, the crate is attached: its root must be ./ to hold local entities.
+        # GIDE's root id (the BioStudies URL) is kept as url; GIDE's own identifier (the accession) stays.
+        old_root = next(d["about"]["@id"] for d in graph if d["@id"] == "ro-crate-metadata.json")
+        graph = json.loads(json.dumps(graph).replace(json.dumps(old_root), '"./"'))
+        root = next(n for n in graph if n["@id"] == "./")
+        root.setdefault("identifier", old_root)
+        root.setdefault("url", old_root)
+        # down to the item crates, as nested crates
         for item in study.get_items():
             root.setdefault("hasPart", []).append({"@id": f"{item.id}/"})
             graph += referenced_crate(f"{item.id}/", item.properties["title"])
@@ -376,17 +381,28 @@ def _(CACHE, GIDE_TERMS, HARVESTED, LICENSES, crate_json, datetime, fetch_json, 
 
 @app.cell
 def _(json, pathlib, readable_dumps, urllib):
-    # every crate in the catalog uses these two published contexts instead of an inline term block
-    CRATE_CONTEXT = [
-        "https://w3id.org/ro/crate/1.2/context",
-        "https://www.gide-project.org/ro-crate/search/1.0/context",
-    ]
-    with urllib.request.urlopen(CRATE_CONTEXT[1], timeout=60) as _response:
-        GIDE_TERMS = set(json.load(_response)["@context"][1])
+    # RO-Crate tooling requires the RO-Crate context by URL, and rejects GIDE's context URL next to it
+    # (GIDE's file imports RO-Crate's again: "recursive context inclusion"). So: the RO-Crate URL, plus
+    # only the GIDE term definitions a crate actually uses, taken from GIDE's published context.
+    RO_CRATE_CONTEXT = "https://w3id.org/ro/crate/1.2/context"
+    GIDE_CONTEXT_URL = "https://www.gide-project.org/ro-crate/search/1.0/context"
+    with urllib.request.urlopen(GIDE_CONTEXT_URL, timeout=60) as _response:
+        GIDE_CONTEXT = json.load(_response)["@context"][1]
+    GIDE_TERMS = set(GIDE_CONTEXT)
+
+    def used_terms(graph):
+        """The GIDE term definitions this graph uses, plus the prefixes those definitions rely on."""
+        text = json.dumps(graph)
+        used = {k for k in GIDE_CONTEXT if f'"{k}"' in text or f'"{k}:' in text}
+        used |= {v["@id"].split(":")[0] for k, v in GIDE_CONTEXT.items()
+                 if k in used and isinstance(v, dict) and v["@id"].split(":")[0] in GIDE_CONTEXT}
+        return {k: v for k, v in GIDE_CONTEXT.items() if k in used}
 
     def crate_json(graph):
         # same layout as the STAC JSON: short objects on one line
-        return readable_dumps({"@context": CRATE_CONTEXT, "@graph": graph}) + "\n"
+        terms = used_terms(graph)
+        context = [RO_CRATE_CONTEXT, terms] if terms else RO_CRATE_CONTEXT
+        return readable_dumps({"@context": context, "@graph": graph}) + "\n"
 
     def obo_id(curie):
         """'NCBITaxon:9606' -> 'obo:NCBITaxon_9606', the form GIDE crates use."""
@@ -404,18 +420,25 @@ def _(json, pathlib, readable_dumps, urllib):
             "name": p["title"],
             "description": p["description"],
             "datePublished": item.datetime.date().isoformat(),
-            "hasPart": [{"@id": zarr}, {"@id": f"{zarr}/zarr.json"}, {"@id": f"{zarr}/ro-crate-metadata.json"}],
+            # a Zarr is a folder: as an RO-Crate Dataset its id ends in /
+            "hasPart": [{"@id": f"{zarr}/"}, {"@id": f"{zarr}/zarr.json"}, {"@id": f"{zarr}/ro-crate-metadata.json"}],
             "seeAlso": {"@id": f"./{item.id}.json"},
-            **({"thumbnailUrl": ["thumbnail.png"]} if "thumbnail" in item.assets else {}),
+            **({"thumbnailUrl": [{"@id": "thumbnail.png"}]} if "thumbnail" in item.assets else {}),
         }
         if "license" in via:
             root["license"] = {"@id": via["license"]}
         study = item.get_parent()
         up = []
         if study is not None and "ro-crate" in study.assets:
-            # up to the study crate, by relative path: the mirror of the study's hasPart link down to us
+            # up to the study crate, by relative path. Not a Dataset: a parent is not a data entity of
+            # this crate (RO-Crate would then require it in our hasPart). The spec has no parent link.
             root["isPartOf"] = {"@id": "../"}
-            up = referenced_crate("../", study.title, url=via.get("via"))
+            up = [
+                {"@id": "../", "@type": "CreativeWork", "name": study.title,
+                 **({"url": via["via"]} if "via" in via else {}),
+                 "subjectOf": {"@id": "../ro-crate-metadata.json"}},
+                {"@id": "../ro-crate-metadata.json", "@type": "CreativeWork", "encodingFormat": "application/ld+json"},
+            ]
         elif "via" in via:
             root["isPartOf"] = {"@id": via["via"]}
         if organism:
@@ -426,7 +449,7 @@ def _(json, pathlib, readable_dumps, urllib):
             {"@id": "ro-crate-metadata.json", "@type": "CreativeWork",
              "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"}, "about": {"@id": "./"}},
             root,
-            {"@id": zarr, "@type": "Dataset", "name": "OME-Zarr", "encodingFormat": "application/vnd.zarr",
+            {"@id": f"{zarr}/", "@type": "Dataset", "name": "OME-Zarr", "encodingFormat": "application/vnd.zarr",
              **({"contentSize": str(p["bioimage:size_bytes"])} if p.get("bioimage:size_bytes") else {})},
             {"@id": f"{zarr}/zarr.json", "@type": "File", "name": "OME-Zarr metadata",
              "encodingFormat": "application/json"},

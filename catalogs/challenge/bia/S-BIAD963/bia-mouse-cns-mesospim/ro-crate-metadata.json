@@ -1,7 +1,14 @@
 {
   "@context": [
     "https://w3id.org/ro/crate/1.2/context",
-    "https://www.gide-project.org/ro-crate/search/1.0/context"
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"},
+      "seeAlso": {"@id": "rdfs:seeAlso"}
+    }
   ],
   "@graph": [
     {
@@ -15,10 +22,10 @@
       "@type": "Dataset",
       "name": "Mouse CNS, mesoSPIM",
       "description": "Mouse central nervous system (CNS) at 5x magnification",
-      "datePublished": "2026-09-18",
+      "datePublished": "2026-09-21",
       "hasPart": [
         {
-          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/9d53468d-2b49-4a43-98dd-c1838485fddd.zarr"
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/9d53468d-2b49-4a43-98dd-c1838485fddd.zarr/"
         },
         {
           "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/9d53468d-2b49-4a43-98dd-c1838485fddd.zarr/zarr.json"
@@ -29,14 +36,14 @@
         {"@id": "thumbnail.png"}
       ],
       "seeAlso": {"@id": "./bia-mouse-cns-mesospim.json"},
-      "thumbnailUrl": ["thumbnail.png"],
+      "thumbnailUrl": [{"@id": "thumbnail.png"}],
       "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
       "isPartOf": {"@id": "../"},
       "about": [{"@id": "obo:NCBITaxon_10090"}],
       "measurementMethod": [{"@id": "obo:FBbi_00000369"}]
     },
     {
-      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/9d53468d-2b49-4a43-98dd-c1838485fddd.zarr",
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/9d53468d-2b49-4a43-98dd-c1838485fddd.zarr/",
       "@type": "Dataset",
       "name": "OME-Zarr",
       "encodingFormat": "application/vnd.zarr",
@@ -63,10 +70,9 @@
     },
     {
       "@id": "../",
-      "@type": "Dataset",
+      "@type": "CreativeWork",
       "name": "The Benchtop mesoSPIM: a next-generation open-source light-sheet microscope for large cleared samples",
       "url": "https://www.ebi.ac.uk/biostudies/BioImages/studies/S-BIAD963",
-      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
       "subjectOf": {"@id": "../ro-crate-metadata.json"}
     },
     {

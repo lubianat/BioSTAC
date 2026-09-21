@@ -1,17 +1,26 @@
 {
   "@context": [
     "https://w3id.org/ro/crate/1.2/context",
-    "https://www.gide-project.org/ro-crate/search/1.0/context"
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"},
+      "BioSample": {"@id": "http://schema.org/BioSample"},
+      "LabProtocol": {"@id": "http://schema.org/LabProtocol"},
+      "labEquipment": {"@id": "http://schema.org/labEquipment"}
+    }
   ],
   "@graph": [
     {
       "@id": "ro-crate-metadata.json",
       "@type": "CreativeWork",
       "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
-      "about": {"@id": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD606"}
+      "about": {"@id": "./"}
     },
     {
-      "@id": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD606",
+      "@id": "./",
       "@type": ["Dataset"],
       "measurementMethod": [{"@id": "#2f00858d-b0b4-49fc-9635-d918637731ee"}, {"@id": "obo:FBbi_00001002"}],
       "about": [{"@id": "#c96dd8d0-c44f-4e91-b092-e67fff3a7abb"}, {"@id": "obo:NCBITaxon_261975"}],
@@ -42,6 +51,7 @@
       "thumbnailUrl": [
         "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD606/38026912-4a13-406d-9751-3bdb444f729b/cd1c3ba0-dd52-4b7c-9244-53689fc9ee76.png"
       ],
+      "url": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD606",
       "hasPart": [{"@id": "bia-3d-micro-ct-image-of-sea-spider/"}]
     },
     {

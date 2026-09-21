@@ -1,7 +1,14 @@
 {
   "@context": [
     "https://w3id.org/ro/crate/1.2/context",
-    "https://www.gide-project.org/ro-crate/search/1.0/context"
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"},
+      "seeAlso": {"@id": "rdfs:seeAlso"}
+    }
   ],
   "@graph": [
     {
@@ -15,10 +22,10 @@
       "@type": "Dataset",
       "name": "Human bronchial organoid",
       "description": "Imaging of the infection of a human bronchial organoid by Pseudomonas aeruginosa",
-      "datePublished": "2026-09-18",
+      "datePublished": "2026-09-21",
       "hasPart": [
         {
-          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/7cc10a97-23f1-4e3e-80f2-d91dc39f2ab9.zarr"
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/7cc10a97-23f1-4e3e-80f2-d91dc39f2ab9.zarr/"
         },
         {
           "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/7cc10a97-23f1-4e3e-80f2-d91dc39f2ab9.zarr/zarr.json"
@@ -29,14 +36,14 @@
         {"@id": "thumbnail.png"}
       ],
       "seeAlso": {"@id": "./bia-human-bronchial-organoid.json"},
-      "thumbnailUrl": ["thumbnail.png"],
+      "thumbnailUrl": [{"@id": "thumbnail.png"}],
       "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
       "isPartOf": {"@id": "../"},
       "about": [{"@id": "obo:NCBITaxon_9606"}],
       "measurementMethod": [{"@id": "obo:FBbi_00000251"}]
     },
     {
-      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/7cc10a97-23f1-4e3e-80f2-d91dc39f2ab9.zarr",
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/7cc10a97-23f1-4e3e-80f2-d91dc39f2ab9.zarr/",
       "@type": "Dataset",
       "name": "OME-Zarr",
       "encodingFormat": "application/vnd.zarr",
@@ -59,10 +66,9 @@
     {"@id": "obo:FBbi_00000251", "@type": "DefinedTerm", "name": "confocal microscopy"},
     {
       "@id": "../",
-      "@type": "Dataset",
+      "@type": "CreativeWork",
       "name": "Pseudomonas aeruginosa breaches respiratory epithelia through goblet cell invasion in a microtissue model",
       "url": "https://www.ebi.ac.uk/biostudies/BioImages/studies/S-BIAD1083",
-      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
       "subjectOf": {"@id": "../ro-crate-metadata.json"}
     },
     {

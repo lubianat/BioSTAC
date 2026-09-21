@@ -1,17 +1,26 @@
 {
   "@context": [
     "https://w3id.org/ro/crate/1.2/context",
-    "https://www.gide-project.org/ro-crate/search/1.0/context"
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"},
+      "BioSample": {"@id": "http://schema.org/BioSample"},
+      "LabProtocol": {"@id": "http://schema.org/LabProtocol"},
+      "labEquipment": {"@id": "http://schema.org/labEquipment"}
+    }
   ],
   "@graph": [
     {
       "@id": "ro-crate-metadata.json",
       "@type": "CreativeWork",
       "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
-      "about": {"@id": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD1083"}
+      "about": {"@id": "./"}
     },
     {
-      "@id": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD1083",
+      "@id": "./",
       "@type": ["Dataset"],
       "measurementMethod": [
         {"@id": "#f54187c1-2c42-446c-ba64-66cbefe63a25"},
@@ -58,6 +67,7 @@
       "thumbnailUrl": [
         "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1083/c829b0e8-ebd5-487c-a24d-ad3498889378/39cc657c-8faf-403e-87ea-621c2ec1a7b6.png"
       ],
+      "url": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD1083",
       "hasPart": [{"@id": "bia-human-bronchial-organoid/"}]
     },
     {

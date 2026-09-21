@@ -1,7 +1,14 @@
 {
   "@context": [
     "https://w3id.org/ro/crate/1.2/context",
-    "https://www.gide-project.org/ro-crate/search/1.0/context"
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"},
+      "seeAlso": {"@id": "rdfs:seeAlso"}
+    }
   ],
   "@graph": [
     {
@@ -15,10 +22,10 @@
       "@type": "Dataset",
       "name": "C. reinhardtii tomogram",
       "description": "cryogenic-sample electron microscopy (CryoET) image of C. reinhardtii prepared using cryo-plasmaFIB milling",
-      "datePublished": "2026-09-18",
+      "datePublished": "2026-09-21",
       "hasPart": [
         {
-          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/c9ba2bf5-09d1-41ff-a925-df0b725a53e4.zarr"
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/c9ba2bf5-09d1-41ff-a925-df0b725a53e4.zarr/"
         },
         {
           "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/c9ba2bf5-09d1-41ff-a925-df0b725a53e4.zarr/zarr.json"
@@ -29,14 +36,14 @@
         {"@id": "thumbnail.png"}
       ],
       "seeAlso": {"@id": "./bia-c-reinhardtii-tomogram.json"},
-      "thumbnailUrl": ["thumbnail.png"],
+      "thumbnailUrl": [{"@id": "thumbnail.png"}],
       "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
       "isPartOf": {"@id": "https://www.ebi.ac.uk/empiar/EMPIAR-11830/"},
       "about": [{"@id": "obo:NCBITaxon_3055"}],
       "measurementMethod": [{"@id": "obo:FBbi_00001004"}]
     },
     {
-      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/c9ba2bf5-09d1-41ff-a925-df0b725a53e4.zarr",
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/c9ba2bf5-09d1-41ff-a925-df0b725a53e4.zarr/",
       "@type": "Dataset",
       "name": "OME-Zarr",
       "encodingFormat": "application/vnd.zarr",

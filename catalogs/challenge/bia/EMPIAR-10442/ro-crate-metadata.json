@@ -1,17 +1,27 @@
 {
   "@context": [
     "https://w3id.org/ro/crate/1.2/context",
-    "https://www.gide-project.org/ro-crate/search/1.0/context"
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "vernacularName": {"@id": "dwc:vernacularName"},
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"},
+      "BioSample": {"@id": "http://schema.org/BioSample"},
+      "LabProtocol": {"@id": "http://schema.org/LabProtocol"},
+      "labEquipment": {"@id": "http://schema.org/labEquipment"}
+    }
   ],
   "@graph": [
     {
       "@id": "ro-crate-metadata.json",
       "@type": "CreativeWork",
       "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
-      "about": {"@id": "https://www.ebi.ac.uk/biostudies/bioimages/studies/EMPIAR-10442"}
+      "about": {"@id": "./"}
     },
     {
-      "@id": "https://www.ebi.ac.uk/biostudies/bioimages/studies/EMPIAR-10442",
+      "@id": "./",
       "@type": ["Dataset"],
       "measurementMethod": [{"@id": "#1d4adadd-99d1-4a6a-a314-2940d409d618"}, {"@id": "obo:FBbi_00000585"}],
       "about": [{"@id": "#d703b208-8cb6-48ba-841a-09228bec2c1d"}, {"@id": "obo:NCBITaxon_3702"}],
@@ -37,6 +47,7 @@
       "thumbnailUrl": [
         "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10442/1acbf84b-5f05-4746-b85f-c70d140b6440/c6b8bd48-ae84-47fa-bc50-ee532a2dc1f8.png"
       ],
+      "url": "https://www.ebi.ac.uk/biostudies/bioimages/studies/EMPIAR-10442",
       "hasPart": [{"@id": "bia-arabidopsis-phloem-pole/"}]
     },
     {

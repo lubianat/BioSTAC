@@ -25,7 +25,7 @@
   "title": "S-BIAD464 — Calcium wave dynamics",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
-    "temporal": {"interval": [["2026-09-18T17:30:24Z", "2026-09-18T17:30:24Z"]]}
+    "temporal": {"interval": [["2026-09-21T09:44:24Z", "2026-09-21T09:44:24Z"]]}
   },
   "license": "CC-BY-4.0",
   "assets": {

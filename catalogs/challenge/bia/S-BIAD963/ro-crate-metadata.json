@@ -1,17 +1,26 @@
 {
   "@context": [
     "https://w3id.org/ro/crate/1.2/context",
-    "https://www.gide-project.org/ro-crate/search/1.0/context"
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"},
+      "BioSample": {"@id": "http://schema.org/BioSample"},
+      "LabProtocol": {"@id": "http://schema.org/LabProtocol"},
+      "labEquipment": {"@id": "http://schema.org/labEquipment"}
+    }
   ],
   "@graph": [
     {
       "@id": "ro-crate-metadata.json",
       "@type": "CreativeWork",
       "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
-      "about": {"@id": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD963"}
+      "about": {"@id": "./"}
     },
     {
-      "@id": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD963",
+      "@id": "./",
       "@type": ["Dataset"],
       "measurementMethod": [
         {"@id": "#8a344b11-4b61-40db-8b89-c75a0f58ac8b"},
@@ -71,6 +80,7 @@
         "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD963/191b1803-0c6a-4fa5-9291-4b2c997e038e/b400b30d-84e2-4102-9df0-36b601422c40.png",
         "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD963/5cc026d8-815b-4f16-9b94-3a9aeb291fbd/1adc0b3f-7d9e-4897-9f2f-25ccd0d2832c.png"
       ],
+      "url": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD963",
       "hasPart": [{"@id": "bia-mouse-cns-mesospim/"}]
     },
     {

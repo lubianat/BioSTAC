@@ -1,7 +1,14 @@
 {
   "@context": [
     "https://w3id.org/ro/crate/1.2/context",
-    "https://www.gide-project.org/ro-crate/search/1.0/context"
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"},
+      "seeAlso": {"@id": "rdfs:seeAlso"}
+    }
   ],
   "@graph": [
     {
@@ -15,10 +22,10 @@
       "@type": "Dataset",
       "name": "Arabidopsis phloem pole",
       "description": "Five-day-old Col-0 Arabidopsis thaliana root, phloem pole unloading zone (339-381 um from the root tip)",
-      "datePublished": "2026-09-18",
+      "datePublished": "2026-09-21",
       "hasPart": [
         {
-          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/2a544b69-9ddd-4941-9801-fd406d06880c.zarr"
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/2a544b69-9ddd-4941-9801-fd406d06880c.zarr/"
         },
         {
           "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/2a544b69-9ddd-4941-9801-fd406d06880c.zarr/zarr.json"
@@ -29,14 +36,14 @@
         {"@id": "thumbnail.png"}
       ],
       "seeAlso": {"@id": "./bia-arabidopsis-phloem-pole.json"},
-      "thumbnailUrl": ["thumbnail.png"],
+      "thumbnailUrl": [{"@id": "thumbnail.png"}],
       "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
       "isPartOf": {"@id": "../"},
       "about": [{"@id": "obo:NCBITaxon_3701"}],
       "measurementMethod": [{"@id": "obo:FBbi_00000585"}]
     },
     {
-      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/2a544b69-9ddd-4941-9801-fd406d06880c.zarr",
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/2a544b69-9ddd-4941-9801-fd406d06880c.zarr/",
       "@type": "Dataset",
       "name": "OME-Zarr",
       "encodingFormat": "application/vnd.zarr",
@@ -63,10 +70,9 @@
     },
     {
       "@id": "../",
-      "@type": "Dataset",
+      "@type": "CreativeWork",
       "name": "170314, Five-day-old Col-0 Arabidopsis thaliana root, phloem pole unloading zone (339-381 um from the root tip)",
       "url": "https://www.ebi.ac.uk/empiar/EMPIAR-10442/",
-      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
       "subjectOf": {"@id": "../ro-crate-metadata.json"}
     },
     {
