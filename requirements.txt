@@ -11,3 +11,4 @@ pillow
 fsspec
 aiohttp
 pypgstac[psycopg]==0.9.11  # must match the pgstac image in api/docker-compose.yml
+rocrate
