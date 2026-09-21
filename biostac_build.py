@@ -8,6 +8,7 @@ import datetime
 import json
 import pathlib
 import re
+import shutil
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -477,8 +478,12 @@ def write_item_crate(item, extra_parts=()):
 
 # --- writing the tree ---------------------------------------------------------------------------
 
-def save_tree(catalog, out_dir, items, studies, study_crates, extra_parts=None):
-    """Save the STAC tree, then ship study crates, copy rendered thumbnails, and write item crates.
+ROOT_CATALOG = pathlib.Path("catalogs/challenge/catalog.json")
+
+
+def save_resource(resource, items, studies, study_crates, extra_parts=None, root_path=ROOT_CATALOG):
+    """Save one resource's subtree under the shared root catalog, leaving the other resources alone.
+    Then ship study crates, copy rendered thumbnails, and write item crates.
 
     study_crates: {accession: (crate, cached path)}; extra_parts: {item id: [(url, name), ...]}."""
     rendered = {
@@ -486,8 +491,19 @@ def save_tree(catalog, out_dir, items, studies, study_crates, extra_parts=None):
         for item in items
         if "thumbnail" in item.assets and "bioimage:rendered_from" in item.assets["thumbnail"].extra_fields
     }
-    catalog.normalize_hrefs(str(out_dir))
-    catalog.save(pystac.CatalogType.SELF_CONTAINED)
+    root_path = pathlib.Path(root_path)
+    if root_path.exists():
+        root = pystac.Catalog.from_file(str(root_path))
+        root.remove_child(resource.id)  # replaces this resource; the others stay as they are
+    else:
+        root = pystac.Catalog(id="biostac-challenge", description="STAC pilot over the OME 2024 NGFF challenge data.")
+    root.set_self_href(str(root_path))
+    root.add_child(resource)
+    # generated output: clear this resource's folder so renamed or removed items leave nothing stale
+    shutil.rmtree(root_path.parent / resource.id, ignore_errors=True)
+    resource.normalize_hrefs(str(root_path.parent / resource.id))
+    resource.save(pystac.CatalogType.SELF_CONTAINED)
+    root.save_object(include_self_link=False)
     crate_sizes = {
         study.id: ship_crate(study, *study_crates[study.id])
         for study in studies if study_crates.get(study.id)

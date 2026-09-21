@@ -130,13 +130,8 @@ def _(CACHE, GIDE_CRATES, HARVESTED, SOURCE_CSV_URL, bb, build_item, rows):
                ("https://www.ebi.ac.uk/bioimage-archive/", "BioImage Archive")],
         extra_fields={"bioimage:source_csv": SOURCE_CSV_URL},
     )
-    catalog = bb.pystac.Catalog(
-        id="biostac-challenge",
-        description="STAC pilot over the OME 2024 NGFF challenge data.",
-    )
-    catalog.add_child(collection)
-    crate_sizes, item_crates = bb.save_tree(catalog, "catalogs/challenge", items, study_collections, study_crates)
-    n_valid = bb.validate(catalog)
+    crate_sizes, item_crates = bb.save_resource(collection, items, study_collections, study_crates)
+    n_valid = bb.validate(collection)
     return crate_sizes, crates, item_crates, items, n_valid, study_crates
 
 
