@@ -21,6 +21,11 @@ The `ontology_term` structure follows the shape used by [bioparquet](https://git
 | `bioimage:size_<name>` | integer | Size of each axis present, by OME-NGFF axis name: `bioimage:size_t`, `_c`, `_z`, `_y`, `_x` |
 | `bioimage:organism` | ontology term | Specimen taxon, e.g. `NCBITaxon:9606` |
 | `bioimage:imaging_method` | ontology term | Imaging method, e.g. `FBbi:00000251` |
+| `bioimage:plate` | boolean | The OME-Zarr is a high-content screening plate |
+| `bioimage:wells` | integer | Wells in the plate |
+| `bioimage:fields` | integer | Field images in the plate, across all wells |
+
+For a plate, the `bioimage:size_*` values describe one field image; all fields of a plate share them.
 
 On the Collection, `bioimage:organisms` and `bioimage:imaging_methods` list the term labels found in its Items, so a reader sees what is inside without opening them.
 

@@ -43,6 +43,20 @@
         },
         "bioimage:imaging_method": {
           "$ref": "#/definitions/ontology_term"
+        },
+        "bioimage:plate": {
+          "type": "boolean",
+          "description": "Whether the OME-Zarr is a high-content screening plate."
+        },
+        "bioimage:wells": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of wells in the plate."
+        },
+        "bioimage:fields": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of field images in the plate, across all wells."
         }
       },
       "patternProperties": {
