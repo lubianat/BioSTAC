@@ -117,6 +117,46 @@ catalogs/challenge/catalog.json
          └─ thumbnail.png
 ```
 
+### Second source: IDR, 1,898 images
+
+```bash
+.venv/bin/marimo edit 14_idr_catalog.py     # writes catalogs/challenge/idr/ (not in git)
+.venv/bin/python 11_parquet_build.py        # adds idr/items.parquet
+```
+
+Built like BIA, from the shared steps in `biostac_build.py`: one STAC Item per OME-Zarr, each with an
+RO-Crate twin, grouped into one Collection per IDR study, with that study's RO-Crate from
+[idr_study_crates](https://github.com/German-BioImaging/idr_study_crates) shipped next to it. All 14
+studies have one.
+
+The scope is the 14 study CSVs listed in the challenge's `samples/idr_samples.csv`. The IDR rows of
+`other_samples.csv` (test exports named "dataset name") and four CSVs the index does not list (idr0013,
+idr0016, idr0025, idr0044) are left out.
+
+What differs from BIA:
+
+- **Three Zarr layouts**: 635 HCS plates, 121 bioformats2raw images (the image is under `0/`), and 1,142
+  plain images. **A plate is one Item**, as the challenge lists them, with `bioimage:plate`,
+  `bioimage:wells` and `bioimage:fields`; its size fields describe one field image. The plate's RO-Crate
+  mirrors the Zarr down to the wells: the OME-Zarr Dataset lists every well (`…/P144.ome.zarr/E/3/`) as a
+  remote part, taken from the plate's own `zarr.json`.
+- **Thumbnails**: 136 images link IDR's own thumbnail, where the challenge points at an IDR image; the other
+  1,762 are rendered from the lowest pyramid level, as for BIA.
+- **Terms**: organism and imaging method come from the CSV, or from the study crate when the CSV has none
+  (82 idr0015 plates).
+- **Study crates**: IDR's name their metadata descriptor `idr0004-ro-crate-metadata.json`; RO-Crate 1.2
+  requires `ro-crate-metadata.json`, so the shipped copy renames it. As with GIDE's, the root becomes `./`
+  and the IDR study URL is kept as `url`.
+
+Size and cost of the build: 1,898 Items, 5,588 files, 146 MB (thumbnails 84 MB, item crates 56 MB, STAC JSON
+6 MB); `items.parquet` is 108 KB. The first run fetched ~10k small files from EBI in 15 minutes with 8
+threads; rebuilds from `build_cache/` (112 MB) take under a minute. That is why `catalogs/challenge/idr/` is
+not in git: build it locally. The root `catalogs/challenge/catalog.json` lists both resources.
+
+`IDR_SAMPLE=2 .venv/bin/python 14_idr_catalog.py` keeps the first 2 images per study, for a quick try.
+
+A study crate and one image crate from each of the 14 studies pass the RO-Crate 1.2 REQUIRED checks.
+
 ### Valid as both STAC and RO-Crate
 
 ```bash
@@ -236,7 +276,27 @@ flat, or query nested ones with DuckDB.
 - One image (mouse CNS, mesoSPIM) renders black with its own OMERO window; it needs auto-contrast, as the
   challenge site's `autoBoost` does.
 
-Still to do: the other six sources, and hosting each resource in its own bucket so the federation is
+### Findings from the IDR harvest
+
+- Four rows write `shape` as a bracketed list, `"[1, 1, 2, 520, 696]"`, where every other row uses
+  `"1,1,1,520,696"` (idr0010 47-35, 69-49 and 96-14, and one idr0015 plate).
+- Licenses disagree between the CSV and the study crate: idr0004 is CC BY 4.0 in the CSV but CC BY-NC-SA 3.0
+  in its study crate; idr0036 is CC BY 4.0 versus CC0 1.0. Items keep the CSV's license, and study
+  Collections the crate's.
+- idr0015 has no organism or imaging method in the CSV; the study crate gives NCBITaxon:1427524 ("mixed
+  sample") and confocal microscopy.
+- Some images have no description; STAC forbids an empty one and RO-Crate requires one, so the Item leaves
+  it out and the item crate says the source gives none.
+- The per-image crates in the IDR Zarrs carry no taxon, unlike BIA's.
+- IDR study crates name their descriptor `<accession>-ro-crate-metadata.json`, which RO-Crate 1.2 does not
+  allow.
+- idr0157's study crate is 770 KB once it lists its 1,127 image crates. Large studies are better browsed
+  through the Parquet file or an API than through the static tree.
+- A plate is one Item here. Treating each field image as an Item, so it could carry its own metadata, would
+  mean 290,587 Items and ~870k files (~2.5–3 GB). It needs no extra requests, because all 635 plates have a
+  fixed number of fields per well. It is the next step if per-image metadata becomes available.
+
+Still to do: the other five sources, and hosting each resource in its own bucket so the federation is
 structural rather than a folder convention.
 
 ## Repository layout
@@ -249,11 +309,14 @@ readable_stac_io.py             writes STAC JSON with short objects on one line
 11_parquet_build.py             writes stac-geoparquet per collection
 12_parquet_query.py             queries it with DuckDB and rustac
 13_ro_crate.py                  reads the same tree as RO-Crate; checks STAC and RO-Crate agree
+14_idr_catalog.py               challenge pilot: IDR source (1,898 images)
+biostac_build.py                build steps shared by the BIA and IDR notebooks
 catalogs/basic/                 written by notebook 1
 catalogs/extended/              written by notebook 3
 extensions/ome-ngff/            experimental STAC extension for the IDR demo
 extensions/bioimage/            experimental STAC extension for the challenge pilot
 catalogs/challenge/bia/         written by 10_bia_catalog.py
+catalogs/challenge/idr/         written by 14_idr_catalog.py (not in git)
 ome2024-ngff-challenge/         submodule: the challenge repo and its sample lists
 build_cache/                    cached zarr.json / RO-Crate / OLS4 responses
 api/                            Docker setup and loader for the STAC API
