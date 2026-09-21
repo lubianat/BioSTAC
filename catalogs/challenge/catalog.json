@@ -10,6 +10,12 @@
       "href": "./bia/collection.json",
       "type": "application/json",
       "title": "BIA / EBI — OME 2024 NGFF challenge"
+    },
+    {
+      "rel": "child",
+      "href": "./idr/collection.json",
+      "type": "application/json",
+      "title": "IDR — OME 2024 NGFF challenge"
     }
   ]
 }
