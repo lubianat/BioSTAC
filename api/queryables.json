@@ -63,7 +63,7 @@
       "type": "string"
     },
     "bioimage:level": {
-      "title": "Row denotes",
+      "title": "Resource level",
       "type": "string",
       "enum": [
         "image",

@@ -281,7 +281,7 @@ def study_collection(accession, members, crate, harvested, study_page, crate_sou
     """crate_source: (href, title) of where the study crate was published, linked as via."""
     """One Collection per study: described by its study crate when there is one."""
     root = crate_root(crate)[1] if crate else {}
-    published = crate_published(crate    )
+    published = crate_published(crate)
     license_ = root.get("license")
     license_ = license_.get("@id") if isinstance(license_, dict) else license_
     study_datetime = published or harvested
