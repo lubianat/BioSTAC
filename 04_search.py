@@ -33,12 +33,22 @@ def _(mo, pathlib, pystac, which):
         for link in catalog.get_links("child")
         if (base / link.href).exists()
     ]
+
+    def existing_subtree(node):
+        yield node
+        base = pathlib.Path(node.self_href).parent
+        for link in node.get_links("child"):
+            href = base / link.href
+            if href.exists():
+                yield from existing_subtree(pystac.read_file(str(href)))
+
     collections = [
         collection
         for child in children
         for collection in ([child] if isinstance(child, pystac.Collection) else list(child.get_collections()))
     ]
-    items = list(catalog.get_items()) + [item for child in children for item in child.get_items(recursive=True)]
+    nodes = [catalog, *(node for child in children for node in existing_subtree(child))]
+    items = [item for node in nodes for item in node.get_items()]
     mo.md(f"# {catalog.id}\n{catalog.description}\n\n**{len(items)}** items in **{len(collections)}** collections")
     return collections, items
 

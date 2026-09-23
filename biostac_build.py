@@ -268,21 +268,22 @@ def crate_root(crate):
     return descriptor, root
 
 
+def crate_published(crate):
+    root = crate_root(crate)[1] if crate else {}
+    return (
+        datetime.datetime.fromisoformat(root["datePublished"]).replace(tzinfo=datetime.timezone.utc)
+        if root.get("datePublished") else None
+    )
+
+
 def study_collection(accession, members, crate, harvested, study_page, crate_source=None,
                      crate_title="Study RO-Crate", fallback_description=None):
     """crate_source: (href, title) of where the study crate was published, linked as via."""
     """One Collection per study: described by its study crate when there is one."""
     root = crate_root(crate)[1] if crate else {}
-    published = (
-        datetime.datetime.fromisoformat(root["datePublished"]).replace(tzinfo=datetime.timezone.utc)
-        if root.get("datePublished") else None
-    )
+    published = crate_published(crate)
     license_ = root.get("license")
     license_ = license_.get("@id") if isinstance(license_, dict) else license_
-    if published:
-        for member in members:
-            if member.datetime == harvested:
-                member.datetime = published
     member_datetimes = [member.datetime for member in members if member.datetime]
     start = min(member_datetimes) if member_datetimes else (published or harvested)
     end = max(member_datetimes) if member_datetimes else (published or harvested)
