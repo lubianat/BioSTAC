@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.org/stac/idr/v0.1.0/schema.json",
+  "title": "IDR Well Annotation Extension (experimental)",
+  "description": "A curated subset of the Image Data Resource's well-level screen annotations: the fields that mean the same thing across studies and that people search by.",
+  "type": "object",
+  "required": ["stac_extensions", "properties"],
+  "properties": {
+    "stac_extensions": {
+      "type": "array",
+      "contains": {"const": "https://example.org/stac/idr/v0.1.0/schema.json"}
+    },
+    "properties": {
+      "type": "object",
+      "properties": {
+        "idr:plate_name": {"type": "string", "description": "Plate name as IDR writes it, e.g. Plate1-Blue-A."},
+        "idr:well": {"type": "string", "pattern": "^[A-Z]+[0-9]+$", "description": "Well as IDR writes it, e.g. A1."},
+        "idr:screen": {"type": "string", "description": "Which screen of the study the annotation came from, e.g. screenA."},
+        "idr:gene_symbol": {"type": ["string", "null"]},
+        "idr:gene_identifier": {"type": ["string", "null"]},
+        "idr:sirna_identifier": {"type": ["string", "null"]},
+        "idr:compound_name": {"type": ["string", "null"]},
+        "idr:organism": {"type": ["string", "null"], "description": "Organism as written, e.g. Saccharomyces cerevisiae."},
+        "idr:organism_term": {"type": ["string", "null"], "description": "Its ontology id, e.g. NCBITaxon:4932."},
+        "idr:cell_line": {"type": ["string", "null"]},
+        "idr:cell_line_term": {"type": ["string", "null"]},
+        "idr:control_type": {"type": ["string", "null"]},
+        "idr:has_phenotype": {"type": ["boolean", "null"]},
+        "idr:phenotypes": {
+          "type": ["array", "null"],
+          "items": {"type": "string"},
+          "description": "The non-empty Phenotype N values of the annotation row."
+        }
+      }
+    }
+  }
+}
