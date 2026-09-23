@@ -156,7 +156,7 @@ def _(PLATE_ITEMS, WELLS, mo, table):
 
 @app.cell
 def _(ITEMS, WELLS, mo, table):
-    ALL_ROWS = ITEMS + WELLS
+    _all_rows = ITEMS + WELLS
     mo.vstack([
         mo.md("## Every file: one question, three buckets\n"
               "`bioimage:level` says what a row denotes, so images, plates and wells can be counted "
@@ -164,18 +164,18 @@ def _(ITEMS, WELLS, mo, table):
         table("What the catalog indexes", f"""
     SELECT "bioimage:source" AS resource, "bioimage:level" AS row_denotes,
            count(*) AS rows, count(DISTINCT collection) AS studies
-    FROM read_parquet({ALL_ROWS}, union_by_name := true)
+    FROM read_parquet({_all_rows}, union_by_name := true)
     GROUP BY 1, 2 ORDER BY rows DESC
-    """, ALL_ROWS),
+    """, _all_rows),
         table("Human samples, wherever they are", f"""
     SELECT "bioimage:source" AS resource, "bioimage:level" AS row_denotes, count(*) AS rows,
            count(DISTINCT collection) AS studies
-    FROM read_parquet({ALL_ROWS}, union_by_name := true)
+    FROM read_parquet({_all_rows}, union_by_name := true)
     WHERE "bioimage:ncbitaxon" = 'NCBITaxon:9606' OR "idr:organism_term" = 'NCBITaxon:9606'
     GROUP BY 1, 2 ORDER BY rows DESC
-    """, ALL_ROWS),
+    """, _all_rows),
     ])
-    return (ALL_ROWS,)
+    return
 
 
 @app.cell

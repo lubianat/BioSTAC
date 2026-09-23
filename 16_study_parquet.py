@@ -95,7 +95,7 @@ def _(bb, json):
             "size_bytes": quantity(nodes, root, "byte"),
             "file_count": quantity(nodes, root, "file"),
         }
-    return crate_index, from_crate
+    return (from_crate,)
 
 
 @app.cell
@@ -133,17 +133,16 @@ def _(CHALLENGE, from_crate, json):
 
 
 @app.cell
-def _(CHALLENGE, duckdb, json, mo, resources, study_rows, tempfile):
+def _(CHALLENGE, duckdb, json, mo, pathlib, resources, study_rows, tempfile):
     def write_studies(resource):
         """DuckDB reads the rows as NDJSON, so the list columns keep their type without a new dependency."""
         rows = list(study_rows(resource))
         target = CHALLENGE / resource / "studies.parquet"
-        with tempfile.NamedTemporaryFile("w", suffix=".ndjson", delete=False) as handle:
-            for row in rows:
-                handle.write(json.dumps(row) + "\n")
-            source = handle.name
-        duckdb.sql(f"""COPY (SELECT * FROM read_json_auto('{source}') ORDER BY study)
-                       TO '{target}' (FORMAT parquet, COMPRESSION zstd)""")
+        with tempfile.TemporaryDirectory() as scratch:
+            source = pathlib.Path(scratch) / "studies.ndjson"
+            source.write_text("".join(json.dumps(row) + "\n" for row in rows))
+            duckdb.sql(f"""COPY (SELECT * FROM read_json_auto('{source}') ORDER BY study)
+                           TO '{target}' (FORMAT parquet, COMPRESSION zstd)""")
         return rows, target
 
     written = {resource: write_studies(resource) for resource in resources}

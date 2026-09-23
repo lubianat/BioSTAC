@@ -5,9 +5,7 @@ app = marimo.App(width="full")
 
 @app.cell
 def _():
-    import collections
     import csv
-    import io
     import json
     import pathlib
     import re
@@ -46,10 +44,8 @@ def _():
         RAW,
         WELLS,
         bb,
-        collections,
         csv,
         duckdb,
-        io,
         json,
         mo,
         pathlib,
@@ -88,7 +84,7 @@ def _(mo):
 
 
 @app.cell
-def _(ANNOTATIONS, RAW, bb, csv, io, re):
+def _(ANNOTATIONS, RAW, bb, re):
     def annotation_file(study, screen):
         """IDR's annotation file for one screen, cached under build_cache/ and never shipped."""
         base, _ = ANNOTATIONS[study]
@@ -199,7 +195,9 @@ def _(IDR, IDR_EXT, bb, json):
             }
 
     plates_by_study = {}
-    for _path in sorted(IDR.glob("*/*/[!r]*.json")):
+    for _path in sorted(IDR.glob("*/*/*.json")):
+        if _path.name.startswith("ro-crate"):  # the item crate sits beside the item
+            continue
         _item = json.loads(_path.read_text())
         if _item["properties"].get("bioimage:level") == "plate":
             plates_by_study.setdefault(_item["collection"], []).append(_item)
