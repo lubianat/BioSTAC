@@ -6,6 +6,7 @@
   "geometry": {"type": "Point", "coordinates": [0.0, 0.0]},
   "bbox": [0.0, 0.0, 0.0, 0.0],
   "properties": {
+    "bioimage:level": "image",
     "title": "Arabidopsis phloem pole",
     "description": "Five-day-old Col-0 Arabidopsis thaliana root, phloem pole unloading zone (339-381 um from the root tip)",
     "license": "CC-BY-4.0",
@@ -18,12 +19,14 @@
     "bioimage:size_y": 3253,
     "bioimage:size_x": 3874,
     "bioimage:organism": {"ontology_source": "NCBITaxon", "term_id": "NCBITaxon:3701", "term_label": "Arabidopsis"},
+    "bioimage:ncbitaxon": "NCBITaxon:3701",
     "bioimage:imaging_method": {
       "ontology_source": "FBbi",
       "term_id": "FBbi:00000585",
       "term_label": "serial block face scanning electron microscopy"
     },
-    "datetime": "2026-09-21T09:44:24Z"
+    "bioimage:fbbi": "FBbi:00000585",
+    "datetime": "2026-09-22T18:58:58Z"
   },
   "links": [
     {"rel": "via", "href": "https://www.ebi.ac.uk/empiar/EMPIAR-10442/", "title": "Original study"},

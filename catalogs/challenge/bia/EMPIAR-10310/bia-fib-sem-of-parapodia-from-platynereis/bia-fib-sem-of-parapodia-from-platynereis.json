@@ -6,6 +6,7 @@
   "geometry": {"type": "Point", "coordinates": [0.0, 0.0]},
   "bbox": [0.0, 0.0, 0.0, 0.0],
   "properties": {
+    "bioimage:level": "image",
     "title": "FIB-SEM of parapodia from Platynereis dumerilii",
     "description": "Platynereis dumerilii images aligned using alignment to median smoothed template (AMST)",
     "license": "CC-BY-4.0",
@@ -22,12 +23,14 @@
       "term_id": "NCBITaxon:6359",
       "term_label": "Platynereis dumerilii"
     },
+    "bioimage:ncbitaxon": "NCBITaxon:6359",
     "bioimage:imaging_method": {
       "ontology_source": "FBbi",
       "term_id": "FBbi:00050000",
       "term_label": "focused ion beam scanning electron microscopy"
     },
-    "datetime": "2026-09-21T09:44:24Z"
+    "bioimage:fbbi": "FBbi:00050000",
+    "datetime": "2026-09-22T18:58:58Z"
   },
   "links": [
     {"rel": "via", "href": "https://www.ebi.ac.uk/empiar/EMPIAR-10310/", "title": "Original study"},

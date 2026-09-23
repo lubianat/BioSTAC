@@ -140,13 +140,16 @@ def _(CACHE, bb, fallback_terms, re):
         wells = []
         if layout == "plate":
             plate = root["attributes"]["ome"]["plate"]
-            properties |= {"bioimage:plate": True, "bioimage:wells": int(row.get("wells") or len(plate["wells"])),
-                           "bioimage:fields": int(row.get("images") or 0) or None}
+            # field_count is the plate's maximum per the NGFF spec, not the count in every well;
+            # the CSV's "images" is only wells x field_count, so it is not carried
+            properties |= {"bioimage:wells": len(plate["wells"]),
+                           "bioimage:field_count_max": plate.get("field_count")}
             wells = [(f"{zarr_url}/{w['path']}/", f"Well {w['path'].replace('/', '')}") for w in plate["wells"]]
         properties = {k: v for k, v in properties.items() if v is not None or k in ("bioimage:organism", "bioimage:imaging_method")}
 
         origin = row.get("origin") or None
-        item = bb.make_item(id_, zarr_url, properties, HARVESTED, origin=origin, license_url=row.get("license"))
+        item = bb.make_item(id_, zarr_url, properties, HARVESTED, origin=origin, license_url=row.get("license"),
+                            level="plate" if layout == "plate" else "image")
         image = re.search(r"show=image-(\d+)", origin or "")
         if image:  # IDR renders its own thumbnails
             bb.add_thumbnail(item, remote=f"https://idr.openmicroscopy.org/webgateway/render_thumbnail/{image.group(1)}/")

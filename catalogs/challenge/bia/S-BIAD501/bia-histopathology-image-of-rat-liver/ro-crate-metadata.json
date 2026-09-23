@@ -22,7 +22,7 @@
       "@type": "Dataset",
       "name": "Histopathology image of rat liver",
       "description": "Rattus norvegicus (brown rat) liver section, treated with 1% cholesterol + 0.25% sodium cholate",
-      "datePublished": "2026-09-21",
+      "datePublished": "2026-09-22",
       "hasPart": [
         {
           "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/fde851c4-cf25-41b5-ae6b-c8b2216fd5d1.zarr/"

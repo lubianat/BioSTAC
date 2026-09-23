@@ -6,6 +6,7 @@
   "geometry": {"type": "Point", "coordinates": [0.0, 0.0]},
   "bbox": [0.0, 0.0, 0.0, 0.0],
   "properties": {
+    "bioimage:level": "image",
     "title": "HeLa cells",
     "description": "HeLa cells showing click chemistry and immunofluorescence",
     "license": "CC-BY-4.0",
@@ -18,8 +19,10 @@
     "bioimage:size_y": 512,
     "bioimage:size_x": 512,
     "bioimage:organism": {"ontology_source": "NCBITaxon", "term_id": "NCBITaxon:9601", "term_label": "Pongo abelii"},
+    "bioimage:ncbitaxon": "NCBITaxon:9601",
     "bioimage:imaging_method": {"ontology_source": "FBbi", "term_id": "FBbi:00000251", "term_label": "confocal microscopy"},
-    "datetime": "2026-09-21T09:44:24Z"
+    "bioimage:fbbi": "FBbi:00000251",
+    "datetime": "2026-09-22T18:58:58Z"
   },
   "links": [
     {

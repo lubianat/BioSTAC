@@ -6,6 +6,7 @@
   "geometry": {"type": "Point", "coordinates": [0.0, 0.0]},
   "bbox": [0.0, 0.0, 0.0, 0.0],
   "properties": {
+    "bioimage:level": "image",
     "title": "Mouse CNS, mesoSPIM",
     "description": "Mouse central nervous system (CNS) at 5x magnification",
     "license": "CC-BY-4.0",
@@ -18,12 +19,14 @@
     "bioimage:size_y": 2048,
     "bioimage:size_x": 2048,
     "bioimage:organism": {"ontology_source": "NCBITaxon", "term_id": "NCBITaxon:10090", "term_label": "Mus musculus"},
+    "bioimage:ncbitaxon": "NCBITaxon:10090",
     "bioimage:imaging_method": {
       "ontology_source": "FBbi",
       "term_id": "FBbi:00000369",
       "term_label": "selective plane illumination fluorescence microscopy"
     },
-    "datetime": "2026-09-21T09:44:24Z"
+    "bioimage:fbbi": "FBbi:00000369",
+    "datetime": "2026-09-22T18:58:58Z"
   },
   "links": [
     {

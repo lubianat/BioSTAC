@@ -25,7 +25,7 @@
   "title": "S-BIAD501 — Histopathology image of rat liver",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
-    "temporal": {"interval": [["2026-09-21T09:44:24Z", "2026-09-21T09:44:24Z"]]}
+    "temporal": {"interval": [["2026-09-22T18:58:58Z", "2026-09-22T18:58:58Z"]]}
   },
   "license": "CC-BY-4.0",
   "assets": {

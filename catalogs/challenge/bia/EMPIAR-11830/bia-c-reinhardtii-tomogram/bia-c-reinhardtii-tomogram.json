@@ -6,6 +6,7 @@
   "geometry": {"type": "Point", "coordinates": [0.0, 0.0]},
   "bbox": [0.0, 0.0, 0.0, 0.0],
   "properties": {
+    "bioimage:level": "image",
     "title": "C. reinhardtii tomogram",
     "description": "cryogenic-sample electron microscopy (CryoET) image of C. reinhardtii prepared using cryo-plasmaFIB milling",
     "license": "CC-BY-4.0",
@@ -22,8 +23,10 @@
       "term_id": "NCBITaxon:3055",
       "term_label": "Chlamydomonas reinhardtii"
     },
+    "bioimage:ncbitaxon": "NCBITaxon:3055",
     "bioimage:imaging_method": {"ontology_source": "FBbi", "term_id": "FBbi:00001004", "term_label": "tomography"},
-    "datetime": "2026-09-21T09:44:24Z"
+    "bioimage:fbbi": "FBbi:00001004",
+    "datetime": "2026-09-22T18:58:58Z"
   },
   "links": [
     {"rel": "via", "href": "https://www.ebi.ac.uk/empiar/EMPIAR-11830/", "title": "Original study"},

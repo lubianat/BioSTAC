@@ -6,6 +6,7 @@
   "geometry": {"type": "Point", "coordinates": [0.0, 0.0]},
   "bbox": [0.0, 0.0, 0.0, 0.0],
   "properties": {
+    "bioimage:level": "image",
     "title": "Histopathology image of rat liver",
     "description": "Rattus norvegicus (brown rat) liver section, treated with 1% cholesterol + 0.25% sodium cholate",
     "license": "CC-BY-4.0",
@@ -22,8 +23,10 @@
       "term_id": "NCBITaxon:10116",
       "term_label": "Rattus norvegicus"
     },
+    "bioimage:ncbitaxon": "NCBITaxon:10116",
     "bioimage:imaging_method": {"ontology_source": "FBbi", "term_id": "FBbi:00000243", "term_label": "bright-field microscopy"},
-    "datetime": "2026-09-21T09:44:24Z"
+    "bioimage:fbbi": "FBbi:00000243",
+    "datetime": "2026-09-22T18:58:58Z"
   },
   "links": [
     {
