@@ -58,6 +58,11 @@
         "CC0-1.0"
       ]
     },
+"bioimage:level": {
+      "title": "Row level",
+      "type": "string",
+      "enum": ["image", "plate", "well"]
+    },
     "bioimage:source": {
       "title": "Source resource",
       "type": "string"
