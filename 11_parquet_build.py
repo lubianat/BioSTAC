@@ -11,12 +11,9 @@ def _():
 
     import marimo as mo
     import pystac
-    import rustac
 
-    from readable_stac_io import ReadableStacIO
-
-    pystac.StacIO.set_default(ReadableStacIO)  # keep re-saved collections human-readable
-    return json, mo, pathlib, pystac, rustac, time
+    import biostac_build as bb  # sets the readable StacIO, so re-saved collections stay readable
+    return bb, json, mo, pathlib, pystac, time
 
 
 @app.cell
@@ -31,13 +28,16 @@ def _(mo):
     by anything that reads Parquet — DuckDB, pandas, R — with no STAC library and no server, and it is the
     file a federated query will reach across buckets later.
 
+    Each file is written sorted by collection and id, and with statistics on every column, so a reader can
+    skip whole row groups instead of scanning: see `write_geoparquet` in `biostac_build.py`.
+
     This notebook only **writes** the files. Querying them is `12_parquet_query.py`.
     """)
     return
 
 
 @app.cell
-def _(json, pathlib, pystac, rustac, time):
+def _(bb, json, pathlib, pystac, time):
     def collection_dirs():
         return sorted(p.parent for p in pathlib.Path("catalogs").glob("*/*/collection.json"))
 
@@ -52,7 +52,8 @@ def _(json, pathlib, pystac, rustac, time):
         target = directory / "items.parquet"
 
         started = time.perf_counter()
-        await rustac.write(str(target), items)  # async cell: rustac needs a running loop
+        # async cell: rustac needs a running loop. Sorted, with statistics: see biostac_build
+        await bb.write_geoparquet(items, target)
         elapsed = time.perf_counter() - started
 
         collection.add_asset("items", pystac.Asset(

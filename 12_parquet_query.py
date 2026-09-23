@@ -5,12 +5,13 @@ app = marimo.App(width="full")
 
 @app.cell
 def _():
+    import pathlib
     import time
 
     import duckdb
     import marimo as mo
     import rustac
-    return duckdb, mo, rustac, time
+    return duckdb, mo, pathlib, rustac, time
 
 
 @app.cell
@@ -67,24 +68,27 @@ ORDER BY images DESC
 
 
 @app.cell
-def _(mo, show):
+def _(mo, pathlib, show):
+    # every Parquet file in the repo, whatever level it indexes; missing ones are simply not there yet
+    parquet_files = sorted(str(p) for p in pathlib.Path("catalogs").glob("*/*/*.parquet"))
+
     # the shape a federated query takes: one statement over several files, later several bucket URLs
     mo.vstack([
         mo.md("## One query across Collections\n"
               "`union_by_name` lets Collections with different extensions sit in the same result set. "
               "Swap the paths for `https://…` URLs and this is the federated query."),
-        show("Largest image per collection", '''
-SELECT collection,
-       count(*) AS items,
-       round(max("bioimage:size_bytes") / 1e6, 1) AS largest_MB
-FROM read_parquet([
-        'catalogs/challenge/bia/items.parquet',
-        'catalogs/extended/ome-ngff-v0.4/items.parquet',
-        'catalogs/extended/ome-ngff-v0.5/items.parquet'
-     ], union_by_name := true)
-GROUP BY 1
-ORDER BY items DESC
-'''),
+        show("Every file, every level, one statement", f"""
+SELECT "bioimage:source" AS source, "bioimage:level" AS row_denotes, count(*) AS rows,
+       count(DISTINCT collection) AS collections, round(max("bioimage:size_bytes") / 1e6, 1) AS largest_MB
+FROM read_parquet({parquet_files}, union_by_name := true)
+GROUP BY 1, 2 ORDER BY rows DESC
+"""),
+        mo.md(
+            "`bioimage:level` says what each row denotes — one `image`, a whole `plate`, or one `well` of a "
+            "plate — so the files can be searched together without having to know which one holds the "
+            "answer. A well inherits its plate's metadata, so filter on the level when counting, or a plate "
+            "and its wells both match and the same image counts twice."
+        ),
     ])
     return
 
