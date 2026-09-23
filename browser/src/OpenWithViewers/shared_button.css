@@ -1,0 +1,169 @@
+/* Shared button & icon styles — single source of truth */
+
+@keyframes seesaw {
+    from {
+        transform: rotate(-0.05turn);
+    }
+
+    to {
+        transform: rotate(0.05turn);
+    }
+}
+
+.shaking {
+    animation: 0.1s linear infinite alternate seesaw;
+}
+
+/* All inline buttons (copy + viewer) */
+.inlineButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+/* Viewer and Copy icons */
+.viewer_icon {
+    max-height: 20px;
+    max-width: 20px;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+.viewer_icon[src$=".svg"] {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.smallCopyBtn {
+    position: relative;
+    height: 20px;
+    visibility: hidden;
+    border-radius: 3px;
+}
+
+
+.inlineButton:hover .smallCopyBtn {
+    visibility: visible;
+}
+
+.bigCopyIcon {
+    height: 20px;
+}
+
+.openwith {
+    position: relative;
+}
+
+.viewerRow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.viewerItem {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip: fade + pointer-events fix */
+.viewer_html {
+    position: absolute;
+    top: 100%;
+    /* sits right below the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+
+    opacity: 0;
+    /* instead of visibility:hidden */
+    pointer-events: none;
+    /* avoid flicker when hidden */
+    transition: opacity 0.15s ease-in-out;
+    z-index: 10;
+    /* ensure above neighbors */
+}
+
+/* show tooltip on hover/focus */
+.viewerItem:hover .viewer_html,
+.viewerItem:focus-within .viewer_html {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+:global(.openwith code) {
+    background: lightgrey;
+}
+
+
+
+#viewer-popover .close,
+#viewer-popover .external {
+    width: 28px;
+    height: 28px;
+    font-size: 1.1rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: white;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+#viewer-popover .close:hover,
+#viewer-popover .external:hover {
+    background: #f5f5f5;
+}
+
+.viewer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* space between title and buttons */
+    gap: 8px;
+    padding: 6px 10px;
+    background: #fafafa;
+    border-bottom: 1px solid #ccc;
+    font-weight: 500;
+}
+
+.viewer-header .vh-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.viewer-header .popover-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+
+.viewer_header_logo {
+    height: 20px;
+    width: auto;
+}
+
+.file-info {
+    color: #666;
+}
+
+#viewer-popover iframe {
+    width: 90vw;
+    height: calc(80vh - 36px);
+    /* header height accounted */
+    border: none;
+}
