@@ -9,7 +9,14 @@
 <div>
   <h2>Introduction</h2>
   <p>
-    Zowser is an OME-Zarr browser based on the <a
+    This is the browser of
+    <a href="https://github.com/lubianat/BioSTAC">BioSTAC</a>, which shows a STAC
+    catalog of bioimaging data. It reads the catalog's stac-geoparquet files
+    directly, so the gallery below is the catalog itself rather than a copy of it.
+  </p>
+  <p>
+    It is a fork of <a href="https://github.com/lubianat/zowser">zowser</a>, an
+    OME-Zarr browser based on the <a
       href="https://forum.image.sc/t/ome2024-ngff-challenge/97363"
       >2024 OME-NGFF Challenge</a
     >, conceived at the

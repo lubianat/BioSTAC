@@ -1,109 +1,28 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
-  import * as omezarr from "ome-zarr.js";
-  import { thumbnailFromConvention } from "./util.js";
-
-  export let source;
+  // The catalog ships a thumbnail per item, so nothing is rendered from the Zarr here.
+  export let src = undefined;
   export let thumbAspectRatio = 1;
   export let cssSize = 120;
-  export let max_size = 512;
 
-  const BASE = import.meta.env.BASE_URL;
-
-  let imgEl;
-  let showSpinner = true;
-  // mode: 'none' | 'cached' | 'live'
-  let mode = "none";
-
-  // initial css box respecting aspect ratio
   let width = cssSize;
   let height = cssSize;
   if (thumbAspectRatio > 1) height = width / thumbAspectRatio;
   else if (thumbAspectRatio < 1) width = height * thumbAspectRatio;
-  let cssWidth = width;
-  let cssHeight = height;
 
-  const controller = new AbortController();
-
-  function basenameFromSource(src) {
-    try {
-      const u = new URL(src, window.location.href);
-      const parts = u.pathname.split("/").filter(Boolean);
-      return parts[parts.length - 1];
-    } catch {
-      const parts = src.split("?")[0].split("/");
-      return parts[parts.length - 1];
-    }
-  }
-
-  async function tryCachedFirst() {
-    const thumbName = basenameFromSource(source);
-    const cachedUrl = `${BASE}thumbs/${thumbName}.jpg`;
-
-    const probe = new Image();
-    probe.decoding = "async";
-    probe.referrerPolicy = "no-referrer";
-
-    return new Promise((resolve) => {
-      probe.onload = () => {
-        mode = "cached";
-        showSpinner = false;
-        if (imgEl) imgEl.src = cachedUrl;
-        resolve(true);
-      };
-      probe.onerror = () => resolve(false);
-      probe.src = cachedUrl;
-    });
-  }
-
-  async function loadWithOmeZarr() {
-    try {
-      console.log(`Loading thumbnail for ${source} with ome-zarr.js`);
-      const dataUrl = await omezarr.renderThumbnail(
-        source,
-        cssSize,
-        true,
-        max_size,
-      );
-      mode = "live";
-      if (imgEl) imgEl.src = dataUrl;
-      showSpinner = false;
-    } catch (err) {
-      // Keep spinner indefinitely (your preferred failure mode)
-      console.warn("Thumbnail generation failed:", err);
-    }
-  }
-
-  async function tryConvention() {
-    const url = await thumbnailFromConvention(source, max_size);
-    if (!url) return false;
-    mode = "cached";
-    showSpinner = false;
-    if (imgEl) imgEl.src = url;
-    return true;
-  }
-
-  onMount(async () => {
-    if (await tryCachedFirst()) return;
-    if (await tryConvention()) return;
-    await loadWithOmeZarr();
-  });
-
-  onDestroy(() => controller.abort());
+  let loaded = false;
 </script>
 
-<div
-  class="thumbWrapper"
-  style="width:{cssWidth}px; height:{cssHeight}px;"
-  class:spinner={showSpinner}
->
-  <img
-    bind:this={imgEl}
-    class:hidden={mode === "none"}
-    style="width:{cssWidth}px; height:{cssHeight}px; object-fit:cover;"
-    alt=""
-    aria-hidden={mode === "none"}
-  />
+<div class="thumbWrapper" style="width:{width}px; height:{height}px;" class:spinner={!loaded}>
+  {#if src}
+    <img
+      {src}
+      on:load={() => (loaded = true)}
+      on:error={() => (loaded = true)}
+      class:hidden={!loaded}
+      style="width:{width}px; height:{height}px; object-fit:cover;"
+      alt=""
+    />
+  {/if}
 </div>
 
 <style>

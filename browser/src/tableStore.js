@@ -1,7 +1,5 @@
 import { writable, get } from "svelte/store";
 import { organismStore, imagingModalityStore } from "./ontologyStore";
-import { loadMultiscales } from "./util.js";
-export { loadMultiscales };
 
 
 class NgffTable {
@@ -12,20 +10,11 @@ class NgffTable {
     this.sortColumn = sortBy;
     this.sortAscending = sortAscending;
 
-    // [{source: "uni1",
-    //  url: "http://...csv",
-    //  image_count: 10,
-    //  "child_csv": [{source: "uni2", url: "http://...csv"}]}
-    // ]
-    this.csvFiles = [];
   }
 
   addRows(rows) {
     // Each row is a dict {"url": "http...zarr"}
     rows = rows.map((row, index) => {
-      if (row.written) {
-        row.written = parseFloat(row.written);
-      }
       if (row.shape) {
         let shape = row.shape.split(",").map((dim) => parseInt(dim));
         let dim_names;
@@ -44,20 +33,10 @@ class NgffTable {
           0,
         );
       }
-      if (row.chunks) {
-        let chunks = row.chunks.split(",").map((dim) => parseInt(dim));
-        row.chunk_pixels = chunks.reduce((prev, curr) => prev * curr, 1);
-      }
-      if (row.shards) {
-        let shards = row.shards.split(",").map((dim) => parseInt(dim));
-        row.shard_pixels = shards.reduce((prev, curr) => prev * curr, 1);
-      }
       // add index for sorting
       row.index = Math.random() * (1 + index);
       return row;
     });
-
-    console.log("Adding rows", rows);
 
     this.store.update((table) => {
       table.push(...rows);
@@ -81,57 +60,6 @@ class NgffTable {
         return row;
       });
       return table;
-    });
-  }
-
-  async loadNgffMetadata(zarrUrl) {
-    const [multiscales, msUrl, plate] = await loadMultiscales(zarrUrl);
-    let shape = [];
-    let written = 0;
-    let well_count = 0;
-    let field_count = 0;
-    let load_failed = false;
-    let loaded = true;
-    // TODO: include 'omero' attrs for rendering settings
-    let image_attrs = { multiscales };
-    let image_url = msUrl;
-    if (plate) {
-      well_count = plate.wells.length;
-      field_count = plate.field_count || 1;
-    }
-    if (multiscales) {
-      // only consider the first multiscale and load highest resolution dataset
-      const dataset = multiscales[0]?.datasets[0];
-      const path = dataset?.path;
-      if (path) {
-        const arrayData = await fetch(`${msUrl}/${path}/zarr.json`)
-          .then((response) => response.json())
-          .catch((error) => {
-            console.log(
-              `----> Failed to parse ${msUrl}/${path}/zarr.json`,
-              error,
-            );
-          });
-        shape = arrayData?.shape;
-        // written = arrayData?.attributes?._ome2024_ngff_challenge_stats?.written;
-      }
-    } else {
-      console.log("No multiscales found");
-      load_failed = true;
-      shape = [0];
-    }
-    // The data that is added to the Table
-    // const total_written = written * (well_count ? well_count * field_count : 1);
-    this.populateRow(zarrUrl, {
-      image_attrs,
-      image_url,
-      shape,
-      // written,
-      well_count,
-      field_count,
-      // total_written,
-      load_failed,
-      loaded, // always true - just means we tried to load the data
     });
   }
 

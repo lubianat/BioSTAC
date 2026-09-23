@@ -1,69 +1,10 @@
 config:
-  title: "OME-Zarr sets"
-  description: "This is a lightweight viewer to share sets of OME-Zarr datasets with basic descriptions.\n Clone the <a href='https://github.com/lubianat/zowser/' target='_blank'>repo</a>, change the config, build with GitHub Pages. "
-samples:
-  - https://uk1s3.embassy.ebi.ac.uk/ebi-ngff-challenge-2024/c0e5d621-62cc-43a6-9dad-2ddab8959d17.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/ebi-ngff-challenge-2024/fb416517-e36d-4bdb-98f9-47b644138d47.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/ebi-ngff-challenge-2024/79ad519b-0aa6-4d64-85a9-6cea2318b980.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/ebi-ngff-challenge-2024/eea08413-3c5e-4fae-b4fb-02c7c5ebb8a4.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/ebi-ngff-challenge-2024/9d53468d-2b49-4a43-98dd-c1838485fddd.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/ebi-ngff-challenge-2024/7cc10a97-23f1-4e3e-80f2-d91dc39f2ab9.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/ebi-ngff-challenge-2024/2a544b69-9ddd-4941-9801-fd406d06880c.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/ebi-ngff-challenge-2024/c9ba2bf5-09d1-41ff-a925-df0b725a53e4.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/share/ome2024-ngff-challenge/idr0157/Riccia sorocarpa SWE/IMG_2471-2570 Riccia sorocarpa thallus with epidermis cross section (40x DIC).ome.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/share/ome2024-ngff-challenge/idr0157/Riccia sorocarpa SWE/IMG_1811-1870 Riccia sorocarpa thallus cross section (10x).ome.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/share/ome2024-ngff-challenge/idr0066/ExpD_chicken_embryo_MIP.ome.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/share/ome2024-ngff-challenge/idr0066/ExpA_VIP_ASLM_on_XZ_slice1088.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/share/ome2024-ngff-challenge/idr0051/180712_H2B_22ss_Courtney1_20180712-163837_p00_c00_preview.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.5/idr0033A/BR00109990_C2.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.5/idr0010/76-45.ome.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.5/idr0090/190129.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.5/idr0066/ExpD_chicken_embryo_MIP.ome.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.5/idr0066/ExpA_VIP_ASLM_on.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.5/idr0062A/6001240_labels.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.5/idr0157/Asterella gracilis SWE/IMG_1033-1112 Asterella gracilis (Mannia gracilis) stature.ome.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.5/idr0051/180712_H2B_22ss_Courtney1_20180712-163837_p00_c00_preview.zarr
-  - https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.5/idr0083/9822152.zarr
+  title: "BioSTAC — OME 2024 NGFF challenge"
+  description: "Every image, plate and study of the challenge pilot, read straight from the
+    published STAC catalog. The gallery opens the catalog's Parquet files over HTTP and nothing
+    else: no Zarr is touched until you open one in a viewer.\n
+    Built from <a href='https://github.com/lubianat/zowser' target='_blank'>zowser</a>."
 
-extended_samples:
-  - name: antscan sample
-    description: Sample from the antscan dataset made available on HuggingFace Buckets.
-    url:  https://huggingface.co/buckets/tiagolubiana/antscan/resolve/CASENT0744743.zarr
-  - name: antscan sample 2
-    description: Sample from the antscan dataset made available on HuggingFace Buckets.
-    url:  https://huggingface.co/buckets/tiagolubiana/antscan/resolve/CASENT0744903.zarr
-  - name: HeLa cells
-    description: Small dataset, 2 channels. HeLa cells showing click chemistry and immunofluorescence. Note that metadata shows TaxonID 9601, likely a typo. Correct entry should be for human, 9606.
-    url: https://uk1s3.embassy.ebi.ac.uk/ebi-ngff-challenge-2024/4ffaeed2-fa70-4907-820f-8a96ef683095.zarr
-  - name: Riccia sorocarpa - photograph
-    description: From a series of bryophyte data on IDR, it shows how OME-Zarr can fit other kinds of images beyond microscopy.
-    url: https://uk1s3.embassy.ebi.ac.uk/idr/share/ome2024-ngff-challenge/idr0157/Riccia sorocarpa SWE/IMG_0069 Riccia sorocarpa stature.ome.zarr
-  - name: IDR image with labels
-    description: 6001240_labels.zarr labels. They are also shown in an OME-Zarr format. Labels do not correspond to image acquisions, but draw regions of interest in the same dimensions as the original image.
-    url: https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.5/idr0062A/6001240_labels.zarr/labels/0
-  - name: Sample Plankton image (TRaversing European Coastlines, TREC) 1
-    description: (OME-Zarr v0.4, unsupported) 2D light microscopy images of fresh plankton samples collected during TREC (oscopy images of fresh plankton samples collected during TREC expedition) expedition
-    url: https://s3.embl.de/live-confocal-trec-super-plankton/TREC_STOP_12_Tallinn/LSM900_20230616/PK2_TAL_10to40_20230616_PM_01_20xcamera_16.ome.zarr/PK2_TAL_10to40_20230616_PM_01_20xcamera.zarr
-    catalog: TREC
-  - name: Sample Plankton image (TRaversing European Coastlines, TREC) 2
-    description: (OME-Zarr v0.4, unsupported) 2D light microscopy images of fresh plankton samples collected during TREC (oscopy images of fresh plankton samples collected during TREC expedition) expedition
-    url: https://s3.embl.de/live-confocal-trec-super-plankton/TREC_STOP_35_Naples/LSM900_20240501/PK2_NAP_150to500_20240501_AM_01_33.ome.zarr/PK2_NAP_150to500_20240501_AM_01.zarr
-    catalog: TREC
-  - name: SciVis stag beetle
-    description: sample from the SciVis dataset
-    url: https://ome-zarr-scivis.s3.us-east-1.amazonaws.com/v0.5/96x2/stag_beetle.ome.zarr
-    catalog: SciVis
-  - name: SciVis aneurism
-    description: sample from the SciVis dataset
-    url: https://ome-zarr-scivis.s3.us-east-1.amazonaws.com/v0.5/96x2/aneurism.ome.zarr
-    catalog: SciVis
-catalogs:
-  TEST:
-    name: TEST
-    url: https://example.org
-  TREC:
-    name: TREC
-    url: https://forum.image.sc/t/ome-zarr-images-of-planetary-biology-projects-submitted-to-bioimage-archive/117372
-  SciVis:
-    name: SciVis
-    url: https://registry.opendata.aws/ome-zarr-open-scivis/
+# The catalog this gallery shows. Point it at another STAC root to show another catalog,
+# as long as its Collections publish an "items" stac-geoparquet asset.
+stac: https://huggingface.co/buckets/tiagolubiana/ome2024-challenge-STAC/resolve/catalog.json

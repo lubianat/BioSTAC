@@ -6,23 +6,22 @@
   import PreviewPopup from "./PreviewPopup.svelte";
   import PageTitle from "./PageTitle.svelte";
   import FilterSelect from "./FilterSelect.svelte";
-  import { loadCsv } from "./util";
+  import { loadStac } from "./stacStore";
+  import { getConfig } from "./util";
 
   import form_select_bg_img from "/selectCaret.svg";
-  import zarr_samples from "/samples/zarrs_metadata.csv?url";
 
   // ────────────────────────────────────────────────────────────────
   // State
   // ────────────────────────────────────────────────────────────────
-  let csvUrl = zarr_samples;
   let tableRows = [];
   let totalZarrs = 0;
   let totalBytes = 0;
   let showSourceColumn = false;
 
   let filters = {
-    catalog: "",
-    ome_zarr_kind: "",
+    collection: "",
+    level: "",
     dimension: "",
     organism: "",
     modality: "",
@@ -35,16 +34,13 @@
   // ────────────────────────────────────────────────────────────────
   // Data loading & subscription
   // ────────────────────────────────────────────────────────────────
-  if (csvUrl) loadCsv(csvUrl, ngffTable);
+  getConfig().then((cfg) => loadStac(cfg.stac));
   tableRows = applyFilters(ngffTable.getRows());
 
   let allRows = [];
 
   // Single consolidated subscription
   ngffTable.subscribe((rows) => {
-    console.log("ngffTable updated, row count:", rows.length);
-    console.log("First few rows:", rows.slice(0, 3));
-
     allRows = rows; // This ensures allRows is always in sync
     tableRows = applyFilters(rows);
     totalZarrs = rows.length;
@@ -52,19 +48,15 @@
     showSourceColumn = rows.some((r) => r.source);
   });
 
-  // Add debug to derived options
-  $: console.log({ tableRows });
-
   // ────────────────────────────────────────────────────────────────
   // Filtering
   // ────────────────────────────────────────────────────────────────
   function applyFilters(rows) {
-    const { catalog, ome_zarr_kind, dimension, organism, modality, text } =
-      filters;
+    const { collection, level, dimension, organism, modality, text } = filters;
     const txt = text.toLowerCase();
     if (
-      catalog == "" &&
-      ome_zarr_kind == "" &&
+      collection == "" &&
+      level == "" &&
       dimension == "" &&
       organism == "" &&
       modality == "" &&
@@ -77,8 +69,8 @@
       if (dimension && String(r.dim_count) !== dimension) return false;
       if (organism && r.organismId !== organism) return false;
       if (modality && r.fbbiId !== modality) return false;
-      if (ome_zarr_kind && r.ome_zarr_kind !== ome_zarr_kind) return false;
-      if (catalog && r.catalog !== catalog) return false;
+      if (level && r.level !== level) return false;
+      if (collection && r.collection !== collection) return false;
 
       if (
         txt &&
@@ -96,7 +88,6 @@
   function setFilter(key, value) {
     filters[key] = value;
     tableRows = applyFilters(ngffTable.getRows());
-    console.log({ tableRows });
   }
 
   function filterText(e) {
@@ -120,14 +111,14 @@
   // Derived options
   // ────────────────────────────────────────────────────────────────
 
-  $: typeOptions = Array.from(
-    new Set(tableRows.map((r) => String(r.ome_zarr_kind)).filter(Boolean)),
+  $: levelOptions = Array.from(
+    new Set(tableRows.map((r) => String(r.level)).filter(Boolean)),
   )
     .sort()
     .map((v) => ({ value: String(v), label: `${v}` }));
 
-  $: catalogOptions = Array.from(
-    new Set(tableRows.map((r) => String(r.catalog)).filter(Boolean)),
+  $: collectionOptions = Array.from(
+    new Set(tableRows.map((r) => String(r.collection)).filter(Boolean)),
   )
     .sort()
     .map((v) => ({ value: String(v), label: `${v}` }));
@@ -150,8 +141,8 @@
     dimension: dimensionOptions,
     organism: organismOptions,
     modality: modalityOptions,
-    catalog: catalogOptions,
-    ome_zarr_kind: typeOptions,
+    collection: collectionOptions,
+    level: levelOptions,
   };
 </script>
 
@@ -200,8 +191,7 @@
             {/each}
             <hr />
             <option value="written">Data Size (bytes)</option>
-            <option value="chunk_pixels">Chunk Size (pixels)</option>
-            <option value="shard_pixels">Shard Size (pixels)</option>
+            <option value="well_count">Wells</option>
           </select>
           <div>
             <ColumnSort {sortAscending} toggleAscending={toggleSortAscending} />
@@ -214,7 +204,7 @@
       <h3 style="margin-left: 15px">
         Showing {tableRows.length} out of {totalZarrs} images
       </h3>
-      <ImageList {tableRows} textFilter={filters.text} {sortedBy} />
+      <ImageList {tableRows} textFilter={filters.text} />
     </div>
   </div>
 </main>
