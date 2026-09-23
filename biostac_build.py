@@ -13,8 +13,10 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+import duckdb
 import numpy as np
 import pystac
+import rustac
 import zarr
 from PIL import Image
 from pystac.summaries import Summarizer
@@ -54,6 +56,12 @@ def fetch_json(url, cache_path):
         with urllib.request.urlopen(web_url(url), timeout=60) as response:
             path.write_bytes(response.read())
     return json.loads(path.read_text())
+
+
+def fetch_bytes(url):
+    """Raw bytes of a URL, for files that are not JSON (an annotation CSV, say)."""
+    with urllib.request.urlopen(web_url(url), timeout=180) as response:
+        return response.read()
 
 
 def fetch_json_or_none(url, cache_path):
@@ -187,8 +195,25 @@ def render_thumbnail(group_url, cache_key, size=256, max_pixels=2000 * 2000):
 
 # --- STAC ---------------------------------------------------------------------------------------
 
-def make_item(item_id, zarr_url, properties, harvested, origin=None, license_url=None):
+LEVELS = ("image", "plate", "well")  # what a row denotes: one image, a whole plate, or one well of a plate
+
+
+def with_flat_terms(properties):
+    """Add the ontology ids as flat columns next to their structs: dictionary-encoded, and the
+    Parquet readers can filter and skip row groups on them (nested fields are awkward, and
+    rustac's CQL2 misses them entirely)."""
+    flat = {"bioimage:organism": "bioimage:ncbitaxon", "bioimage:imaging_method": "bioimage:fbbi"}
+    out = {}
+    for key, value in properties.items():
+        out[key] = value
+        if key in flat and value:
+            out[flat[key]] = value["term_id"]
+    return out
+
+
+def make_item(item_id, zarr_url, properties, harvested, origin=None, license_url=None, level="image"):
     """A STAC Item for one OME-Zarr, with its data, zarr.json and image-crate assets."""
+    properties = with_flat_terms({"bioimage:level": level, **properties})
     item = pystac.Item(
         id=item_id,
         geometry={"type": "Point", "coordinates": [0.0, 0.0]},
@@ -478,6 +503,34 @@ def write_item_crate(item, extra_parts=()):
 
 
 # --- writing the tree ---------------------------------------------------------------------------
+
+ROW_GROUP_SIZE = 50_000
+
+
+def merge_geoparquet(source, path, sort_by=("collection", "id"), row_group_size=ROW_GROUP_SIZE):
+    """Rewrite stac-geoparquet (one file, or a glob of parts) laid out for search: sorted by the columns
+    people filter on, with statistics on every column. rustac leaves statistics off the string columns,
+    and without them a reader cannot skip row groups at all."""
+    path = pathlib.Path(path)
+    stac = duckdb.sql(f"""SELECT decode(value) FROM parquet_kv_metadata('{source}')
+                          WHERE decode(key) = 'stac-geoparquet' LIMIT 1""").fetchone()[0]
+    order = ", ".join(f'"{column}"' for column in sort_by)
+    # DuckDB writes the 'geo' key itself; passing ours too would duplicate it
+    duckdb.sql(f"""COPY (SELECT * FROM read_parquet('{source}', union_by_name := true) ORDER BY {order})
+                   TO '{path}' (FORMAT parquet, COMPRESSION zstd,
+                                ROW_GROUP_SIZE {row_group_size}, KV_METADATA {{'stac-geoparquet': {stac!r}}})""")
+    return path
+
+
+async def write_geoparquet(items, path, sort_by=("collection", "id"), row_group_size=ROW_GROUP_SIZE):
+    """rustac writes the file, because it gets the STAC metadata right, then merge_geoparquet lays it out."""
+    path = pathlib.Path(path)
+    raw = path.with_name(path.stem + ".raw.parquet")  # rustac picks the format from the extension
+    await rustac.write(str(raw), items)
+    merge_geoparquet(raw, path, sort_by, row_group_size)
+    raw.unlink()
+    return path
+
 
 ROOT_CATALOG = pathlib.Path("catalogs/challenge/catalog.json")
 

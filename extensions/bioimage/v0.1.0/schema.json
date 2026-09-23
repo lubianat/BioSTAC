@@ -18,7 +18,8 @@
     "properties": {
       "type": "object",
       "required": [
-        "bioimage:source"
+        "bioimage:source",
+        "bioimage:level"
       ],
       "properties": {
         "bioimage:source": {
@@ -44,19 +45,34 @@
         "bioimage:imaging_method": {
           "$ref": "#/definitions/ontology_term"
         },
-        "bioimage:plate": {
-          "type": "boolean",
-          "description": "Whether the OME-Zarr is a high-content screening plate."
-        },
         "bioimage:wells": {
           "type": "integer",
           "minimum": 1,
           "description": "Number of wells in the plate."
         },
-        "bioimage:fields": {
+        "bioimage:ncbitaxon": {
+          "type": "string",
+          "pattern": "^NCBITaxon:[0-9]+$",
+          "description": "Specimen taxon id, flat next to bioimage:organism, for search."
+        },
+        "bioimage:fbbi": {
+          "type": "string",
+          "pattern": "^FBbi:[0-9]+$",
+          "description": "Imaging method id, flat next to bioimage:imaging_method, for search."
+        },
+        "bioimage:field_count_max": {
           "type": "integer",
           "minimum": 1,
-          "description": "Number of field images in the plate, across all wells."
+          "description": "Maximum number of fields per well in the plate, as OME-NGFF field_count. Individual wells may hold fewer."
+        },
+        "bioimage:level": {
+          "type": "string",
+          "enum": [
+            "image",
+            "plate",
+            "well"
+          ],
+          "description": "What the Item denotes: one image, a whole HCS plate, or one well of a plate."
         }
       },
       "patternProperties": {
