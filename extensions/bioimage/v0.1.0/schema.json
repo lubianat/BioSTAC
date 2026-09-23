@@ -60,6 +60,14 @@
           "pattern": "^FBbi:[0-9]+$",
           "description": "Imaging method id, flat next to bioimage:imaging_method, for search."
         },
+        "bioimage:plate_id": {
+          "type": "string",
+          "description": "On a well, the id of the plate Item it belongs to."
+        },
+        "bioimage:well": {
+          "type": "string",
+          "description": "On a well, its position as OME-NGFF writes the path, e.g. A/10."
+        },
         "bioimage:field_count_max": {
           "type": "integer",
           "minimum": 1,

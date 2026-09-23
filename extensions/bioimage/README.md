@@ -26,6 +26,8 @@ The `ontology_term` structure follows the shape used by [bioparquet](https://git
 | `bioimage:level` | string | What the row denotes: `image`, `plate` or `well`. Levels share the same fields, so they can be searched together and told apart by this column. |
 | `bioimage:wells` | integer | Wells in the plate |
 | `bioimage:field_count_max` | integer | Maximum fields per well in the plate (OME-NGFF `field_count`); wells may hold fewer |
+| `bioimage:plate_id` | string | On a well, the id of its plate Item — the key that joins well rows to plate rows |
+| `bioimage:well` | string | On a well, its position as OME-NGFF writes it, e.g. `A/10` |
 
 For a plate, the `bioimage:size_*` values describe one field image; all fields of a plate share them.
 
