@@ -32,8 +32,16 @@
     import.meta.hot.on("vite:afterUpdate", load);
   }
 
-  $: displayTitle = title || fallbackTitle;
-  $: displayDescription = description || fallbackDescription;
+  // The config is written by hand, so [text](url) is nicer there than an <a> tag.
+  // Links are all the Markdown it needs; anything else is passed through as HTML.
+  const links = (text) =>
+    text.replace(
+      /\[([^\]]+)\]\(((?:https?:|\/|#)[^)\s]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener">$1</a>',
+    );
+
+  $: displayTitle = links(title || fallbackTitle);
+  $: displayDescription = links(description || fallbackDescription);
 </script>
 
 {#if displayTitle || displayDescription}

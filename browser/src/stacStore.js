@@ -54,8 +54,19 @@ export async function loadStac(rootUrl) {
     .filter((link) => link.rel === "child")
     .map((link) => new URL(link.href, rootUrl).href);
 
-  for (const collectionUrl of children) {
-    const collection = await getJson(collectionUrl);
+  // the Collections first: they are small, and they say what this catalog offers
+  const collections = await Promise.all(
+    children.map(async (url) => ({ url, collection: await getJson(url) })),
+  );
+  resourceStore.set(
+    collections.map(({ collection }) => ({
+      id: collection.id,
+      title: collection.title || collection.id,
+      description: collection.description,
+    })),
+  );
+
+  for (const { url: collectionUrl, collection } of collections) {
     const items = collection.assets?.items;
     if (!items) {
       console.warn(`${collection.id} publishes no items.parquet`);
@@ -65,9 +76,5 @@ export async function loadStac(rootUrl) {
     const file = await asyncBufferFromUrl({ url }); // ranged GETs, not a full download
     const rows = await parquetReadObjects({ file, compressors });
     ngffTable.addRows(rows.map((row) => toRow(row, collection.id, collectionUrl)));
-    resourceStore.update((known) => [
-      ...known,
-      { id: collection.id, title: collection.title || collection.id, description: collection.description },
-    ]);
   }
 }
