@@ -394,12 +394,13 @@ def crate_json(graph):
     return readable_dumps({"@context": context, "@graph": graph}) + "\n"
 
 
-def replace_ids(node, old, new):
+def replace_at_ids(node, old, new):
+    """Rewrite matching JSON-LD @id values without touching non-identifier properties such as url."""
     if isinstance(node, list):
-        return [replace_ids(value, old, new) for value in node]
+        return [replace_at_ids(value, old, new) for value in node]
     if isinstance(node, dict):
         return {
-            key: (new if key == "@id" and value == old else replace_ids(value, old, new))
+            key: (new if key == "@id" and value == old else replace_at_ids(value, old, new))
             for key, value in node.items()
         }
     return node
@@ -430,8 +431,8 @@ def ship_crate(study, crate, cached_path):
     descriptor, root = crate_root(crate)
     old_descriptor, old_root = descriptor["@id"], root["@id"]
     # RO-Crate 1.2: the descriptor MUST be ro-crate-metadata.json; the root of an attached crate is ./
-    graph = replace_ids(crate["@graph"], old_descriptor, "ro-crate-metadata.json")
-    graph = replace_ids(graph, old_root, "./")
+    graph = replace_at_ids(crate["@graph"], old_descriptor, "ro-crate-metadata.json")
+    graph = replace_at_ids(graph, old_root, "./")
     root = next(n for n in graph if n["@id"] == "./")
     root.setdefault("identifier", old_root)  # keeps the source's own identifier when it has one
     root.setdefault("url", old_root)
