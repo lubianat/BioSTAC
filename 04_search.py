@@ -160,10 +160,6 @@ def _(http, mo, partial, pathlib, pystac, threading, which):
         pass  # already serving (cell re-run or 02_browse.py running)
 
     browse = pathlib.Path(f"{which.value}/catalog.json")
-    catalog = pystac.Catalog.from_file(str(browse))
-    children = [browse.parent / link.href for link in catalog.get_links("child")]
-    if any(not child.exists() for child in children):
-        browse = next((child for child in children if child.exists()), browse)
     url = f"https://radiantearth.github.io/stac-browser/#/external/http://localhost:8000/{browse.as_posix()}"
     mo.md(f"## STAC Browser\n[Open the extended catalog in STAC Browser]({url}): collections, summaries, ome:* properties, assets.")
     return
