@@ -38,7 +38,7 @@ def _(mo, pathlib, pystac, which):
         for child in children
         for collection in ([child] if isinstance(child, pystac.Collection) else list(child.get_collections()))
     ]
-    items = [item for child in children for item in child.get_items(recursive=True)]
+    items = list(catalog.get_items()) + [item for child in children for item in child.get_items(recursive=True)]
     mo.md(f"# {catalog.id}\n{catalog.description}\n\n**{len(items)}** items in **{len(collections)}** collections")
     return collections, items
 
