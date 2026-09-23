@@ -62,6 +62,15 @@
       "title": "Source resource",
       "type": "string"
     },
+    "bioimage:level": {
+      "title": "Row denotes",
+      "type": "string",
+      "enum": [
+        "image",
+        "plate",
+        "well"
+      ]
+    },
     "bioimage:ngff_version": {
       "title": "OME-NGFF version",
       "type": "string"

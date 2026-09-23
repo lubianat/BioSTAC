@@ -30,7 +30,7 @@
   "title": "The Benchtop mesoSPIM: a next-generation open-source light-sheet microscope for large cleared samples",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
-    "temporal": {"interval": [["2023-12-15T00:00:00Z", "2023-12-15T00:00:00Z"]]}
+    "temporal": {"interval": [["2026-09-22T18:58:58Z", "2026-09-22T18:58:58Z"]]}
   },
   "license": "CC-BY-4.0",
   "keywords": ["light-sheet", "mesoSPIM", "tissue clearing"],

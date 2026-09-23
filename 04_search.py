@@ -6,13 +6,14 @@ app = marimo.App(width="full")
 @app.cell
 def _():
     import http.server
+    import pathlib
     import threading
     from functools import partial
 
     import cql2
     import marimo as mo
     import pystac
-    return cql2, http, mo, partial, pystac, threading
+    return cql2, http, mo, partial, pathlib, pystac, threading
 
 
 @app.cell
@@ -24,10 +25,15 @@ def _(mo):
 
 
 @app.cell
-def _(mo, pystac, which):
+def _(mo, pathlib, pystac, which):
     catalog = pystac.Catalog.from_file(f"{which.value}/catalog.json")
-    collections = list(catalog.get_children())
-    items = list(catalog.get_items(recursive=True))
+    base = pathlib.Path(catalog.self_href).parent
+    collections = [
+        pystac.Collection.from_file(str(base / link.href))
+        for link in catalog.get_links("child")
+        if (base / link.href).exists()
+    ]
+    items = [item for collection in collections for item in collection.get_items(recursive=True)]
     mo.md(f"# {catalog.id}\n{catalog.description}\n\n**{len(items)}** items in **{len(collections)}** collections")
     return collections, items
 
@@ -119,7 +125,7 @@ def _(hits, mo):
 
 
 @app.cell
-def _(http, mo, partial, threading, which):
+def _(http, mo, partial, pathlib, pystac, threading, which):
     class CORS(http.server.SimpleHTTPRequestHandler):
         def end_headers(self):
             self.send_header("Access-Control-Allow-Origin", "*")
@@ -131,7 +137,12 @@ def _(http, mo, partial, threading, which):
     except OSError:
         pass  # already serving (cell re-run or 02_browse.py running)
 
-    url = f"https://radiantearth.github.io/stac-browser/#/external/http://localhost:8000/{which.value}/catalog.json"
+    browse = pathlib.Path(f"{which.value}/catalog.json")
+    catalog = pystac.Catalog.from_file(str(browse))
+    children = [browse.parent / link.href for link in catalog.get_links("child")]
+    if any(not child.exists() for child in children):
+        browse = next((child for child in children if child.exists()), browse)
+    url = f"https://radiantearth.github.io/stac-browser/#/external/http://localhost:8000/{browse.as_posix()}"
     mo.md(f"## STAC Browser\n[Open the extended catalog in STAC Browser]({url}): collections, summaries, ome:* properties, assets.")
     return
 
