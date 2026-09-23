@@ -21,7 +21,12 @@ const num = (value) => (value === null || value === undefined ? undefined : Numb
 
 function toRow(item, resource, collectionUrl) {
   const axes = AXES.filter((axis) => item[`bioimage:size_${axis}`] != null);
-  const base = collectionUrl.replace(/collection\.json$/, "");
+  // an asset href is either absolute or relative to its item, which lives in its own folder
+  const itemBase = new URL(
+    `${item.collection}/${item.id}/`,
+    collectionUrl.replace(/collection\.json$/, ""),
+  ).href;
+  const href = (asset) => (asset ? new URL(asset.href, itemBase).href : undefined);
   return {
     resource,
     url: item.assets.data.href,
@@ -38,12 +43,10 @@ function toRow(item, resource, collectionUrl) {
     well_count: num(item["bioimage:wells"]),
     organismId: item["bioimage:ncbitaxon"],
     fbbiId: item["bioimage:fbbi"],
-    // each item is a folder in the bucket, named by its id, holding its thumbnail
-    thumbnail: item.assets.thumbnail
-      ? new URL(`${item.collection}/${item.id}/${item.assets.thumbnail.href}`, base).href
-      : undefined,
-    zarr_metadata: item.assets["zarr-metadata"]?.href,
-    ro_crate: item.assets["ro-crate"]?.href,
+    // the catalog's own PNG, or IDR's renderer where the challenge points at one
+    thumbnail: href(item.assets.thumbnail),
+    zarr_metadata: href(item.assets["zarr-metadata"]),
+    ro_crate: href(item.assets["ro-crate"]),
   };
 }
 
