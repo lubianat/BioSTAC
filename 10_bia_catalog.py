@@ -110,7 +110,7 @@ def _(CACHE, GIDE_CRATES, HARVESTED, SOURCE_CSV_URL, bb, build_item, rows):
 
     study_crates = {accession: gide_crate(accession) for accession, _ in studies}
     for accession, members in studies.items():
-        published = bb.crate_published((study_crates[accession[0]] or (None,))[0])
+        published = bb.crate_published((study_crates[accession] or (None,))[0])
         if published:
             for _item in members:
                 if _item.datetime == HARVESTED:
