@@ -42,7 +42,9 @@ function toRow(item, resource, collectionUrl) {
     written: num(item["bioimage:size_bytes"]),
     well_count: num(item["bioimage:wells"]),
     organismId: item["bioimage:ncbitaxon"],
+    organismLabel: item["bioimage:organism"]?.term_label,
     fbbiId: item["bioimage:fbbi"],
+    modalityLabel: item["bioimage:imaging_method"]?.term_label,
     // the catalog's own PNG, or IDR's renderer where the challenge points at one
     thumbnail: href(item.assets.thumbnail),
     zarr_metadata: href(item.assets["zarr-metadata"]),

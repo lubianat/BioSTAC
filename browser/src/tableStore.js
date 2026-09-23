@@ -44,11 +44,13 @@ class NgffTable {
       return table;
     });
 
-    let organismIds = rows.map((row) => row.organismId);
-    organismStore.addTerms(organismIds);
-
-    let fbbiIds = rows.map((row) => row.fbbiId);
-    imagingModalityStore.addTerms(fbbiIds);
+    // the catalog names its own terms; the stores only look up what arrives unnamed
+    organismStore.addTerms(
+      rows.map((row) => ({ id: row.organismId, label: row.organismLabel })),
+    );
+    imagingModalityStore.addTerms(
+      rows.map((row) => ({ id: row.fbbiId, label: row.modalityLabel })),
+    );
   }
 
   populateRow(zarrUrl, rowValues) {
