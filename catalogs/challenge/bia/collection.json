@@ -94,12 +94,12 @@
     "serial block face scanning electron microscopy",
     "tomography"
   ],
-  "bioimage:harvested": "2026-09-21T09:44:24+00:00",
+  "bioimage:harvested": "2026-09-22T18:58:58+00:00",
   "bioimage:source_csv": "https://github.com/ome/ome2024-ngff-challenge/blob/main/samples/ebi-ngff-challenge-samples.csv",
   "title": "BIA / EBI — OME 2024 NGFF challenge",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
-    "temporal": {"interval": [["2026-09-21T09:44:24Z", "2026-09-21T09:44:24Z"]]}
+    "temporal": {"interval": [["2026-09-22T18:58:58Z", "2026-09-22T18:58:58Z"]]}
   },
   "license": "various",
   "summaries": {
@@ -116,6 +116,12 @@
       "type": "application/vnd.apache.parquet",
       "title": "Items as stac-geoparquet",
       "roles": ["data"]
+    },
+    "studies": {
+      "href": "./studies.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "Studies of this resource as a table (derived from the Collections and their RO-Crates)",
+      "roles": ["metadata"]
     }
   }
 }
