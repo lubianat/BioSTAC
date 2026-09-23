@@ -567,7 +567,7 @@ def save_resource(resource, items, studies, study_crates, extra_parts=None, root
         root = pystac.Catalog.from_file(str(root_path))
         old_child = next((child for child in root.get_children() if child.id == resource.id), None)
         if old_child is not None:
-            root.remove_child(old_child)  # replaces this resource; the others stay as they are
+            root.remove_child(old_child.id)  # replaces this resource; the others stay as they are
     else:
         root = pystac.Catalog(id="biostac-challenge", description="STAC pilot over the OME 2024 NGFF challenge data.")
     root.set_self_href(str(root_path))
