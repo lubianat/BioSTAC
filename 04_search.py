@@ -27,18 +27,26 @@ def _(mo):
 @app.cell
 def _(mo, pathlib, pystac, which):
     catalog = pystac.Catalog.from_file(f"{which.value}/catalog.json")
-    base = pathlib.Path(catalog.self_href).parent
+    def base_path(node):
+        return pathlib.Path(node.self_href).parent
+
+    def direct_items(node):
+        return [
+            pystac.Item.from_file(str(base_path(node) / link.href))
+            for link in node.get_links("item")
+            if (base_path(node) / link.href).exists()
+        ]
+
     children = [
-        pystac.read_file(str(base / link.href))
+        pystac.read_file(str(base_path(catalog) / link.href))
         for link in catalog.get_links("child")
-        if (base / link.href).exists()
+        if (base_path(catalog) / link.href).exists()
     ]
 
     def existing_subtree(node):
-        yield node
-        base = pathlib.Path(node.self_href).parent
+        yield node, direct_items(node)
         for link in node.get_links("child"):
-            href = base / link.href
+            href = base_path(node) / link.href
             if href.exists():
                 yield from existing_subtree(pystac.read_file(str(href)))
 
@@ -47,8 +55,7 @@ def _(mo, pathlib, pystac, which):
         for child in children
         for collection in ([child] if isinstance(child, pystac.Collection) else list(child.get_collections()))
     ]
-    nodes = [catalog, *(node for child in children for node in existing_subtree(child))]
-    items = [item for node in nodes for item in node.get_items()]
+    items = [item for _, direct in existing_subtree(catalog) for item in direct]
     mo.md(f"# {catalog.id}\n{catalog.description}\n\n**{len(items)}** items in **{len(collections)}** collections")
     return collections, items
 
