@@ -276,8 +276,49 @@ flat, or query nested ones with DuckDB.
 - One image (mouse CNS, mesoSPIM) renders black with its own OMERO window; it needs auto-contrast, as the
   challenge site's `autoBoost` does.
 
+### Below a plate: wells, annotated from IDR
+
+```bash
+.venv/bin/marimo edit 15_plate_wells.py     # writes catalogs/challenge/idr/wells.parquet
+```
+
+A plate is one STAC Item, and its **wells** are indexed as rows in `wells.parquet`: **139,286 wells** of the
+635 plates, 1.5 MB, sorted by study, plate and well. The individual field images are deliberately not
+indexed, for two reasons:
+
+- **Metadata lives at well level.** IDR's screen annotations are keyed `Plate, Well`; the several field
+  images of a well share one gene or compound. A well is the smallest unit that carries anything to search.
+- **Fields cannot be listed without a request per well.** OME-NGFF defines `field_count` as the *maximum*
+  number of fields per well, and idr0011 wells hold fewer, so deriving field paths from it invents URLs that
+  404. To list a well's images, read that well's own `zarr.json` — one request, on demand, and each row links
+  it as its `zarr-metadata` asset.
+
+Each row carries the plate's properties plus a curated set of IDR's annotations, the
+[`idr:` extension](extensions/idr/): gene symbol and identifier, siRNA, compound, organism and cell line with
+their ontology ids, control type and phenotypes. The eight annotated studies use 172 distinct column names
+between them, so only the shared, searchable ones are carried; **IDR's tables are not republished**, and the
+annotation files are read from `IDR/idr-metadata` (and the per-study repos of idr0012, idr0033 and idr0090)
+into `build_cache/` alone.
+
+Coverage: every well of the eight annotated studies joins (idr0004 3,679, idr0010 56,448, idr0011 7,800 using
+all five of its screens, idr0012 22,847, idr0033 4,608, idr0035 3,300, idr0036 7,680, idr0090 544). idr0015
+has no annotation file, so its 32,380 wells carry none.
+
+This is what makes IDR-style search possible on the catalog. `idr:gene_symbol = 'PAU8'` returns
+idr0004 plate P101 well A2 (gene YAL068C), the same hit IDR's own search gives for that gene in that study:
+
+```sql
+SELECT collection, "idr:plate_name", "idr:well", assets.data.href
+FROM 'catalogs/challenge/idr/wells.parquet'
+WHERE "idr:gene_symbol" = 'PAU8'
+```
+
 ### Findings from the IDR harvest
 
+- OME-NGFF's `field_count` is the **maximum** fields per well, not the count in every well: in idr0011, 114
+  of 546 sampled wells hold fewer. The challenge CSV's `images` column is just wells × `field_count`, so it
+  cannot detect this either. Plate Items therefore carry `bioimage:field_count_max`, named for what it is.
+- 4 of 1,905 sampled wells are listed in IDR's plate metadata but return 404 on the server.
 - Four rows write `shape` as a bracketed list, `"[1, 1, 2, 520, 696]"`, where every other row uses
   `"1,1,1,520,696"` (idr0010 47-35, 69-49 and 96-14, and one idr0015 plate).
 - Licenses disagree between the CSV and the study crate: idr0004 is CC BY 4.0 in the CSV but CC BY-NC-SA 3.0
@@ -296,6 +337,51 @@ flat, or query nested ones with DuckDB.
   mean 290,587 Items and ~870k files (~2.5–3 GB). It needs no extra requests, because all 635 plates have a
   fixed number of fields per well. It is the next step if per-image metadata becomes available.
 
+### The studies themselves, as a table
+
+```bash
+.venv/bin/marimo edit 16_study_parquet.py   # writes catalogs/challenge/<resource>/studies.parquet
+```
+
+Images, plates and wells are all queryable as Parquet; the study was not, living only in its Collection
+JSON and in the RO-Crate shipped beside it. This notebook reads both and writes one row per study — title,
+license, keywords, publication date, authors and their ORCIDs, publisher, publication and DOI, taxa and
+imaging methods with their ontology ids, size in bytes and file count — and registers it as the `studies`
+asset on each resource Collection.
+
+It is deliberately **not** stac-geoparquet: that format holds STAC Items as rows, and a Collection is not
+an Item. It is a plain derived table whose `study` column joins to the `collection` column of
+`items.parquet` and `wells.parquet`. The JSON Collections and the crates stay canonical.
+
+24 studies, 19 of which ship a crate (BIA 5 of 10, IDR 14 of 14). The five without still get a row, from
+their Collection alone. GIDE's crates spell the size node `QuantitiveValue` and IDR's
+`QuantitativeValue`, so both spellings are accepted.
+
+### Searching what is actually published
+
+```bash
+.venv/bin/marimo edit 17_search_deployed.py  # reads the web, writes nothing
+```
+
+The closing notebook knows one thing — the URL of the deployed root catalog — and discovers the rest. It
+crawls the federation with pystac, takes the Parquet asset hrefs from the catalog itself, and queries them
+over HTTPS with DuckDB. Nothing local is read and no credentials are used; the buckets serve range
+requests, so only the column chunks a query names are fetched.
+
+The queries are grouped by how many files each one needs, because that is the point of a federated catalog:
+
+- **One file** — `idr:gene_symbol = 'PAU8'` reads `wells.parquet` alone and returns idr0004 plate P101
+  well A2. The other buckets are never opened.
+- **Two files** — plates joined to their wells: each well row names its plate in `bioimage:plate_id`,
+  which is the id of the plate Item in `items.parquet`. A single flat table could not hold both without
+  repeating every plate a few hundred times.
+- **Every file** — a count by `bioimage:level` across both resources in one statement: 139,286 wells,
+  1,263 images and 635 plates from IDR, 10 images from BIA.
+- **Studies joined to their data** — `studies.parquet` against `items.parquet`, across four files in two
+  buckets.
+
+Each query reports its wall time; the six together take about 15 seconds over the network.
+
 Still to do: the other five sources, and hosting each resource in its own bucket so the federation is
 structural rather than a folder convention.
 
@@ -310,11 +396,15 @@ readable_stac_io.py             writes STAC JSON with short objects on one line
 12_parquet_query.py             queries it with DuckDB and rustac
 13_ro_crate.py                  reads the same tree as RO-Crate; checks STAC and RO-Crate agree
 14_idr_catalog.py               challenge pilot: IDR source (1,898 images)
+15_plate_wells.py               plate wells as Parquet rows, annotated from IDR
+16_study_parquet.py             studies as a table, from the Collections and their crates
+17_search_deployed.py           queries the published catalog from its root URL
 biostac_build.py                build steps shared by the BIA and IDR notebooks
 catalogs/basic/                 written by notebook 1
 catalogs/extended/              written by notebook 3
 extensions/ome-ngff/            experimental STAC extension for the IDR demo
 extensions/bioimage/            experimental STAC extension for the challenge pilot
+extensions/idr/                 experimental STAC extension for IDR well annotations
 catalogs/challenge/bia/         written by 10_bia_catalog.py
 catalogs/challenge/idr/         written by 14_idr_catalog.py (not in git)
 ome2024-ngff-challenge/         submodule: the challenge repo and its sample lists
