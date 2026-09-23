@@ -28,12 +28,17 @@ def _(mo):
 def _(mo, pathlib, pystac, which):
     catalog = pystac.Catalog.from_file(f"{which.value}/catalog.json")
     base = pathlib.Path(catalog.self_href).parent
-    collections = [
-        pystac.Collection.from_file(str(base / link.href))
+    children = [
+        pystac.read_file(str(base / link.href))
         for link in catalog.get_links("child")
         if (base / link.href).exists()
     ]
-    items = [item for collection in collections for item in collection.get_items(recursive=True)]
+    collections = [
+        collection
+        for child in children
+        for collection in ([child] if isinstance(child, pystac.Collection) else list(child.get_collections()))
+    ]
+    items = [item for child in children for item in child.get_items(recursive=True)]
     mo.md(f"# {catalog.id}\n{catalog.description}\n\n**{len(items)}** items in **{len(collections)}** collections")
     return collections, items
 
