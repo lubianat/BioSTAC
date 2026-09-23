@@ -10,28 +10,38 @@
 </script>
 
 <div bind:this={popover} id="aboutPopover" popover>
-  <button class="close" title="Close" on:click={() => popover.hidePopover()}>&times;</button>
+  <button class="close" title="Close" on:click={() => popover.hidePopover()}
+    >&times;</button
+  >
   <div class="content">
     <h2>About BioSTAC</h2>
     <p>
-      BioSTAC is a <a href="https://stacspec.org" target="_blank">STAC</a> catalog of the submissions to the
-      <a href="https://ome.github.io/ome2024-ngff-challenge/" target="_blank">2024 OME-NGFF challenge</a>:
-      one Collection per contributing resource, one Item per OME-Zarr image or plate, each describing what
-      the image is of and how it was acquired. This gallery is the challenge's own, by way of
-      <a href="https://github.com/lubianat/zowser" target="_blank">zowser</a>, reading the catalog instead
-      of a list of samples — everything below comes from the catalog's Parquet files.
+      BioSTAC is an experimental <a href="https://stacspec.org" target="_blank"
+        >STAC</a
+      >
+      catalog of the submissions to the
+      <a href="https://ome.github.io/ome2024-ngff-challenge/" target="_blank"
+        >2024 OME-NGFF challenge</a
+      >: one Collection per contributing resource, one Item per OME-Zarr
+      image/plate. Everything below comes from HuggingFace; the catalog's
+      Parquet files and the pre-rendered thumbnails linked by them.
     </p>
     <p>
-      No image data is copied here. The OME-Zarrs stay where their resources put them, on EMBL-EBI and IDR
-      infrastructure, and opening one sends the viewer straight there. What BioSTAC publishes is the
-      metadata: a few hundred kilobytes of Parquet and JSON, served from Hugging Face buckets, which is
-      enough to search nearly two thousand images and a hundred and forty thousand wells without touching a
-      single pixel.
+      OME-Zarrs stay where their resources put them. BioSTAC re-publishes
+      metadata in Parquet and JSON, served from Hugging Face buckets. It is a
+      demonstration of the STAC specification hijacked for bioimaging, and of
+      the potential of STAC to enable federated search across multiple
+      resources.
     </p>
     <p class="thanks">
       Coordination of the challenge this derives from was supported by the
-      <a href="https://www.nfdi.de/" target="_blank">German National Research Data Initiative (NFDI)</a>
-      and the <a href="https://chanzuckerberg.com/" target="_blank">Chan Zuckerberg Initiative</a>.
+      <a href="https://www.nfdi.de/" target="_blank"
+        >German National Research Data Initiative (NFDI)</a
+      >
+      and the
+      <a href="https://chanzuckerberg.com/" target="_blank"
+        >Chan Zuckerberg Initiative</a
+      >.
     </p>
     <div class="logos">
       <img src={nfdiLogo} alt="NFDI" />
