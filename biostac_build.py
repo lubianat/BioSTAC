@@ -281,12 +281,10 @@ def study_collection(accession, members, crate, harvested, study_page, crate_sou
     """crate_source: (href, title) of where the study crate was published, linked as via."""
     """One Collection per study: described by its study crate when there is one."""
     root = crate_root(crate)[1] if crate else {}
-    published = crate_published(crate)
+    published = crate_published(crate    )
     license_ = root.get("license")
     license_ = license_.get("@id") if isinstance(license_, dict) else license_
-    member_datetimes = [member.datetime for member in members if member.datetime]
-    start = min(member_datetimes) if member_datetimes else (published or harvested)
-    end = max(member_datetimes) if member_datetimes else (published or harvested)
+    study_datetime = published or harvested
     study = pystac.Collection(
         id=accession,
         title=root.get("name") or f"{accession} — {members[0].properties['title']}",
@@ -297,7 +295,7 @@ def study_collection(accession, members, crate, harvested, study_page, crate_sou
         license=LICENSES.get(license_, members[0].properties["license"]),
         extent=pystac.Extent(
             pystac.SpatialExtent([PLACEHOLDER_BBOX]),
-            pystac.TemporalExtent([[start, end]]),
+            pystac.TemporalExtent([[study_datetime, study_datetime]]),
         ),
     )
     if crate:
