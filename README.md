@@ -385,6 +385,24 @@ Each query reports its wall time; the six together take about 15 seconds over th
 Still to do: the other five sources, and hosting each resource in its own bucket so the federation is
 structural rather than a folder convention.
 
+## Browsing it
+
+```bash
+cd browser && npm install && npm run dev
+```
+
+`browser/` is the challenge's own gallery, forked from [zowser](https://github.com/lubianat/zowser)
+and rewired to read this catalog. Its `config.yaml` names one URL — the published root catalog — and
+`src/stacStore.js` follows it to each resource Collection and reads the `items.parquet` each one
+advertises, with [hyparquet](https://github.com/hyparam/hyparquet) over HTTP range requests.
+
+Nothing opens a Zarr. The rows already carry shape, organism, imaging method, data size, well count
+and a thumbnail, so 1,908 images and plates arrive in a handful of requests, where the upstream
+gallery fetched a `zarr.json` per image and rendered each thumbnail in the browser. It is the same
+argument the Parquet files make in `17_search_deployed.py`, with a UI on top.
+
+See [browser/README.md](browser/README.md) to point it at another catalog.
+
 ## Repository layout
 
 ```
@@ -410,6 +428,7 @@ catalogs/challenge/idr/         written by 14_idr_catalog.py (not in git)
 ome2024-ngff-challenge/         submodule: the challenge repo and its sample lists
 build_cache/                    cached zarr.json / RO-Crate / OLS4 responses
 api/                            Docker setup and loader for the STAC API
+browser/                        the challenge gallery, reading this catalog's Parquet
 ```
 
 ## Notes on fitting microscopy into STAC
