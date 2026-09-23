@@ -30,7 +30,7 @@
       "term_label": "focused ion beam scanning electron microscopy"
     },
     "bioimage:fbbi": "FBbi:00050000",
-    "datetime": "2026-09-22T18:58:58Z"
+    "datetime": "2020-02-07T00:00:00Z"
   },
   "links": [
     {"rel": "via", "href": "https://www.ebi.ac.uk/empiar/EMPIAR-10310/", "title": "Original study"},

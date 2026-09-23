@@ -279,6 +279,10 @@ def study_collection(accession, members, crate, harvested, study_page, crate_sou
     )
     license_ = root.get("license")
     license_ = license_.get("@id") if isinstance(license_, dict) else license_
+    if published:
+        for member in members:
+            if member.datetime == harvested:
+                member.datetime = published
     member_datetimes = [member.datetime for member in members if member.datetime]
     start = min(member_datetimes) if member_datetimes else (published or harvested)
     end = max(member_datetimes) if member_datetimes else (published or harvested)

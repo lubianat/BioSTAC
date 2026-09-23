@@ -26,7 +26,7 @@
       "term_label": "serial block face scanning electron microscopy"
     },
     "bioimage:fbbi": "FBbi:00000585",
-    "datetime": "2026-09-22T18:58:58Z"
+    "datetime": "2020-10-23T00:00:00Z"
   },
   "links": [
     {"rel": "via", "href": "https://www.ebi.ac.uk/empiar/EMPIAR-10442/", "title": "Original study"},
