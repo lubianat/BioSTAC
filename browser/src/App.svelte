@@ -1,19 +1,11 @@
 <script>
   import Main from "./Main.svelte";
   import Nav from "./Nav.svelte";
-  import About from "./About.svelte";
-
-  let pathname = window.location.pathname;
 </script>
 
 <div class="app">
-  <!-- <Nav /> -->
-
-  {#if pathname.endsWith("/about/")}
-    <About />
-  {:else}
-    <Main />
-  {/if}
+  <Nav />
+  <Main />
 </div>
 
 <style>

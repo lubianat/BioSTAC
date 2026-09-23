@@ -4,9 +4,13 @@
 // asset, and that file already holds everything the gallery shows — shape, organism,
 // imaging method, size, thumbnail. So nothing here opens a Zarr.
 
+import { writable } from "svelte/store";
 import { asyncBufferFromUrl, parquetReadObjects } from "hyparquet";
 import { compressors } from "hyparquet-compressors";
 import { ngffTable } from "./tableStore";
+
+/** What the catalog says about each of its resources, in the catalog's own words. */
+export const resourceStore = writable([]);
 
 const AXES = ["t", "c", "z", "y", "x"];
 
@@ -15,15 +19,15 @@ const getJson = (url) => fetch(url).then((r) => r.json());
 // Parquet gives integers as BigInt; the table sorts and formats plain numbers.
 const num = (value) => (value === null || value === undefined ? undefined : Number(value));
 
-function toRow(item, collectionUrl) {
+function toRow(item, resource, collectionUrl) {
   const axes = AXES.filter((axis) => item[`bioimage:size_${axis}`] != null);
   const base = collectionUrl.replace(/collection\.json$/, "");
   return {
+    resource,
     url: item.assets.data.href,
     name: item.title || item.id,
     description: item.description || "",
     license: item.license,
-    source: item["bioimage:source"],
     collection: item.collection,
     level: item["bioimage:level"],
     ngff_version: item["bioimage:ngff_version"],
@@ -60,6 +64,10 @@ export async function loadStac(rootUrl) {
     const url = new URL(items.href, collectionUrl).href;
     const file = await asyncBufferFromUrl({ url }); // ranged GETs, not a full download
     const rows = await parquetReadObjects({ file, compressors });
-    ngffTable.addRows(rows.map((row) => toRow(row, collectionUrl)));
+    ngffTable.addRows(rows.map((row) => toRow(row, collection.id, collectionUrl)));
+    resourceStore.update((known) => [
+      ...known,
+      { id: collection.id, title: collection.title || collection.id, description: collection.description },
+    ]);
   }
 }

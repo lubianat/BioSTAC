@@ -1,9 +1,6 @@
 config:
-  title: "BioSTAC — OME 2024 NGFF challenge"
-  description: "Every image, plate and study of the challenge pilot, read straight from the
-    published STAC catalog. The gallery opens the catalog's Parquet files over HTTP and nothing
-    else: no Zarr is touched until you open one in a viewer.\n
-    Built from <a href='https://github.com/lubianat/zowser' target='_blank'>zowser</a>."
+  title: "OME 2024 NGFF challenge"
+  description: "Every image and plate of the challenge, read from the published STAC catalog."
 
 # The catalog this gallery shows. Point it at another STAC root to show another catalog,
 # as long as its Collections publish an "items" stac-geoparquet asset.

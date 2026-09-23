@@ -6,6 +6,7 @@
   import PreviewPopup from "./PreviewPopup.svelte";
   import PageTitle from "./PageTitle.svelte";
   import FilterSelect from "./FilterSelect.svelte";
+  import SourceChips from "./SourceChips.svelte";
   import { loadStac } from "./stacStore";
   import { getConfig } from "./util";
 
@@ -20,6 +21,7 @@
   let showSourceColumn = false;
 
   let filters = {
+    resource: "",
     collection: "",
     level: "",
     dimension: "",
@@ -52,9 +54,11 @@
   // Filtering
   // ────────────────────────────────────────────────────────────────
   function applyFilters(rows) {
-    const { collection, level, dimension, organism, modality, text } = filters;
+    const { resource, collection, level, dimension, organism, modality, text } =
+      filters;
     const txt = text.toLowerCase();
     if (
+      resource == "" &&
       collection == "" &&
       level == "" &&
       dimension == "" &&
@@ -69,6 +73,7 @@
       if (dimension && String(r.dim_count) !== dimension) return false;
       if (organism && r.organismId !== organism) return false;
       if (modality && r.fbbiId !== modality) return false;
+      if (resource && r.resource !== resource) return false;
       if (level && r.level !== level) return false;
       if (collection && r.collection !== collection) return false;
 
@@ -151,6 +156,7 @@
 <main style="--form-select-bg-img: url('{form_select_bg_img}')">
   <div class="summary">
     <PageTitle />
+    <SourceChips value={filters.resource} onChange={(v) => setFilter("resource", v)} />
     <div class="textInputWrapper">
       <input
         bind:value={filters.text}

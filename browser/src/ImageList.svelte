@@ -47,7 +47,7 @@
       width="100%"
       height={innerHeight}
       itemCount={tableRows.length}
-      itemSize={160}
+      itemSize={180}
       getKey={getItemKey}
       on:afterScroll={afterScroll}
     >
