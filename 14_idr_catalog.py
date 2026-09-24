@@ -198,6 +198,13 @@ def _(HARVESTED, INDEX_URL, STUDY_CRATES, bb, ids, results, study_crates):
         crate = (study_crates.get(accession) or (None,))[0]
         return bb.crate_root(crate)[1]["@id"] if crate else f"https://idr.openmicroscopy.org/search/?query=Name:{accession}"
 
+    for accession, _members in members.items():
+        published = bb.crate_published((study_crates.get(accession) or (None,))[0])
+        if published:
+            for _item in _members:
+                if _item.datetime == HARVESTED:
+                    _item.datetime = published
+
     study_collections = [
         bb.study_collection(
             accession, members[accession], (study_crates.get(accession) or (None,))[0], HARVESTED,

@@ -268,27 +268,34 @@ def crate_root(crate):
     return descriptor, root
 
 
+def crate_published(crate):
+    root = crate_root(crate)[1] if crate else {}
+    return (
+        datetime.datetime.fromisoformat(root["datePublished"]).replace(tzinfo=datetime.timezone.utc)
+        if root.get("datePublished") else None
+    )
+
+
 def study_collection(accession, members, crate, harvested, study_page, crate_source=None,
                      crate_title="Study RO-Crate", fallback_description=None):
     """crate_source: (href, title) of where the study crate was published, linked as via."""
     """One Collection per study: described by its study crate when there is one."""
     root = crate_root(crate)[1] if crate else {}
-    published = (
-        datetime.datetime.fromisoformat(root["datePublished"]).replace(tzinfo=datetime.timezone.utc)
-        if root.get("datePublished") else None
-    )
+    published = crate_published(crate)
     license_ = root.get("license")
     license_ = license_.get("@id") if isinstance(license_, dict) else license_
+    study_datetime = published or harvested
     study = pystac.Collection(
         id=accession,
         title=root.get("name") or f"{accession} — {members[0].properties['title']}",
-        description=root.get("description") or fallback_description
-        or f"{accession}. No study crate is available for this study.",
+        description=root.get("description") or (
+            fallback_description if not crate else f"{accession}. The study crate gives no description."
+        ) or f"{accession}. No study crate is available for this study.",
         keywords=root.get("keywords") or None,
         license=LICENSES.get(license_, members[0].properties["license"]),
         extent=pystac.Extent(
             pystac.SpatialExtent([PLACEHOLDER_BBOX]),
-            pystac.TemporalExtent([[published or harvested, published or harvested]]),
+            pystac.TemporalExtent([[study_datetime, study_datetime]]),
         ),
     )
     if crate:
@@ -390,6 +397,18 @@ def crate_json(graph):
     return readable_dumps({"@context": context, "@graph": graph}) + "\n"
 
 
+def replace_at_ids(node, old, new):
+    """Rewrite matching JSON-LD @id values without touching non-identifier properties such as url."""
+    if isinstance(node, list):
+        return [replace_at_ids(value, old, new) for value in node]
+    if isinstance(node, dict):
+        return {
+            key: (new if key == "@id" and value == old else replace_at_ids(value, old, new))
+            for key, value in node.items()
+        }
+    return node
+
+
 def referenced_crate(folder, name, url=None):
     """RO-Crate 1.2 'Referencing other RO-Crates': the crate as a Dataset that conforms to RO-Crate,
     plus its metadata document, linked with subjectOf. Relative folder ids keep it readable and movable."""
@@ -415,10 +434,8 @@ def ship_crate(study, crate, cached_path):
     descriptor, root = crate_root(crate)
     old_descriptor, old_root = descriptor["@id"], root["@id"]
     # RO-Crate 1.2: the descriptor MUST be ro-crate-metadata.json; the root of an attached crate is ./
-    text = json.dumps(crate["@graph"])
-    text = text.replace(json.dumps(old_descriptor), '"ro-crate-metadata.json"')
-    text = text.replace(json.dumps(old_root), '"./"')
-    graph = json.loads(text)
+    graph = replace_at_ids(crate["@graph"], old_descriptor, "ro-crate-metadata.json")
+    graph = replace_at_ids(graph, old_root, "./")
     root = next(n for n in graph if n["@id"] == "./")
     root.setdefault("identifier", old_root)  # keeps the source's own identifier when it has one
     root.setdefault("url", old_root)
@@ -548,7 +565,9 @@ def save_resource(resource, items, studies, study_crates, extra_parts=None, root
     root_path = pathlib.Path(root_path)
     if root_path.exists():
         root = pystac.Catalog.from_file(str(root_path))
-        root.remove_child(resource.id)  # replaces this resource; the others stay as they are
+        old_child = next((child for child in root.get_children() if child.id == resource.id), None)
+        if old_child is not None:
+            root.remove_child(old_child.id)  # replaces this resource; the others stay as they are
     else:
         root = pystac.Catalog(id="biostac-challenge", description="STAC pilot over the OME 2024 NGFF challenge data.")
     root.set_self_href(str(root_path))

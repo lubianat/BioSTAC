@@ -109,6 +109,12 @@ def _(CACHE, GIDE_CRATES, HARVESTED, SOURCE_CSV_URL, bb, build_item, rows):
         return (crate, path) if crate else None
 
     study_crates = {accession: gide_crate(accession) for accession, _ in studies}
+    for accession, members in studies.items():
+        published = bb.crate_published((study_crates[accession] or (None,))[0])
+        if published:
+            for _item in members:
+                if _item.datetime == HARVESTED:
+                    _item.datetime = published
     study_collections = [
         bb.study_collection(
             accession, members, (study_crates[accession] or (None,))[0], HARVESTED, origin,
