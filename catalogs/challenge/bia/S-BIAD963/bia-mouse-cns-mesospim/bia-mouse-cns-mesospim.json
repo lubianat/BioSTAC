@@ -1,0 +1,85 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": ["https://example.org/stac/bioimage/v0.1.0/schema.json"],
+  "id": "bia-mouse-cns-mesospim",
+  "geometry": {"type": "Point", "coordinates": [0.0, 0.0]},
+  "bbox": [0.0, 0.0, 0.0, 0.0],
+  "properties": {
+    "bioimage:level": "image",
+    "title": "Mouse CNS, mesoSPIM",
+    "description": "Mouse central nervous system (CNS) at 5x magnification",
+    "license": "CC-BY-4.0",
+    "bioimage:source": "bia",
+    "bioimage:ngff_version": "0.5",
+    "bioimage:size_bytes": 8220322215,
+    "bioimage:size_t": 1,
+    "bioimage:size_c": 1,
+    "bioimage:size_z": 1196,
+    "bioimage:size_y": 2048,
+    "bioimage:size_x": 2048,
+    "bioimage:organism": {"ontology_source": "NCBITaxon", "term_id": "NCBITaxon:10090", "term_label": "Mus musculus"},
+    "bioimage:ncbitaxon": "NCBITaxon:10090",
+    "bioimage:imaging_method": {
+      "ontology_source": "FBbi",
+      "term_id": "FBbi:00000369",
+      "term_label": "selective plane illumination fluorescence microscopy"
+    },
+    "bioimage:fbbi": "FBbi:00000369",
+    "datetime": "2023-12-15T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "via",
+      "href": "https://www.ebi.ac.uk/biostudies/BioImages/studies/S-BIAD963",
+      "title": "Original study"
+    },
+    {"rel": "license", "href": "https://creativecommons.org/licenses/by/4.0/", "title": "CC-BY-4.0"},
+    {
+      "rel": "alternate",
+      "href": "./ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "This item as an RO-Crate"
+    },
+    {"rel": "root", "href": "../../../catalog.json", "type": "application/json"},
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "The Benchtop mesoSPIM: a next-generation open-source light-sheet microscope for large cleared samples"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "The Benchtop mesoSPIM: a next-generation open-source light-sheet microscope for large cleared samples"
+    }
+  ],
+  "assets": {
+    "data": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/9d53468d-2b49-4a43-98dd-c1838485fddd.zarr",
+      "type": "application/vnd.zarr",
+      "title": "OME-Zarr",
+      "roles": ["data"]
+    },
+    "zarr-metadata": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/9d53468d-2b49-4a43-98dd-c1838485fddd.zarr/zarr.json",
+      "type": "application/json",
+      "title": "OME-Zarr metadata (zarr.json)",
+      "roles": ["metadata"]
+    },
+    "ro-crate": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/9d53468d-2b49-4a43-98dd-c1838485fddd.zarr/ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "RO-Crate metadata",
+      "roles": ["metadata"]
+    },
+    "thumbnail": {
+      "href": "./thumbnail.png",
+      "type": "image/png",
+      "title": "Lowest resolution level, middle Z plane",
+      "roles": ["thumbnail"]
+    }
+  },
+  "collection": "S-BIAD963"
+}

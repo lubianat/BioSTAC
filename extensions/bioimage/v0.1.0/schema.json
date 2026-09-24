@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.org/stac/bioimage/v0.1.0/schema.json",
+  "title": "Bioimage Extension (experimental)",
+  "description": "Describes a bioimage (OME-Zarr) asset: axes, sizes, and ontology terms for specimen and imaging method.",
+  "type": "object",
+  "required": [
+    "stac_extensions",
+    "properties"
+  ],
+  "properties": {
+    "stac_extensions": {
+      "type": "array",
+      "contains": {
+        "const": "https://example.org/stac/bioimage/v0.1.0/schema.json"
+      }
+    },
+    "properties": {
+      "type": "object",
+      "required": [
+        "bioimage:source",
+        "bioimage:level"
+      ],
+      "properties": {
+        "bioimage:source": {
+          "type": "string",
+          "description": "Short id of the resource that published the image, e.g. bia."
+        },
+        "bioimage:ngff_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bioimage:size_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "bioimage:organism": {
+          "$ref": "#/definitions/ontology_term"
+        },
+        "bioimage:imaging_method": {
+          "$ref": "#/definitions/ontology_term"
+        },
+        "bioimage:wells": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of wells in the plate."
+        },
+        "bioimage:ncbitaxon": {
+          "type": "string",
+          "pattern": "^NCBITaxon:[0-9]+$",
+          "description": "Specimen taxon id, flat next to bioimage:organism, for search."
+        },
+        "bioimage:fbbi": {
+          "type": "string",
+          "pattern": "^FBbi:[0-9]+$",
+          "description": "Imaging method id, flat next to bioimage:imaging_method, for search."
+        },
+        "bioimage:plate_id": {
+          "type": "string",
+          "description": "On a well, the id of the plate Item it belongs to."
+        },
+        "bioimage:well": {
+          "type": "string",
+          "description": "On a well, its position as OME-NGFF writes the path, e.g. A/10."
+        },
+        "bioimage:field_count_max": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum number of fields per well in the plate, as OME-NGFF field_count. Individual wells may hold fewer."
+        },
+        "bioimage:level": {
+          "type": "string",
+          "enum": [
+            "image",
+            "plate",
+            "well"
+          ],
+          "description": "What the Item denotes: one image, a whole HCS plate, or one well of a plate."
+        }
+      },
+      "patternProperties": {
+        "^bioimage:size_[a-z]$": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ontology_term": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "ontology_source",
+        "term_id"
+      ],
+      "properties": {
+        "ontology_source": {
+          "type": "string",
+          "description": "Ontology the term comes from, e.g. NCBITaxon, FBbi."
+        },
+        "term_id": {
+          "type": "string",
+          "description": "CURIE of the term, e.g. NCBITaxon:9606."
+        },
+        "term_label": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

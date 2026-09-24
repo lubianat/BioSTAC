@@ -1,0 +1,39 @@
+{
+  "type": "Collection",
+  "id": "S-BIAD464",
+  "stac_version": "1.1.0",
+  "description": "S-BIAD464. No GIDE study crate is available for this study.",
+  "links": [
+    {"rel": "root", "href": "../../catalog.json", "type": "application/json"},
+    {
+      "rel": "via",
+      "href": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD464",
+      "title": "Study page"
+    },
+    {
+      "rel": "item",
+      "href": "./bia-calcium-wave-dynamics/bia-calcium-wave-dynamics.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "BIA / EBI — OME 2024 NGFF challenge"
+    }
+  ],
+  "title": "S-BIAD464 — Calcium wave dynamics",
+  "extent": {
+    "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
+    "temporal": {"interval": [["2026-09-22T18:58:58Z", "2026-09-22T18:58:58Z"]]}
+  },
+  "license": "CC-BY-4.0",
+  "assets": {
+    "thumbnail": {
+      "href": "./bia-calcium-wave-dynamics/thumbnail.png",
+      "type": "image/png",
+      "title": "Thumbnail of Calcium wave dynamics",
+      "roles": ["thumbnail"]
+    }
+  }
+}

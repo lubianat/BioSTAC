@@ -1,0 +1,81 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": ["https://example.org/stac/bioimage/v0.1.0/schema.json"],
+  "id": "bia-arabidopsis-phloem-pole",
+  "geometry": {"type": "Point", "coordinates": [0.0, 0.0]},
+  "bbox": [0.0, 0.0, 0.0, 0.0],
+  "properties": {
+    "bioimage:level": "image",
+    "title": "Arabidopsis phloem pole",
+    "description": "Five-day-old Col-0 Arabidopsis thaliana root, phloem pole unloading zone (339-381 um from the root tip)",
+    "license": "CC-BY-4.0",
+    "bioimage:source": "bia",
+    "bioimage:ngff_version": "0.5",
+    "bioimage:size_bytes": 13779527717,
+    "bioimage:size_t": 1,
+    "bioimage:size_c": 1,
+    "bioimage:size_z": 1061,
+    "bioimage:size_y": 3253,
+    "bioimage:size_x": 3874,
+    "bioimage:organism": {"ontology_source": "NCBITaxon", "term_id": "NCBITaxon:3701", "term_label": "Arabidopsis"},
+    "bioimage:ncbitaxon": "NCBITaxon:3701",
+    "bioimage:imaging_method": {
+      "ontology_source": "FBbi",
+      "term_id": "FBbi:00000585",
+      "term_label": "serial block face scanning electron microscopy"
+    },
+    "bioimage:fbbi": "FBbi:00000585",
+    "datetime": "2020-10-23T00:00:00Z"
+  },
+  "links": [
+    {"rel": "via", "href": "https://www.ebi.ac.uk/empiar/EMPIAR-10442/", "title": "Original study"},
+    {"rel": "license", "href": "https://creativecommons.org/licenses/by/4.0/", "title": "CC-BY-4.0"},
+    {
+      "rel": "alternate",
+      "href": "./ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "This item as an RO-Crate"
+    },
+    {"rel": "root", "href": "../../../catalog.json", "type": "application/json"},
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "170314, Five-day-old Col-0 Arabidopsis thaliana root, phloem pole unloading zone (339-381 um from the root tip)"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "170314, Five-day-old Col-0 Arabidopsis thaliana root, phloem pole unloading zone (339-381 um from the root tip)"
+    }
+  ],
+  "assets": {
+    "data": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/2a544b69-9ddd-4941-9801-fd406d06880c.zarr",
+      "type": "application/vnd.zarr",
+      "title": "OME-Zarr",
+      "roles": ["data"]
+    },
+    "zarr-metadata": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/2a544b69-9ddd-4941-9801-fd406d06880c.zarr/zarr.json",
+      "type": "application/json",
+      "title": "OME-Zarr metadata (zarr.json)",
+      "roles": ["metadata"]
+    },
+    "ro-crate": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/2a544b69-9ddd-4941-9801-fd406d06880c.zarr/ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "RO-Crate metadata",
+      "roles": ["metadata"]
+    },
+    "thumbnail": {
+      "href": "./thumbnail.png",
+      "type": "image/png",
+      "title": "Lowest resolution level, middle Z plane",
+      "roles": ["thumbnail"]
+    }
+  },
+  "collection": "EMPIAR-10442"
+}

@@ -4,11 +4,7 @@
   "stac_version": "1.1.0",
   "description": "IDR sample images stored as OME-NGFF 0.4.",
   "links": [
-    {
-      "rel": "root",
-      "href": "../catalog.json",
-      "type": "application/json"
-    },
+    {"rel": "root", "href": "../catalog.json", "type": "application/json"},
     {
       "rel": "item",
       "href": "./v0.4-idr0073A-9798462/v0.4-idr0073A-9798462.json",
@@ -124,38 +120,15 @@
       "href": "./v0.4-idr0079A-idr0079_images/v0.4-idr0079A-idr0079_images.json",
       "type": "application/geo+json"
     },
-    {
-      "rel": "parent",
-      "href": "../catalog.json",
-      "type": "application/json"
-    }
+    {"rel": "parent", "href": "../catalog.json", "type": "application/json"}
   ],
   "extent": {
-    "spatial": {
-      "bbox": [
-        [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ]
-      ]
-    },
-    "temporal": {
-      "interval": [
-        [
-          "2022-05-05T00:00:00Z",
-          "2026-05-12T00:00:00Z"
-        ]
-      ]
-    }
+    "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
+    "temporal": {"interval": [["2022-05-05T00:00:00Z", "2026-05-12T00:00:00Z"]]}
   },
   "license": "various",
   "summaries": {
-    "license": [
-      "CC-BY-4.0",
-      "CC0-1.0"
-    ],
+    "license": ["CC-BY-4.0", "CC0-1.0"],
     "idr:study": [
       "idr0073",
       "idr0072",
@@ -175,40 +148,21 @@
       "idr0138",
       "idr0079"
     ],
-    "ome:axes": [
-      "XYZCT",
-      "XYC",
-      "XYZC",
-      "XYT",
-      null
-    ],
-    "ome:has_labels": [
-      false,
-      true
-    ],
-    "ome:plate": [
-      false,
-      true
-    ],
-    "ome:size_t": {
-      "minimum": 1,
-      "maximum": 532
-    },
-    "ome:size_z": {
-      "minimum": 1,
-      "maximum": 1402
-    },
-    "ome:size_c": {
-      "minimum": 1,
-      "maximum": 50
-    },
-    "ome:size_x": {
-      "minimum": 190,
-      "maximum": 144384
-    },
-    "ome:size_y": {
-      "minimum": 189,
-      "maximum": 93184
+    "ome:axes": ["XYZCT", "XYC", "XYZC", "XYT", null],
+    "ome:has_labels": [false, true],
+    "ome:plate": [false, true],
+    "ome:size_t": {"minimum": 1, "maximum": 532},
+    "ome:size_z": {"minimum": 1, "maximum": 1402},
+    "ome:size_c": {"minimum": 1, "maximum": 50},
+    "ome:size_x": {"minimum": 190, "maximum": 144384},
+    "ome:size_y": {"minimum": 189, "maximum": 93184}
+  },
+  "assets": {
+    "items": {
+      "href": "./items.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "Items as stac-geoparquet",
+      "roles": ["data"]
     }
   }
 }

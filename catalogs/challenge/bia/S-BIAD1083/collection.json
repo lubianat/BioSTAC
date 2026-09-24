@@ -1,0 +1,55 @@
+{
+  "type": "Collection",
+  "id": "S-BIAD1083",
+  "stac_version": "1.1.0",
+  "description": "While commensal bacteria generally respect natural barriers of the human body, pathogens are able to breach epithelia, invade deeper tissue layers and cause life-threatening infections. Pseudomonas aeruginosa, an opportunistic human pathogen, is a leading cause of severe hospital-acquired pneumonia, with mortality rates up to 50% in mechanically ventilated patients1–3. Effective colonization and breaching of lung mucosa are hallmarks of P. aeruginosa pathogenesis4. Although virulence factors and behavioral strategies of P. aeruginosa have been described5,6, it has remained unclear how this pathogen disseminates on functional mucosal surfaces, how it avoids mucociliary clearance and how it invades the tissue barrier. Using fully differentiated human lung epithelia, we demonstrate that P. aeruginosa efficiently spreads on the apical tissue surface before it breaches epithelia by preferentially invading mucus secreting goblet cells. Internalization leads to host cell death and expulsion and the formation of ruptures of the epithelial barrier. Rupture sites are rapidly colonized by extracellular bacteria through active chemotaxis, leading to increasing tissue damage and successful pathogen translocation to the unprotected basolateral side of the epithelium. We show that cell invasion is promoted by two Type-6 toxin secretion systems (T6SS), while Type-3 (T3SS) mediates cell death of infected goblet cells. T3SS mutants invade goblet cells normally, but internalized bacteria fail to trigger goblet cell expulsion and instead show unrestrained intracellular replication. While the effective shedding of infected host cells reveals potent tissue protection mechanisms, the discovery of an intracellular lifestyle of P. aeruginosa in pseudostratified human lung epithelia provides new entry points into investigating the intersection of antibiotic and immune mechanisms during lung infections. By demonstrating that P. aeruginosa uses a combination of specific virulence factors and collective behavior to invade goblet cells and breach the lung tissue barrier from within, these studies reveal novel mechanisms underlying lung infection dynamics under physiological conditions. ",
+  "links": [
+    {"rel": "root", "href": "../../catalog.json", "type": "application/json"},
+    {
+      "rel": "via",
+      "href": "https://github.com/foundingGIDE/gide-data-deliverable/blob/main/data_deliverable/GIDE_crates/S-BIAD1083-ro-crate-metadata.json",
+      "title": "GIDE study crate (source; context compacted)"
+    },
+    {
+      "rel": "via",
+      "href": "https://www.ebi.ac.uk/biostudies/BioImages/studies/S-BIAD1083",
+      "title": "Study page"
+    },
+    {
+      "rel": "item",
+      "href": "./bia-human-bronchial-organoid/bia-human-bronchial-organoid.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "BIA / EBI — OME 2024 NGFF challenge"
+    }
+  ],
+  "title": "Pseudomonas aeruginosa breaches respiratory epithelia through goblet cell invasion in a microtissue model",
+  "extent": {
+    "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
+    "temporal": {"interval": [["2024-04-11T00:00:00Z", "2024-04-11T00:00:00Z"]]}
+  },
+  "license": "CC-BY-4.0",
+  "keywords": [
+    "Pseudomonas aeruginosa",
+    "lower airway organoid",
+    "Normal Human Bronchial Epithelial cells (NHBE)",
+    "goblet cells"
+  ],
+  "assets": {
+    "ro-crate": {
+      "href": "./ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "GIDE study RO-Crate",
+      "roles": ["metadata"]
+    },
+    "thumbnail": {
+      "href": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1083/c829b0e8-ebd5-487c-a24d-ad3498889378/39cc657c-8faf-403e-87ea-621c2ec1a7b6.png",
+      "type": "image/png",
+      "roles": ["thumbnail"]
+    }
+  }
+}

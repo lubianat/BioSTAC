@@ -1,0 +1,39 @@
+{
+  "type": "Collection",
+  "id": "S-BIAD501",
+  "stac_version": "1.1.0",
+  "description": "S-BIAD501. No GIDE study crate is available for this study.",
+  "links": [
+    {"rel": "root", "href": "../../catalog.json", "type": "application/json"},
+    {
+      "rel": "via",
+      "href": "https://www.ebi.ac.uk/biostudies/BioImages/studies/S-BIAD501",
+      "title": "Study page"
+    },
+    {
+      "rel": "item",
+      "href": "./bia-histopathology-image-of-rat-liver/bia-histopathology-image-of-rat-liver.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "BIA / EBI — OME 2024 NGFF challenge"
+    }
+  ],
+  "title": "S-BIAD501 — Histopathology image of rat liver",
+  "extent": {
+    "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
+    "temporal": {"interval": [["2026-09-22T18:58:58Z", "2026-09-22T18:58:58Z"]]}
+  },
+  "license": "CC-BY-4.0",
+  "assets": {
+    "thumbnail": {
+      "href": "./bia-histopathology-image-of-rat-liver/thumbnail.png",
+      "type": "image/png",
+      "title": "Thumbnail of Histopathology image of rat liver",
+      "roles": ["thumbnail"]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "type": "Collection",
+  "id": "S-BIAD144",
+  "stac_version": "1.1.0",
+  "description": "S-BIAD144. No GIDE study crate is available for this study.",
+  "links": [
+    {"rel": "root", "href": "../../catalog.json", "type": "application/json"},
+    {
+      "rel": "via",
+      "href": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD144",
+      "title": "Study page"
+    },
+    {"rel": "item", "href": "./bia-hela-cells/bia-hela-cells.json", "type": "application/geo+json"},
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "BIA / EBI — OME 2024 NGFF challenge"
+    }
+  ],
+  "title": "S-BIAD144 — HeLa cells",
+  "extent": {
+    "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
+    "temporal": {"interval": [["2026-09-22T18:58:58Z", "2026-09-22T18:58:58Z"]]}
+  },
+  "license": "CC-BY-4.0",
+  "assets": {
+    "thumbnail": {
+      "href": "./bia-hela-cells/thumbnail.png",
+      "type": "image/png",
+      "title": "Thumbnail of HeLa cells",
+      "roles": ["thumbnail"]
+    }
+  }
+}

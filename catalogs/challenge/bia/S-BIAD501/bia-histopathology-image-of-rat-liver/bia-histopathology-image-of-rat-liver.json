@@ -1,0 +1,85 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": ["https://example.org/stac/bioimage/v0.1.0/schema.json"],
+  "id": "bia-histopathology-image-of-rat-liver",
+  "geometry": {"type": "Point", "coordinates": [0.0, 0.0]},
+  "bbox": [0.0, 0.0, 0.0, 0.0],
+  "properties": {
+    "bioimage:level": "image",
+    "title": "Histopathology image of rat liver",
+    "description": "Rattus norvegicus (brown rat) liver section, treated with 1% cholesterol + 0.25% sodium cholate",
+    "license": "CC-BY-4.0",
+    "bioimage:source": "bia",
+    "bioimage:ngff_version": "0.5",
+    "bioimage:size_bytes": 5390776103,
+    "bioimage:size_t": 1,
+    "bioimage:size_c": 3,
+    "bioimage:size_z": 1,
+    "bioimage:size_y": 39787,
+    "bioimage:size_x": 83663,
+    "bioimage:organism": {
+      "ontology_source": "NCBITaxon",
+      "term_id": "NCBITaxon:10116",
+      "term_label": "Rattus norvegicus"
+    },
+    "bioimage:ncbitaxon": "NCBITaxon:10116",
+    "bioimage:imaging_method": {"ontology_source": "FBbi", "term_id": "FBbi:00000243", "term_label": "bright-field microscopy"},
+    "bioimage:fbbi": "FBbi:00000243",
+    "datetime": "2026-09-22T18:58:58Z"
+  },
+  "links": [
+    {
+      "rel": "via",
+      "href": "https://www.ebi.ac.uk/biostudies/BioImages/studies/S-BIAD501",
+      "title": "Original study"
+    },
+    {"rel": "license", "href": "https://creativecommons.org/licenses/by/4.0/", "title": "CC-BY-4.0"},
+    {
+      "rel": "alternate",
+      "href": "./ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "This item as an RO-Crate"
+    },
+    {"rel": "root", "href": "../../../catalog.json", "type": "application/json"},
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "S-BIAD501 — Histopathology image of rat liver"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "S-BIAD501 — Histopathology image of rat liver"
+    }
+  ],
+  "assets": {
+    "data": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/fde851c4-cf25-41b5-ae6b-c8b2216fd5d1.zarr",
+      "type": "application/vnd.zarr",
+      "title": "OME-Zarr",
+      "roles": ["data"]
+    },
+    "zarr-metadata": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/fde851c4-cf25-41b5-ae6b-c8b2216fd5d1.zarr/zarr.json",
+      "type": "application/json",
+      "title": "OME-Zarr metadata (zarr.json)",
+      "roles": ["metadata"]
+    },
+    "ro-crate": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/fde851c4-cf25-41b5-ae6b-c8b2216fd5d1.zarr/ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "RO-Crate metadata",
+      "roles": ["metadata"]
+    },
+    "thumbnail": {
+      "href": "./thumbnail.png",
+      "type": "image/png",
+      "title": "Lowest resolution level, middle Z plane",
+      "roles": ["thumbnail"]
+    }
+  },
+  "collection": "S-BIAD501"
+}

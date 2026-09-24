@@ -1,0 +1,68 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"},
+      "seeAlso": {"@id": "rdfs:seeAlso"}
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "C. reinhardtii tomogram",
+      "description": "cryogenic-sample electron microscopy (CryoET) image of C. reinhardtii prepared using cryo-plasmaFIB milling",
+      "datePublished": "2026-09-22",
+      "hasPart": [
+        {
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/c9ba2bf5-09d1-41ff-a925-df0b725a53e4.zarr/"
+        },
+        {
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/c9ba2bf5-09d1-41ff-a925-df0b725a53e4.zarr/zarr.json"
+        },
+        {
+          "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/c9ba2bf5-09d1-41ff-a925-df0b725a53e4.zarr/ro-crate-metadata.json"
+        },
+        {"@id": "thumbnail.png"}
+      ],
+      "seeAlso": {"@id": "./bia-c-reinhardtii-tomogram.json"},
+      "thumbnailUrl": [{"@id": "thumbnail.png"}],
+      "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
+      "isPartOf": {"@id": "https://www.ebi.ac.uk/empiar/EMPIAR-11830/"},
+      "about": [{"@id": "obo:NCBITaxon_3055"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00001004"}]
+    },
+    {
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/c9ba2bf5-09d1-41ff-a925-df0b725a53e4.zarr/",
+      "@type": "Dataset",
+      "name": "OME-Zarr",
+      "encodingFormat": "application/vnd.zarr",
+      "contentSize": "2466532322"
+    },
+    {
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/c9ba2bf5-09d1-41ff-a925-df0b725a53e4.zarr/zarr.json",
+      "@type": "File",
+      "name": "OME-Zarr metadata",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/c9ba2bf5-09d1-41ff-a925-df0b725a53e4.zarr/ro-crate-metadata.json",
+      "@type": "File",
+      "name": "Image RO-Crate (NGFF challenge)",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "thumbnail.png", "@type": "File", "name": "Thumbnail", "encodingFormat": "image/png"},
+    {"@id": "obo:NCBITaxon_3055", "@type": "Taxon", "scientificName": "Chlamydomonas reinhardtii"},
+    {"@id": "obo:FBbi_00001004", "@type": "DefinedTerm", "name": "tomography"}
+  ]
+}

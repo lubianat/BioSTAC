@@ -1,0 +1,7 @@
+config:
+  title: "OME 2024 NGFF challenge (BioSTAC Pilot)"
+  description: "Images from the OME-NGFF challenge read from a [BioSTAC catalog on 🤗](https://huggingface.co/buckets/tiagolubiana/ome2024-challenge-STAC/resolve/catalog.json)."
+
+# The catalog this gallery shows. Point it at another STAC root to show another catalog,
+# as long as its Collections publish an "items" stac-geoparquet asset.
+stac: https://huggingface.co/buckets/tiagolubiana/ome2024-challenge-STAC/resolve/catalog.json

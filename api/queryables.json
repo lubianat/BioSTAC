@@ -1,16 +1,108 @@
 {
   "type": "object",
   "properties": {
-    "ome:version": {"title": "OME-NGFF version", "type": "string", "enum": ["0.4", "0.5"]},
-    "ome:axes": {"title": "Axes", "type": "string"},
-    "ome:size_x": {"title": "Size X", "type": "integer", "minimum": 1},
-    "ome:size_y": {"title": "Size Y", "type": "integer", "minimum": 1},
-    "ome:size_z": {"title": "Size Z", "type": "integer", "minimum": 1},
-    "ome:size_c": {"title": "Channels", "type": "integer", "minimum": 1},
-    "ome:size_t": {"title": "Timepoints", "type": "integer", "minimum": 1},
-    "ome:has_labels": {"title": "Has labels", "type": "boolean"},
-    "ome:plate": {"title": "HCS plate", "type": "boolean"},
-    "idr:study": {"title": "IDR study", "type": "string"},
-    "license": {"title": "License", "type": "string", "enum": ["CC-BY-4.0", "CC0-1.0"]}
+    "ome:version": {
+      "title": "OME-NGFF version",
+      "type": "string",
+      "enum": [
+        "0.4",
+        "0.5"
+      ]
+    },
+    "ome:axes": {
+      "title": "Axes",
+      "type": "string"
+    },
+    "ome:size_x": {
+      "title": "Size X",
+      "type": "integer",
+      "minimum": 1
+    },
+    "ome:size_y": {
+      "title": "Size Y",
+      "type": "integer",
+      "minimum": 1
+    },
+    "ome:size_z": {
+      "title": "Size Z",
+      "type": "integer",
+      "minimum": 1
+    },
+    "ome:size_c": {
+      "title": "Channels",
+      "type": "integer",
+      "minimum": 1
+    },
+    "ome:size_t": {
+      "title": "Timepoints",
+      "type": "integer",
+      "minimum": 1
+    },
+    "ome:has_labels": {
+      "title": "Has labels",
+      "type": "boolean"
+    },
+    "ome:plate": {
+      "title": "HCS plate",
+      "type": "boolean"
+    },
+    "idr:study": {
+      "title": "IDR study",
+      "type": "string"
+    },
+    "license": {
+      "title": "License",
+      "type": "string",
+      "enum": [
+        "CC-BY-4.0",
+        "CC0-1.0"
+      ]
+    },
+"bioimage:level": {
+      "title": "Row level",
+      "type": "string",
+      "enum": ["image", "plate", "well"]
+    },
+    "bioimage:source": {
+      "title": "Source resource",
+      "type": "string"
+    },
+    "bioimage:level": {
+      "title": "Resource level",
+      "type": "string",
+      "enum": [
+        "image",
+        "plate",
+        "well"
+      ]
+    },
+    "bioimage:ngff_version": {
+      "title": "OME-NGFF version",
+      "type": "string"
+    },
+    "bioimage:size_bytes": {
+      "title": "Size in bytes",
+      "type": "integer"
+    },
+    "bioimage:size_x": {
+      "title": "Size X",
+      "type": "integer"
+    },
+    "bioimage:size_y": {
+      "title": "Size Y",
+      "type": "integer"
+    },
+    "bioimage:size_z": {
+      "title": "Size Z",
+      "type": "integer"
+    },
+    "bioimage:size_t": {
+      "title": "Timepoints",
+      "type": "integer"
+    },
+    "bioimage:size_c": {
+      "title": "Channels",
+      "type": "integer"
+    }
   }
 }

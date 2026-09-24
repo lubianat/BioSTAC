@@ -1,0 +1,45 @@
+{
+  "type": "Collection",
+  "id": "EMPIAR-10310",
+  "stac_version": "1.1.0",
+  "description": "EMPIAR-10310. The study crate gives no description.",
+  "links": [
+    {"rel": "root", "href": "../../catalog.json", "type": "application/json"},
+    {
+      "rel": "via",
+      "href": "https://github.com/foundingGIDE/gide-data-deliverable/blob/main/data_deliverable/GIDE_crates/EMPIAR-10310-ro-crate-metadata.json",
+      "title": "GIDE study crate (source; context compacted)"
+    },
+    {"rel": "via", "href": "https://www.ebi.ac.uk/empiar/EMPIAR-10310/", "title": "Study page"},
+    {
+      "rel": "item",
+      "href": "./bia-fib-sem-of-parapodia-from-platynereis/bia-fib-sem-of-parapodia-from-platynereis.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "BIA / EBI — OME 2024 NGFF challenge"
+    }
+  ],
+  "title": "FIB-SEM of parapodia from Platynereis dumerilii",
+  "extent": {
+    "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
+    "temporal": {"interval": [["2020-02-07T00:00:00Z", "2020-02-07T00:00:00Z"]]}
+  },
+  "license": "CC0-1.0",
+  "assets": {
+    "ro-crate": {
+      "href": "./ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "GIDE study RO-Crate",
+      "roles": ["metadata"]
+    },
+    "thumbnail": {
+      "href": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10310/2e32dd1d-864b-449b-ae23-3fdc4abdb1e8/79965e61-3248-49f3-a4fd-407a3be350d5.png",
+      "type": "image/png",
+      "roles": ["thumbnail"]
+    }
+  }
+}

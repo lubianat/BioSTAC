@@ -1,0 +1,35 @@
+{
+  "type": "Collection",
+  "id": "EMPIAR-10392",
+  "stac_version": "1.1.0",
+  "description": "EMPIAR-10392. No GIDE study crate is available for this study.",
+  "links": [
+    {"rel": "root", "href": "../../catalog.json", "type": "application/json"},
+    {"rel": "via", "href": "https://www.ebi.ac.uk/empiar/EMPIAR-10392/", "title": "Study page"},
+    {
+      "rel": "item",
+      "href": "./bia-pladmodium-falciparum-schizont-at/bia-pladmodium-falciparum-schizont-at.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "BIA / EBI — OME 2024 NGFF challenge"
+    }
+  ],
+  "title": "EMPIAR-10392 — Pladmodium falciparum schizont at parasitophorous vacuolar membrane (PVM) rupture",
+  "extent": {
+    "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
+    "temporal": {"interval": [["2026-09-22T18:58:58Z", "2026-09-22T18:58:58Z"]]}
+  },
+  "license": "CC-BY-4.0",
+  "assets": {
+    "thumbnail": {
+      "href": "./bia-pladmodium-falciparum-schizont-at/thumbnail.png",
+      "type": "image/png",
+      "title": "Thumbnail of Pladmodium falciparum schizont at parasitophorous vacuolar membrane (PVM) rupture",
+      "roles": ["thumbnail"]
+    }
+  }
+}

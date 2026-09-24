@@ -1,0 +1,45 @@
+{
+  "type": "Collection",
+  "id": "EMPIAR-10442",
+  "stac_version": "1.1.0",
+  "description": "EMPIAR-10442. The study crate gives no description.",
+  "links": [
+    {"rel": "root", "href": "../../catalog.json", "type": "application/json"},
+    {
+      "rel": "via",
+      "href": "https://github.com/foundingGIDE/gide-data-deliverable/blob/main/data_deliverable/GIDE_crates/EMPIAR-10442-ro-crate-metadata.json",
+      "title": "GIDE study crate (source; context compacted)"
+    },
+    {"rel": "via", "href": "https://www.ebi.ac.uk/empiar/EMPIAR-10442/", "title": "Study page"},
+    {
+      "rel": "item",
+      "href": "./bia-arabidopsis-phloem-pole/bia-arabidopsis-phloem-pole.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "BIA / EBI — OME 2024 NGFF challenge"
+    }
+  ],
+  "title": "170314, Five-day-old Col-0 Arabidopsis thaliana root, phloem pole unloading zone (339-381 um from the root tip)",
+  "extent": {
+    "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
+    "temporal": {"interval": [["2020-10-23T00:00:00Z", "2020-10-23T00:00:00Z"]]}
+  },
+  "license": "CC0-1.0",
+  "assets": {
+    "ro-crate": {
+      "href": "./ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "GIDE study RO-Crate",
+      "roles": ["metadata"]
+    },
+    "thumbnail": {
+      "href": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10442/1acbf84b-5f05-4746-b85f-c70d140b6440/c6b8bd48-ae84-47fa-bc50-ee532a2dc1f8.png",
+      "type": "image/png",
+      "roles": ["thumbnail"]
+    }
+  }
+}

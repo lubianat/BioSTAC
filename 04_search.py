@@ -6,20 +6,56 @@ app = marimo.App(width="full")
 @app.cell
 def _():
     import http.server
+    import pathlib
     import threading
     from functools import partial
 
     import cql2
     import marimo as mo
     import pystac
-    return cql2, http, mo, partial, pystac, threading
+    return cql2, http, mo, partial, pathlib, pystac, threading
 
 
 @app.cell
-def _(mo, pystac):
-    catalog = pystac.Catalog.from_file("catalogs/extended/catalog.json")
-    collections = list(catalog.get_children())
-    items = list(catalog.get_items(recursive=True))
+def _(mo):
+    catalogs = {"IDR samples (extended)": "catalogs/extended", "NGFF challenge (BIA)": "catalogs/challenge"}
+    which = mo.ui.dropdown(catalogs, value="IDR samples (extended)", label="Catalog")
+    which
+    return (which,)
+
+
+@app.cell
+def _(mo, pathlib, pystac, which):
+    catalog = pystac.Catalog.from_file(f"{which.value}/catalog.json")
+    def base_path(node):
+        return pathlib.Path(node.self_href).parent
+
+    def direct_items(node):
+        return [
+            pystac.Item.from_file(str(base_path(node) / link.href))
+            for link in node.get_links("item")
+            if (base_path(node) / link.href).exists()
+        ]
+
+    children = [
+        pystac.read_file(str(base_path(catalog) / link.href))
+        for link in catalog.get_links("child")
+        if (base_path(catalog) / link.href).exists()
+    ]
+
+    def existing_subtree(node):
+        yield node, direct_items(node)
+        for link in node.get_links("child"):
+            href = base_path(node) / link.href
+            if href.exists():
+                yield from existing_subtree(pystac.read_file(str(href)))
+
+    collections = [
+        collection
+        for child in children
+        for collection in ([child] if isinstance(child, pystac.Collection) else list(child.get_collections()))
+    ]
+    items = [item for _, direct in existing_subtree(catalog) for item in direct]
     mo.md(f"# {catalog.id}\n{catalog.description}\n\n**{len(items)}** items in **{len(collections)}** collections")
     return collections, items
 
@@ -44,9 +80,13 @@ def _(collections, mo):
 
 
 @app.cell
-def _(mo):
+def _(mo, which):
     # CQL2 is the STAC API filter language; the same text works against any STAC API with the Filter extension
     examples = {
+        "Human samples": "\"bioimage:organism.term_id\" = 'NCBITaxon:9606'",
+        "Electron microscopy": "\"bioimage:imaging_method.term_label\" LIKE '%electron%'",
+        "Deep stacks (Z > 100)": "\"bioimage:size_z\" > 100",
+    } if "challenge" in which.value else {
         "3D time-lapse with labels": "\"ome:size_z\" > 1 AND \"ome:size_t\" > 1 AND \"ome:has_labels\" = true",
         "Many channels (≥ 6)": "\"ome:size_c\" >= 6",
         "HCS plates": "\"ome:plate\" = true",
@@ -54,7 +94,7 @@ def _(mo):
         "Public domain": "license = 'CC0-1.0'",
         "Big 2D (X > 10000)": "\"ome:size_x\" > 10000 AND \"ome:size_z\" = 1",
     }
-    example = mo.ui.dropdown(examples, value="3D time-lapse with labels", label="Example query")
+    example = mo.ui.dropdown(examples, value=list(examples)[0], label="Example query")
     example
     return (example,)
 
@@ -87,14 +127,18 @@ def _(hits, mo):
     def card(item):
         p = item.properties
         data = item.assets["data"].href
-        meta = item.assets.get("metadata")
-        dims = " × ".join(f"{d}{p[f'ome:size_{d.lower()}']}" for d in "XYZCT" if p[f"ome:size_{d.lower()}"])
+        meta = item.assets.get("metadata") or item.assets.get("ro-crate")
+        # either extension: bioimage:size_x … or ome:size_x …
+        sizes = {d: p.get(f"bioimage:size_{d.lower()}") or p.get(f"ome:size_{d.lower()}") for d in "XYZCT"}
+        dims = " × ".join(f"{d}{sizes[d]}" for d in "XYZCT" if sizes.get(d))
+        thumbnail = item.assets.get("thumbnail")
+        preview = (f'<img src="{thumbnail.href}" width="96">' if thumbnail
+                   else '<div style="width:96px;height:96px;background:#eee;font-size:10px">open in Vizarr</div>')
         return mo.Html(
-            f'<a href="https://hms-dbmi.github.io/vizarr/?source={data}" target="_blank">'
-            f'<img src="{item.assets["thumbnail"].href}" width="96"></a>'
-            f'<div style="font-size:11px;width:140px;word-break:break-all">{item.id}<br>{dims}<br>{p["license"]}'
-            + (" · labels" if p["ome:has_labels"] else "")
-            + (f' · <a href="{meta.href}" target="_blank">OME-XML</a>' if meta else "")
+            f'<a href="https://hms-dbmi.github.io/vizarr/?source={data}" target="_blank">{preview}</a>'
+            f'<div style="font-size:11px;width:140px;word-break:break-all">{item.id}<br>{dims}<br>{p.get("license", "")}'
+            + (" · labels" if p.get("ome:has_labels") else "")
+            + (f' · <a href="{meta.href}" target="_blank">{meta.title or "metadata"}</a>' if meta else "")
             + "</div>"
         )
 
@@ -103,7 +147,7 @@ def _(hits, mo):
 
 
 @app.cell
-def _(http, mo, partial, threading):
+def _(http, mo, partial, pathlib, pystac, threading, which):
     class CORS(http.server.SimpleHTTPRequestHandler):
         def end_headers(self):
             self.send_header("Access-Control-Allow-Origin", "*")
@@ -115,7 +159,8 @@ def _(http, mo, partial, threading):
     except OSError:
         pass  # already serving (cell re-run or 02_browse.py running)
 
-    url = "https://radiantearth.github.io/stac-browser/#/external/http://localhost:8000/catalogs/extended/catalog.json"
+    browse = pathlib.Path(f"{which.value}/catalog.json")
+    url = f"https://radiantearth.github.io/stac-browser/#/external/http://localhost:8000/{browse.as_posix()}"
     mo.md(f"## STAC Browser\n[Open the extended catalog in STAC Browser]({url}): collections, summaries, ome:* properties, assets.")
     return
 

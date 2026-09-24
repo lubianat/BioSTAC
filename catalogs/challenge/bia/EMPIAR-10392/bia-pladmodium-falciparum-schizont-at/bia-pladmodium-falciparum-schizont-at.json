@@ -1,0 +1,85 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": ["https://example.org/stac/bioimage/v0.1.0/schema.json"],
+  "id": "bia-pladmodium-falciparum-schizont-at",
+  "geometry": {"type": "Point", "coordinates": [0.0, 0.0]},
+  "bbox": [0.0, 0.0, 0.0, 0.0],
+  "properties": {
+    "bioimage:level": "image",
+    "title": "Pladmodium falciparum schizont at parasitophorous vacuolar membrane (PVM) rupture",
+    "description": "Three-dimensional ultrastructure of Plasmodium falciparum throughout cytokinesis",
+    "license": "CC-BY-4.0",
+    "bioimage:source": "bia",
+    "bioimage:ngff_version": "0.5",
+    "bioimage:size_bytes": 158413550,
+    "bioimage:size_t": 1,
+    "bioimage:size_c": 1,
+    "bioimage:size_z": 190,
+    "bioimage:size_y": 617,
+    "bioimage:size_x": 617,
+    "bioimage:organism": {
+      "ontology_source": "NCBITaxon",
+      "term_id": "NCBITaxon:5833",
+      "term_label": "Plasmodium falciparum"
+    },
+    "bioimage:ncbitaxon": "NCBITaxon:5833",
+    "bioimage:imaging_method": {
+      "ontology_source": "FBbi",
+      "term_id": "FBbi:00050000",
+      "term_label": "focused ion beam scanning electron microscopy"
+    },
+    "bioimage:fbbi": "FBbi:00050000",
+    "datetime": "2026-09-22T18:58:58Z"
+  },
+  "links": [
+    {"rel": "via", "href": "https://www.ebi.ac.uk/empiar/EMPIAR-10392/", "title": "Original study"},
+    {"rel": "license", "href": "https://creativecommons.org/licenses/by/4.0/", "title": "CC-BY-4.0"},
+    {
+      "rel": "alternate",
+      "href": "./ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "This item as an RO-Crate"
+    },
+    {"rel": "root", "href": "../../../catalog.json", "type": "application/json"},
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMPIAR-10392 — Pladmodium falciparum schizont at parasitophorous vacuolar membrane (PVM) rupture"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMPIAR-10392 — Pladmodium falciparum schizont at parasitophorous vacuolar membrane (PVM) rupture"
+    }
+  ],
+  "assets": {
+    "data": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/fb416517-e36d-4bdb-98f9-47b644138d47.zarr",
+      "type": "application/vnd.zarr",
+      "title": "OME-Zarr",
+      "roles": ["data"]
+    },
+    "zarr-metadata": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/fb416517-e36d-4bdb-98f9-47b644138d47.zarr/zarr.json",
+      "type": "application/json",
+      "title": "OME-Zarr metadata (zarr.json)",
+      "roles": ["metadata"]
+    },
+    "ro-crate": {
+      "href": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/fb416517-e36d-4bdb-98f9-47b644138d47.zarr/ro-crate-metadata.json",
+      "type": "application/ld+json",
+      "title": "RO-Crate metadata",
+      "roles": ["metadata"]
+    },
+    "thumbnail": {
+      "href": "./thumbnail.png",
+      "type": "image/png",
+      "title": "Lowest resolution level, middle Z plane",
+      "roles": ["thumbnail"]
+    }
+  },
+  "collection": "EMPIAR-10392"
+}
