@@ -13,23 +13,40 @@
     },
     {
       "rel": "parent",
-      "href": "../collection.json",
+      "href": "../catalog.json",
       "type": "application/json",
       "title": "BIA / EBI — OME 2024 NGFF challenge"
     }
   ],
+  "stac_extensions": ["https://stac-extensions.github.io/file/v2.1.0/schema.json"],
   "title": "EMPIAR-10392 — Pladmodium falciparum schizont at parasitophorous vacuolar membrane (PVM) rupture",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
-    "temporal": {"interval": [["2026-09-22T18:58:58Z", "2026-09-22T18:58:58Z"]]}
+    "temporal": {"interval": [["2026-09-25T17:40:51Z", "2026-09-25T17:40:51Z"]]}
   },
   "license": "CC-BY-4.0",
+  "summaries": {
+    "license": ["CC-BY-4.0"],
+    "bioimage:ngff_version": ["0.5"],
+    "bioimage:size_bytes": {"minimum": 158413550, "maximum": 158413550},
+    "bioimage:size_z": {"minimum": 190, "maximum": 190},
+    "bioimage:size_y": {"minimum": 617, "maximum": 617},
+    "bioimage:size_x": {"minimum": 617, "maximum": 617}
+  },
   "assets": {
     "thumbnail": {
       "href": "./bia-pladmodium-falciparum-schizont-at/thumbnail.png",
       "type": "image/png",
       "title": "Thumbnail of Pladmodium falciparum schizont at parasitophorous vacuolar membrane (PVM) rupture",
       "roles": ["thumbnail"]
+    },
+    "items": {
+      "href": "./items.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "Items as stac-geoparquet",
+      "file:size": 12516,
+      "file:checksum": "122042e94f7b78b6283ecdf5f87ccc9eaeae344f51481e826ff44082dcd90f92b910",
+      "roles": ["data"]
     }
   }
 }

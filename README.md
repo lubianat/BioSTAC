@@ -44,8 +44,10 @@ api/load.sh                                       # load catalogs/extended/ into
 
 ## The pilot: the OME 2024 NGFF challenge
 
-The pilot builds one catalog over the challenge submissions, with a Collection per contributing resource,
-so that the resources can live in separate buckets and still be searched together.
+The pilot builds one catalog over the challenge submissions, with a Catalog per contributing resource and
+a Collection per study, so that the resources can live in separate buckets and still be searched together.
+Collections are one level deep, as [MINI-PORTOLAN.md](MINI-PORTOLAN.md) asks: a resource only organizes,
+the study holds the data.
 
 ```bash
 .venv/bin/marimo edit 10_bia_catalog.py     # BIA / EMBL-EBI, 10 images
@@ -74,9 +76,9 @@ each image folder as a nested crate, each image crate points at its parent.
 
 ```
 catalogs/challenge/catalog.json
-└─ bia/collection.json                          the resource (+ items.parquet, studies.parquet)
+└─ bia/catalog.json                             the resource (links items.parquet, studies.parquet)
    └─ S-BIAD963/
-      ├─ collection.json                        a study, as STAC
+      ├─ collection.json                        a study, as STAC (+ its own items.parquet)
       ├─ ro-crate-metadata.json                 the same study, as RO-Crate
       └─ bia-mouse-cns-mesospim/
          ├─ bia-mouse-cns-mesospim.json         an image, as STAC
@@ -89,12 +91,17 @@ two views agree on title, license, taxon, imaging method and data location for e
 
 ### Four levels, four tables
 
-Each Collection also gets a [stac-geoparquet](https://github.com/stac-utils/stac-geoparquet) file, linked
-from its `collection.json`. The JSON stays canonical; the Parquet makes a Collection queryable with no STAC
+Each study Collection also gets a [stac-geoparquet](https://github.com/stac-utils/stac-geoparquet) file,
+`items.parquet` (and `wells.parquet` for IDR plate studies), as an asset of its `collection.json`. Each
+resource Catalog links the same rows merged into one file, so a query across a resource opens one file
+rather than one per study; the merged file is only ever built from the study files. A Catalog has no
+assets, so these are `rel: alternate` links, told apart by `bioimage:table` (`items`, `studies`, `wells`).
+`studies.parquet` also indexes each study's own files (`items_href`, `wells_href`): filter studies there,
+then read only theirs. The JSON stays canonical; the Parquet makes the catalog queryable with no STAC
 library and no server, and it is what a federated query reads across buckets.
 
 ```bash
-.venv/bin/marimo edit 11_parquet_build.py   # items.parquet per Collection
+.venv/bin/marimo edit 11_parquet_build.py   # items.parquet per study, merged per resource (before 15)
 .venv/bin/marimo edit 12_parquet_query.py   # queries them with DuckDB and rustac
 .venv/bin/marimo edit 15_plate_wells.py     # wells.parquet: 139,286 wells of the 635 plates
 .venv/bin/marimo edit 16_study_parquet.py   # studies.parquet: one row per study, from its crate
@@ -134,7 +141,7 @@ cd browser && npm install && npm run dev
 
 `browser/` is the challenge's own gallery, forked from [zowser](https://github.com/lubianat/zowser) and
 rewired to read this catalog: its `config.yaml` names the root URL, and it follows that to each
-Collection's `items.parquet`. No Zarr is opened — the rows already carry shape, organism, imaging method,
+resource's merged `items.parquet`. No Zarr is opened — the rows already carry shape, organism, imaging method,
 size and a thumbnail, so 1,908 images and plates arrive in a handful of requests, where the upstream
 gallery fetched a `zarr.json` per image. See [browser/README.md](browser/README.md).
 
@@ -146,9 +153,9 @@ samples.csv                     input: IDR OME-Zarr samples (v0.4, v0.5)
 10_bia_catalog.py               pilot: BIA source
 14_idr_catalog.py               pilot: IDR source
 15_plate_wells.py               plate wells as Parquet rows, annotated from IDR
-16_study_parquet.py             studies as a table, from the Collections and their crates
+16_study_parquet.py             studies as a table, from the Collections and their crates (an index)
 17_search_deployed.py           queries the published catalog from its root URL
-11_parquet_build.py             writes stac-geoparquet per collection
+11_parquet_build.py             writes stac-geoparquet per study, and merges it per resource
 12_parquet_query.py             queries it with DuckDB and rustac
 13_ro_crate.py                  reads the same tree as RO-Crate; checks the two views agree
 biostac_build.py                build steps shared by the BIA and IDR notebooks

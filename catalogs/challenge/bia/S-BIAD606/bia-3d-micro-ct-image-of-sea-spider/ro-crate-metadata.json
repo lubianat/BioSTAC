@@ -22,7 +22,7 @@
       "@type": "Dataset",
       "name": "3D micro-CT image of sea spider (Pycnogonum litorale)",
       "description": "The sea spider Pycnogonum litorale overturns the paradigm of the absence of axial regeneration in molting animals, micro computed tomography image",
-      "datePublished": "2026-09-22",
+      "datePublished": "2023-01-31",
       "hasPart": [
         {
           "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/79ad519b-0aa6-4d64-85a9-6cea2318b980.zarr/"

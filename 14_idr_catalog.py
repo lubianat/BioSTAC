@@ -217,7 +217,7 @@ def _(HARVESTED, INDEX_URL, STUDY_CRATES, bb, ids, results, study_crates):
         )
         for accession in sorted(members)
     ]
-    collection = bb.resource_collection(
+    resource = bb.resource_catalog(
         "idr", "IDR — OME 2024 NGFF challenge",
         "Images the Image Data Resource (IDR) converted to OME-NGFF 0.5 for the OME 2024 NGFF challenge. "
         "Harvested from the challenge sample lists; the OME-Zarr data stays on EBI servers.",
@@ -225,9 +225,9 @@ def _(HARVESTED, INDEX_URL, STUDY_CRATES, bb, ids, results, study_crates):
         links=[(INDEX_URL, "Challenge sample list (IDR)"), ("https://idr.openmicroscopy.org/", "IDR")],
         extra_fields={"bioimage:source_csv": INDEX_URL},
     )
-    crate_sizes, item_crates = bb.save_resource(collection, items, study_collections, study_crates, extra_parts)
-    n_valid = bb.validate(collection)
-    return collection, crate_sizes, item_crates, items, n_valid, study_collections
+    crate_sizes, item_crates = bb.save_resource(resource, items, study_collections, study_crates, extra_parts)
+    n_valid = bb.validate(resource)
+    return resource, crate_sizes, item_crates, items, n_valid, study_collections
 
 
 @app.cell

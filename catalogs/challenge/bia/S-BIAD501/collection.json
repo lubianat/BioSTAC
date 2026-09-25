@@ -17,23 +17,40 @@
     },
     {
       "rel": "parent",
-      "href": "../collection.json",
+      "href": "../catalog.json",
       "type": "application/json",
       "title": "BIA / EBI — OME 2024 NGFF challenge"
     }
   ],
+  "stac_extensions": ["https://stac-extensions.github.io/file/v2.1.0/schema.json"],
   "title": "S-BIAD501 — Histopathology image of rat liver",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
-    "temporal": {"interval": [["2026-09-22T18:58:58Z", "2026-09-22T18:58:58Z"]]}
+    "temporal": {"interval": [["2026-09-25T17:40:51Z", "2026-09-25T17:40:51Z"]]}
   },
   "license": "CC-BY-4.0",
+  "summaries": {
+    "license": ["CC-BY-4.0"],
+    "bioimage:ngff_version": ["0.5"],
+    "bioimage:size_bytes": {"minimum": 5390776103, "maximum": 5390776103},
+    "bioimage:size_z": {"minimum": 1, "maximum": 1},
+    "bioimage:size_y": {"minimum": 39787, "maximum": 39787},
+    "bioimage:size_x": {"minimum": 83663, "maximum": 83663}
+  },
   "assets": {
     "thumbnail": {
       "href": "./bia-histopathology-image-of-rat-liver/thumbnail.png",
       "type": "image/png",
       "title": "Thumbnail of Histopathology image of rat liver",
       "roles": ["thumbnail"]
+    },
+    "items": {
+      "href": "./items.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "Items as stac-geoparquet",
+      "file:size": 12213,
+      "file:checksum": "122009fc1690252c563ca5016190d58099efca4ccec9ceb0d9e0838abd4315af5645",
+      "roles": ["data"]
     }
   }
 }

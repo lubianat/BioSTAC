@@ -22,7 +22,7 @@
       "@type": "Dataset",
       "name": "C. reinhardtii tomogram",
       "description": "cryogenic-sample electron microscopy (CryoET) image of C. reinhardtii prepared using cryo-plasmaFIB milling",
-      "datePublished": "2026-09-22",
+      "datePublished": "2026-09-25",
       "hasPart": [
         {
           "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/c9ba2bf5-09d1-41ff-a925-df0b725a53e4.zarr/"

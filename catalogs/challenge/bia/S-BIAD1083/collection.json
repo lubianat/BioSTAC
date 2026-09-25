@@ -22,11 +22,12 @@
     },
     {
       "rel": "parent",
-      "href": "../collection.json",
+      "href": "../catalog.json",
       "type": "application/json",
       "title": "BIA / EBI — OME 2024 NGFF challenge"
     }
   ],
+  "stac_extensions": ["https://stac-extensions.github.io/file/v2.1.0/schema.json"],
   "title": "Pseudomonas aeruginosa breaches respiratory epithelia through goblet cell invasion in a microtissue model",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
@@ -39,6 +40,14 @@
     "Normal Human Bronchial Epithelial cells (NHBE)",
     "goblet cells"
   ],
+  "summaries": {
+    "license": ["CC-BY-4.0"],
+    "bioimage:ngff_version": ["0.5"],
+    "bioimage:size_bytes": {"minimum": 287767126, "maximum": 287767126},
+    "bioimage:size_z": {"minimum": 1, "maximum": 1},
+    "bioimage:size_y": {"minimum": 11898, "maximum": 11898},
+    "bioimage:size_x": {"minimum": 11898, "maximum": 11898}
+  },
   "assets": {
     "ro-crate": {
       "href": "./ro-crate-metadata.json",
@@ -50,6 +59,14 @@
       "href": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1083/c829b0e8-ebd5-487c-a24d-ad3498889378/39cc657c-8faf-403e-87ea-621c2ec1a7b6.png",
       "type": "image/png",
       "roles": ["thumbnail"]
+    },
+    "items": {
+      "href": "./items.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "Items as stac-geoparquet",
+      "file:size": 12027,
+      "file:checksum": "12204f285f5fe2c911ecfbc30e425f1dc494a337dd8897f9181a7ef8c34cca9e627b",
+      "roles": ["data"]
     }
   }
 }

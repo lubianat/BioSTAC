@@ -1,7 +1,7 @@
 // The only data source: a STAC catalog whose Collections publish stac-geoparquet.
 //
-// The root catalog links its resources, each resource advertises an "items" Parquet
-// asset, and that file already holds everything the gallery shows — shape, organism,
+// The root catalog links its resources, each resource Catalog links an "items" Parquet
+// table (merged from its studies' own files), and that file already holds everything the gallery shows — shape, organism,
 // imaging method, size, thumbnail. So nothing here opens a Zarr.
 
 import { writable } from "svelte/store";
@@ -19,12 +19,12 @@ const getJson = (url) => fetch(url).then((r) => r.json());
 // Parquet gives integers as BigInt; the table sorts and formats plain numbers.
 const num = (value) => (value === null || value === undefined ? undefined : Number(value));
 
-function toRow(item, resource, collectionUrl) {
+function toRow(item, resource, resourceUrl) {
   const axes = AXES.filter((axis) => item[`bioimage:size_${axis}`] != null);
   // an asset href is either absolute or relative to its item, which lives in its own folder
   const itemBase = new URL(
     `${item.collection}/${item.id}/`,
-    collectionUrl.replace(/collection\.json$/, ""),
+    resourceUrl.replace(/[^/]*$/, ""),
   ).href;
   const href = (asset) => (asset ? new URL(asset.href, itemBase).href : undefined);
   return {
@@ -52,14 +52,14 @@ function toRow(item, resource, collectionUrl) {
   };
 }
 
-/** Crawl the catalog and load every Collection's items.parquet into the table. */
+/** Crawl the catalog and load every resource's consolidated items.parquet into the table. */
 export async function loadStac(rootUrl) {
   const root = await getJson(rootUrl);
   const children = root.links
     .filter((link) => link.rel === "child")
     .map((link) => new URL(link.href, rootUrl).href);
 
-  // the Collections first: they are small, and they say what this catalog offers
+  // the resource Catalogs first: they are small, and they say what this catalog offers
   const collections = await Promise.all(
     children.map(async (url) => ({ url, collection: await getJson(url) })),
   );
@@ -72,7 +72,10 @@ export async function loadStac(rootUrl) {
   );
 
   for (const { url: collectionUrl, collection } of collections) {
-    const items = collection.assets?.items;
+    // a Catalog has no assets: the Parquet is a link, picked by its bioimage:table
+    // (a resource published before that was a Collection with an "items" asset)
+    const items =
+      collection.links.find((link) => link["bioimage:table"] === "items") ?? collection.assets?.items;
     if (!items) {
       console.warn(`${collection.id} publishes no items.parquet`);
       continue;

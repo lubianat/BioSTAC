@@ -17,23 +17,40 @@
     },
     {
       "rel": "parent",
-      "href": "../collection.json",
+      "href": "../catalog.json",
       "type": "application/json",
       "title": "BIA / EBI — OME 2024 NGFF challenge"
     }
   ],
+  "stac_extensions": ["https://stac-extensions.github.io/file/v2.1.0/schema.json"],
   "title": "S-BIAD464 — Calcium wave dynamics",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
-    "temporal": {"interval": [["2026-09-22T18:58:58Z", "2026-09-22T18:58:58Z"]]}
+    "temporal": {"interval": [["2026-09-25T17:40:51Z", "2026-09-25T17:40:51Z"]]}
   },
   "license": "CC-BY-4.0",
+  "summaries": {
+    "license": ["CC-BY-4.0"],
+    "bioimage:ngff_version": ["0.5"],
+    "bioimage:size_bytes": {"minimum": 489363667, "maximum": 489363667},
+    "bioimage:size_z": {"minimum": 1, "maximum": 1},
+    "bioimage:size_y": {"minimum": 1024, "maximum": 1024},
+    "bioimage:size_x": {"minimum": 1024, "maximum": 1024}
+  },
   "assets": {
     "thumbnail": {
       "href": "./bia-calcium-wave-dynamics/thumbnail.png",
       "type": "image/png",
       "title": "Thumbnail of Calcium wave dynamics",
       "roles": ["thumbnail"]
+    },
+    "items": {
+      "href": "./items.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "Items as stac-geoparquet",
+      "file:size": 11930,
+      "file:checksum": "1220a59986285d344e643fe23ca8f0edee44d0aa631f31e273da613fe0d73d7c8f12",
+      "roles": ["data"]
     }
   }
 }

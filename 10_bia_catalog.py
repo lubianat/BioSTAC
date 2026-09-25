@@ -45,7 +45,7 @@ def _(mo):
 
     ```
     catalogs/challenge/catalog.json
-    └─ bia/collection.json                 the resource
+    └─ bia/catalog.json                    the resource (a Catalog: it organizes studies)
        └─ S-BIAD606/collection.json        a study
           ├─ ro-crate-metadata.json         its GIDE crate, shipped as a collection asset
           └─ bia-3d-micro-ct-image-…/…json  an image
@@ -109,7 +109,7 @@ def _(CACHE, GIDE_CRATES, HARVESTED, SOURCE_CSV_URL, bb, build_item, rows):
         return (crate, path) if crate else None
 
     study_crates = {accession: gide_crate(accession) for accession, _ in studies}
-    for accession, members in studies.items():
+    for (accession, _origin), members in studies.items():
         published = bb.crate_published((study_crates[accession] or (None,))[0])
         if published:
             for _item in members:
@@ -127,7 +127,7 @@ def _(CACHE, GIDE_CRATES, HARVESTED, SOURCE_CSV_URL, bb, build_item, rows):
         )
         for (accession, origin), members in sorted(studies.items())
     ]
-    collection = bb.resource_collection(
+    resource = bb.resource_catalog(
         "bia", "BIA / EBI — OME 2024 NGFF challenge",
         "Images submitted by the BioImage Archive (EMBL-EBI) to the OME 2024 NGFF challenge. "
         "Harvested from the challenge sample list; the OME-Zarr data stays on EBI servers.",
@@ -136,8 +136,8 @@ def _(CACHE, GIDE_CRATES, HARVESTED, SOURCE_CSV_URL, bb, build_item, rows):
                ("https://www.ebi.ac.uk/bioimage-archive/", "BioImage Archive")],
         extra_fields={"bioimage:source_csv": SOURCE_CSV_URL},
     )
-    crate_sizes, item_crates = bb.save_resource(collection, items, study_collections, study_crates)
-    n_valid = bb.validate(collection)
+    crate_sizes, item_crates = bb.save_resource(resource, items, study_collections, study_crates)
+    n_valid = bb.validate(resource)
     return crate_sizes, crates, item_crates, items, n_valid, study_crates
 
 

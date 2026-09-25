@@ -22,11 +22,12 @@
     },
     {
       "rel": "parent",
-      "href": "../collection.json",
+      "href": "../catalog.json",
       "type": "application/json",
       "title": "BIA / EBI — OME 2024 NGFF challenge"
     }
   ],
+  "stac_extensions": ["https://stac-extensions.github.io/file/v2.1.0/schema.json"],
   "title": "The Benchtop mesoSPIM: a next-generation open-source light-sheet microscope for large cleared samples",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
@@ -34,6 +35,14 @@
   },
   "license": "CC-BY-4.0",
   "keywords": ["light-sheet", "mesoSPIM", "tissue clearing"],
+  "summaries": {
+    "license": ["CC-BY-4.0"],
+    "bioimage:ngff_version": ["0.5"],
+    "bioimage:size_bytes": {"minimum": 8220322215, "maximum": 8220322215},
+    "bioimage:size_z": {"minimum": 1196, "maximum": 1196},
+    "bioimage:size_y": {"minimum": 2048, "maximum": 2048},
+    "bioimage:size_x": {"minimum": 2048, "maximum": 2048}
+  },
   "assets": {
     "ro-crate": {
       "href": "./ro-crate-metadata.json",
@@ -45,6 +54,14 @@
       "href": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD963/191b1803-0c6a-4fa5-9291-4b2c997e038e/b400b30d-84e2-4102-9df0-36b601422c40.png",
       "type": "image/png",
       "roles": ["thumbnail"]
+    },
+    "items": {
+      "href": "./items.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "Items as stac-geoparquet",
+      "file:size": 12028,
+      "file:checksum": "1220918708b0f3369c60119b8c3254024c6c0e4e10a7ce3007fb3cbd108157a5bb1c",
+      "roles": ["data"]
     }
   }
 }

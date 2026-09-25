@@ -22,7 +22,7 @@
       "@type": "Dataset",
       "name": "Arabidopsis phloem pole",
       "description": "Five-day-old Col-0 Arabidopsis thaliana root, phloem pole unloading zone (339-381 um from the root tip)",
-      "datePublished": "2026-09-22",
+      "datePublished": "2020-10-23",
       "hasPart": [
         {
           "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/2a544b69-9ddd-4941-9801-fd406d06880c.zarr/"

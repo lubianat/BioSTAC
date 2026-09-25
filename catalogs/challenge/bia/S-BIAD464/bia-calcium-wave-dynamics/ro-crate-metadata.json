@@ -22,7 +22,7 @@
       "@type": "Dataset",
       "name": "Calcium wave dynamics",
       "description": "Time lapse image of whole leaves expressing calcium and glutamate responses",
-      "datePublished": "2026-09-22",
+      "datePublished": "2026-09-25",
       "hasPart": [
         {
           "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/c0e5d621-62cc-43a6-9dad-2ddab8959d17.zarr/"

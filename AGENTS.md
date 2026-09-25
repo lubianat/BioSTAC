@@ -12,9 +12,9 @@ directly from the repository root, so commands are run from there.
 
 ```
 01_ … 05_*.py        warm-up on samples.csv: basic catalog, browse, extended catalog, search, API
-10_bia_catalog.py    pilot: BIA, 10 images       → catalogs/challenge/bia/
+10_bia_catalog.py    pilot: BIA, 10 images       → catalogs/challenge/bia/   (a Catalog of study Collections)
 14_idr_catalog.py    pilot: IDR, 1,898 images    → catalogs/challenge/idr/   (not in git)
-15_plate_wells.py    139,286 wells               → catalogs/challenge/idr/wells.parquet
+15_plate_wells.py    139,286 wells               → idr/<study>/wells.parquet, merged into idr/wells.parquet
 11/12_parquet_*.py   build and query stac-geoparquet
 13_ro_crate.py       reads the same tree as RO-Crate and checks the two views agree
 16_study_parquet.py  studies as a table          → catalogs/challenge/<resource>/studies.parquet
@@ -41,6 +41,12 @@ at a time into part files and merges them; keep it that way, and cap it with `ul
 
 ## Conventions that are load-bearing
 
+- **Collections are studies, and one level deep** (MINI-PORTOLAN.md). The root and each resource are
+  Catalogs: they organize, they hold no data. A study's `items.parquet` / `wells.parquet` are its assets
+  and the source of truth; the resource's files of the same name are only ever the merge of those
+  (`11`, `15`), linked from `catalog.json` with `rel: alternate` and `bioimage:table`, because Catalogs
+  have no assets. `studies.parquet` indexes the study files (`items_href`, `wells_href`, relative to it).
+  Build order: 10, 14, 11, 15, 16.
 - **`bioimage:level`** (`image`, `plate`, `well`) says what a row denotes. Every row has it; queries that
   mix files group by it. Do not derive it from other columns — fix the build instead.
 - **Ontology ids are also flat**, `bioimage:ncbitaxon` / `bioimage:fbbi` next to the structs, because
@@ -104,7 +110,8 @@ the older columns.
 
 ## Left for later, deliberately
 
-- Per-study `items.parquet` / `wells.parquet` and `table`-extension pointers from a study to its data.
+- `table`-extension column descriptions on the Parquet assets; `AGENTS.md`/`README.md` per catalog and
+  collection, and `providers` per study, as MINI-PORTOLAN.md asks.
 - Field-level Items (~290k Items, ~870k files): they carry no metadata of their own today.
 - The other five challenge sources.
 - `browser/`'s viewer buttons still hardcode NGFF version 0.5 and `image`, though the rows now carry

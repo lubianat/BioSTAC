@@ -22,7 +22,7 @@
     "bioimage:ncbitaxon": "NCBITaxon:3701",
     "bioimage:imaging_method": {"ontology_source": "FBbi", "term_id": "FBbi:00000251", "term_label": "confocal microscopy"},
     "bioimage:fbbi": "FBbi:00000251",
-    "datetime": "2026-09-22T18:58:58Z"
+    "datetime": "2026-09-25T17:40:51Z"
   },
   "links": [
     {

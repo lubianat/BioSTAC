@@ -13,23 +13,40 @@
     },
     {
       "rel": "parent",
-      "href": "../collection.json",
+      "href": "../catalog.json",
       "type": "application/json",
       "title": "BIA / EBI — OME 2024 NGFF challenge"
     }
   ],
+  "stac_extensions": ["https://stac-extensions.github.io/file/v2.1.0/schema.json"],
   "title": "EMPIAR-11830 — C. reinhardtii tomogram",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
-    "temporal": {"interval": [["2026-09-22T18:58:58Z", "2026-09-22T18:58:58Z"]]}
+    "temporal": {"interval": [["2026-09-25T17:40:51Z", "2026-09-25T17:40:51Z"]]}
   },
   "license": "CC-BY-4.0",
+  "summaries": {
+    "license": ["CC-BY-4.0"],
+    "bioimage:ngff_version": ["0.5"],
+    "bioimage:size_bytes": {"minimum": 2466532322, "maximum": 2466532322},
+    "bioimage:size_z": {"minimum": 512, "maximum": 512},
+    "bioimage:size_y": {"minimum": 1024, "maximum": 1024},
+    "bioimage:size_x": {"minimum": 1024, "maximum": 1024}
+  },
   "assets": {
     "thumbnail": {
       "href": "./bia-c-reinhardtii-tomogram/thumbnail.png",
       "type": "image/png",
       "title": "Thumbnail of C. reinhardtii tomogram",
       "roles": ["thumbnail"]
+    },
+    "items": {
+      "href": "./items.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "Items as stac-geoparquet",
+      "file:size": 12095,
+      "file:checksum": "1220c0f1ab1e756673f1bf9b14a94b0dee7ca7a236357e203f4c20442b9387d3443a",
+      "roles": ["data"]
     }
   }
 }

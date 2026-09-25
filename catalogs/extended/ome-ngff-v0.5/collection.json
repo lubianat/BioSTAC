@@ -57,6 +57,7 @@
     },
     {"rel": "parent", "href": "../catalog.json", "type": "application/json"}
   ],
+  "stac_extensions": ["https://stac-extensions.github.io/file/v2.1.0/schema.json"],
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
     "temporal": {"interval": [["2024-11-21T00:00:00Z", "2025-09-22T00:00:00Z"]]}
@@ -89,6 +90,8 @@
       "href": "./items.parquet",
       "type": "application/vnd.apache.parquet",
       "title": "Items as stac-geoparquet",
+      "file:size": 9968,
+      "file:checksum": "1220479b503442293c34424668298b92b1e6bd391320751c77157937f5765937f69b",
       "roles": ["data"]
     }
   }

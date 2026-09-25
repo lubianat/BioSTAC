@@ -205,8 +205,9 @@ def _(IDR, IDR_EXT, bb, json):
 
 
 @app.cell
-async def _(WELLS, annotations_for, bb, mo, plates_by_study, rustac, shutil, time, well_rows):
-    # one study at a time: its annotations, its rows, its part file. Then DuckDB merges the parts.
+async def _(IDR, WELLS, annotations_for, bb, mo, plates_by_study, rustac, shutil, time, well_rows):
+    # one study at a time: its annotations, its rows, its own wells.parquet. Then DuckDB merges those
+    # into the resource's file, which is only ever that merge.
     parts = WELLS.with_name("wells.parts")
     shutil.rmtree(parts, ignore_errors=True)
     parts.mkdir(parents=True)
@@ -217,13 +218,15 @@ async def _(WELLS, annotations_for, bb, mo, plates_by_study, rustac, shutil, tim
         _by_well, _overlaps = annotations_for(_study)
         _rows = [row for plate in _plates for row in well_rows(plate, _by_well)]
         await rustac.write(str(parts / f"{_study}.parquet"), _rows)
+        bb.merge_geoparquet(parts / f"{_study}.parquet", IDR / _study / "wells.parquet",
+                            sort_by=("bioimage:plate_id", "bioimage:well"))
         per_study[_study] = {
             "study": _study, "plates": len(_plates), "wells": len(_rows),
             "annotated": sum(1 for r in _rows if r["properties"].get("idr:plate_name")),
             "annotation rows": len(_by_well), "wells in two screens": _overlaps,
         }
         del _rows, _by_well
-    bb.merge_geoparquet(f"{parts}/*.parquet", WELLS, sort_by=("collection", "bioimage:plate_id", "bioimage:well"))
+    bb.merge_geoparquet(f"{IDR}/*/wells.parquet", WELLS, sort_by=("collection", "bioimage:plate_id", "bioimage:well"))
     shutil.rmtree(parts)
     write_seconds = round(time.perf_counter() - started, 1)
 
@@ -239,17 +242,17 @@ async def _(WELLS, annotations_for, bb, mo, plates_by_study, rustac, shutil, tim
 
 
 @app.cell
-def _(IDR, WELLS, mo, pystac):
-    collection = pystac.Collection.from_file(str(IDR / "collection.json"))
-    collection.add_asset("wells", pystac.Asset(
-        href="./wells.parquet",
-        media_type="application/vnd.apache.parquet",
-        roles=["data"],
-        title="Plate wells, with IDR annotations, as stac-geoparquet",
-    ))
-    collection.save_object(include_self_link=False, dest_href=str(IDR / "collection.json"))
-    mo.md(f"Registered on the `idr` Collection as the `wells` asset, next to `items`. "
-          f"`14_idr_catalog.py` rewrites `collection.json`, so run this notebook again after a rebuild.")
+def _(IDR, WELLS, bb, mo, per_study, pystac):
+    for _study in per_study:
+        _collection = pystac.Collection.from_file(str(IDR / _study / "collection.json"))
+        bb.add_parquet_asset(_collection, "wells", IDR / _study / "wells.parquet",
+                             "Plate wells, with IDR annotations, as stac-geoparquet")
+        _collection.save_object(include_self_link=False, dest_href=str(IDR / _study / "collection.json"))
+    _catalog = pystac.Catalog.from_file(str(IDR / "catalog.json"))
+    bb.link_table(_catalog, "wells", WELLS, "All plate wells of IDR, with IDR annotations, as stac-geoparquet")
+    _catalog.save_object(include_self_link=False, dest_href=str(IDR / "catalog.json"))
+    mo.md(f"Each plate study's `wells.parquet` registered as its `wells` asset; the merged file linked from "
+          f"the `idr` Catalog. `14_idr_catalog.py` rewrites the tree, so run this notebook again after a rebuild.")
     return
 
 
@@ -262,11 +265,12 @@ Built by `14_idr_catalog.py` (plates and images) and `15_plate_wells.py` (wells)
 
 ## What the levels are
 
-- `collection.json` — the IDR resource
-- `<study>/collection.json` — one study, with its RO-Crate from IDR shipped beside it
+- `catalog.json` — the IDR resource, a Catalog linking the consolidated Parquet files below
+- `<study>/collection.json` — one study, with its RO-Crate from IDR shipped beside it, and its own
+  `items.parquet` (and `wells.parquet` for plate studies)
 - `<study>/<image>/` — one STAC Item per OME-Zarr in the challenge list: a plain image, a
   bioformats2raw image, or a **whole plate**
-- `items.parquet` — those Items as stac-geoparquet
+- `items.parquet` — those Items as stac-geoparquet, merged from the studies' files
 - `wells.parquet` — **{well_count:,} wells** of the {sum(s['plates'] for s in per_study.values())} plates,
   one row each, with a curated set of IDR's well annotations (see `extensions/idr/`)
 

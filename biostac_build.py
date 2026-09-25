@@ -5,6 +5,7 @@ STAC + RO-Crate tree, is the same and lives here.
 """
 
 import datetime
+import hashlib
 import json
 import pathlib
 import re
@@ -202,12 +203,15 @@ def with_flat_terms(properties):
     """Add the ontology ids as flat columns next to their structs: dictionary-encoded, and the
     Parquet readers can filter and skip row groups on them (nested fields are awkward, and
     rustac's CQL2 misses them entirely)."""
-    flat = {"bioimage:organism": "bioimage:ncbitaxon", "bioimage:imaging_method": "bioimage:fbbi"}
+    flat = {"bioimage:organism": ("bioimage:ncbitaxon", "NCBITaxon:"),
+            "bioimage:imaging_method": ("bioimage:fbbi", "FBbi:")}
     out = {}
     for key, value in properties.items():
         out[key] = value
-        if key in flat and value:
-            out[flat[key]] = value["term_id"]
+        # a source may name a term from another ontology (IDR crates use NCIT for some methods):
+        # the struct keeps it, the flat column only takes ids of the ontology it is named after
+        if key in flat and value and value["term_id"].startswith(flat[key][1]):
+            out[flat[key][0]] = value["term_id"]
     return out
 
 
@@ -297,6 +301,7 @@ def study_collection(accession, members, crate, harvested, study_page, crate_sou
             pystac.SpatialExtent([PLACEHOLDER_BBOX]),
             pystac.TemporalExtent([[study_datetime, study_datetime]]),
         ),
+        summaries=Summarizer(SUMMARIZED).summarize(members),
     )
     if crate:
         # shipped with the catalog: ship_crate() writes it next to this collection.json
@@ -325,20 +330,19 @@ def study_collection(accession, members, crate, harvested, study_page, crate_sou
     return study
 
 
-def resource_collection(source, title, description, studies, items, harvested, links=(), extra_fields=None):
-    collection = pystac.Collection(
+SUMMARIZED = {
+    "license": "v", "bioimage:ngff_version": "v", "bioimage:size_bytes": "r",
+    "bioimage:size_x": "r", "bioimage:size_y": "r", "bioimage:size_z": "r",
+}
+
+
+def resource_catalog(source, title, description, studies, items, harvested, links=(), extra_fields=None):
+    """A resource organizes its studies and holds no data of its own: a Catalog, not a Collection, so
+    Collections stay one level deep (MINI-PORTOLAN.md). Its Parquet files are links: see link_table."""
+    catalog = pystac.Catalog(
         id=source,
         title=title,
         description=description,
-        license="various",
-        extent=pystac.Extent(
-            pystac.SpatialExtent([PLACEHOLDER_BBOX]),
-            pystac.TemporalExtent([[harvested, harvested]]),
-        ),
-        summaries=Summarizer({
-            "license": "v", "bioimage:ngff_version": "v", "bioimage:size_bytes": "r",
-            "bioimage:size_x": "r", "bioimage:size_y": "r", "bioimage:size_z": "r",
-        }).summarize(items),
         extra_fields={
             "bioimage:source": source,
             "bioimage:organisms": sorted({
@@ -351,10 +355,40 @@ def resource_collection(source, title, description, studies, items, harvested, l
             **(extra_fields or {}),
         },
     )
-    collection.add_children(studies)
+    catalog.add_children(studies)
     for href, link_title in links:
-        collection.add_link(pystac.Link("via", href, title=link_title))
-    return collection
+        catalog.add_link(pystac.Link("via", href, title=link_title))
+    return catalog
+
+
+PARQUET = "application/vnd.apache.parquet"
+FILE_EXT = "https://stac-extensions.github.io/file/v2.1.0/schema.json"
+
+
+def file_fields(path):
+    """file:size and file:checksum (sha2-256 multihash, as hex) of bytes we publish."""
+    data = pathlib.Path(path).read_bytes()
+    return {"file:size": len(data), "file:checksum": "1220" + hashlib.sha256(data).hexdigest()}
+
+
+def add_parquet_asset(collection, key, path, title, roles=("data",)):
+    """A study's own Parquet, as a Collection asset. The study files are the source of truth."""
+    collection.add_asset(key, pystac.Asset(
+        href=f"./{pathlib.Path(path).name}", media_type=PARQUET, roles=list(roles), title=title,
+        extra_fields=file_fields(path),
+    ))
+    if FILE_EXT not in collection.stac_extensions:
+        collection.stac_extensions.append(FILE_EXT)
+
+
+def link_table(catalog, table, path, title):
+    """A resource's consolidated Parquet, merged from its studies' files. Catalogs have no assets, so
+    it is an alternate link; clients pick it by bioimage:table (items, studies, wells)."""
+    catalog.links = [link for link in catalog.links if link.extra_fields.get("bioimage:table") != table]
+    catalog.add_link(pystac.Link(
+        "alternate", f"./{pathlib.Path(path).name}", media_type=PARQUET, title=title,
+        extra_fields={"bioimage:table": table, **file_fields(path)},
+    ))
 
 
 def validate(catalog):

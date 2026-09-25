@@ -41,12 +41,13 @@ def _(ROOT, mo, pystac, urllib):
     catalog = pystac.Catalog.from_file(ROOT)
     resources = list(catalog.get_children())
 
-    def parquet_assets(collection):
-        """The Parquet files a Collection advertises, as absolute URLs taken from the catalog itself."""
+    def parquet_assets(resource):
+        """The consolidated Parquet files a resource Catalog links, keyed by bioimage:table, as absolute URLs.
+        A Catalog has no assets, so these are links; each study also carries its own files as assets."""
         return {
-            key: asset.get_absolute_href()
-            for key, asset in collection.assets.items()
-            if (asset.media_type or "").endswith("parquet")
+            link.extra_fields["bioimage:table"]: link.get_absolute_href()
+            for link in resource.links
+            if "bioimage:table" in link.extra_fields
         }
 
     deployed = {c.id: parquet_assets(c) for c in resources}
@@ -56,7 +57,7 @@ def _(ROOT, mo, pystac, urllib):
             "title": c.title,
             "bucket": urllib.parse.urlparse(c.get_self_href()).path.split("/")[3],
             "studies": len(list(c.get_children())),
-            "parquet assets": ", ".join(deployed[c.id]) or "—",
+            "parquet tables": ", ".join(deployed[c.id]) or "—",
         }
         for c in resources
     ]
@@ -74,7 +75,7 @@ def _(deployed, duckdb, mo):
     duckdb.sql("LOAD httpfs")
 
     def urls(key):
-        """Every deployed file published under one asset key, as absolute URLs."""
+        """Every deployed file published as one table, as absolute URLs."""
         return [assets[key] for assets in deployed.values() if key in assets]
 
     ITEMS, WELLS, STUDIES = urls("items"), urls("wells"), urls("studies")
@@ -194,6 +195,28 @@ def _(ITEMS, STUDIES, mo, table):
         "No `studies` asset is deployed yet — run `16_study_parquet.py` and upload the result, and this "
         "cell joins study metadata to the image rows."
     )
+    return
+
+
+@app.cell
+def _(STUDIES, duckdb, mo, table):
+    # search by study: the small studies table is the index, then only the chosen study's file is read
+    _hits = duckdb.sql(f"""
+        SELECT study, items_href, filename FROM read_parquet({STUDIES}, union_by_name := true, filename := true)
+        WHERE list_contains(organisms, 'Saccharomyces cerevisiae') AND items_href IS NOT NULL""").fetchall()
+    _files = [f.rsplit("/", 1)[0] + "/" + href for _, href, f in _hits]
+    mo.vstack([
+        mo.md("## By study: index first, then one small file each
+"
+              f"`studies.parquet` names each study's own `items.parquet`; yeast studies: "
+              f"{', '.join(s for s, _, _ in _hits) or 'none'}."),
+        table("Images of the yeast studies", f"""
+    SELECT collection AS study, id, "bioimage:level" AS row_denotes, assets.data.href AS url
+    FROM read_parquet({_files}, union_by_name := true)
+    ORDER BY study, id LIMIT 8
+    """, STUDIES + _files),
+    ]) if _files else mo.md("## By study
+No deployed study lists its own `items.parquet` yet.")
     return
 
 

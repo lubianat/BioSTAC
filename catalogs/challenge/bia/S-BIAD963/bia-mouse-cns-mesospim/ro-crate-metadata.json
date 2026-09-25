@@ -22,7 +22,7 @@
       "@type": "Dataset",
       "name": "Mouse CNS, mesoSPIM",
       "description": "Mouse central nervous system (CNS) at 5x magnification",
-      "datePublished": "2026-09-22",
+      "datePublished": "2023-12-15",
       "hasPart": [
         {
           "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/9d53468d-2b49-4a43-98dd-c1838485fddd.zarr/"

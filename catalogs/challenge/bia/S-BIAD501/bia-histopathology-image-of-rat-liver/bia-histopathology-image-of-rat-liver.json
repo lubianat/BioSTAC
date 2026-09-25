@@ -26,7 +26,7 @@
     "bioimage:ncbitaxon": "NCBITaxon:10116",
     "bioimage:imaging_method": {"ontology_source": "FBbi", "term_id": "FBbi:00000243", "term_label": "bright-field microscopy"},
     "bioimage:fbbi": "FBbi:00000243",
-    "datetime": "2026-09-22T18:58:58Z"
+    "datetime": "2026-09-25T17:40:51Z"
   },
   "links": [
     {

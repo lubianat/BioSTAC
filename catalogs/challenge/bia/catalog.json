@@ -1,5 +1,5 @@
 {
-  "type": "Collection",
+  "type": "Catalog",
   "id": "bia",
   "stac_version": "1.1.0",
   "description": "Images submitted by the BioImage Archive (EMBL-EBI) to the OME 2024 NGFF challenge. Harvested from the challenge sample list; the OME-Zarr data stays on EBI servers.",
@@ -71,7 +71,25 @@
       "title": "Challenge sample list"
     },
     {"rel": "via", "href": "https://www.ebi.ac.uk/bioimage-archive/", "title": "BioImage Archive"},
-    {"rel": "parent", "href": "../catalog.json", "type": "application/json"}
+    {"rel": "parent", "href": "../catalog.json", "type": "application/json"},
+    {
+      "rel": "alternate",
+      "href": "./items.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "All items of this resource, as stac-geoparquet",
+      "bioimage:table": "items",
+      "file:size": 18005,
+      "file:checksum": "1220330f2149265a3ed97150797529d7a2265b345f629d3c9b08f1ab30c6bec2dae6"
+    },
+    {
+      "rel": "alternate",
+      "href": "./studies.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "Studies of this resource as a table, indexing each study's own Parquet",
+      "bioimage:table": "studies",
+      "file:size": 10539,
+      "file:checksum": "12201e8e1af48cbd55699e56fd9725610d41bbebd9342d2583d8b52d902460c1568f"
+    }
   ],
   "bioimage:source": "bia",
   "bioimage:organisms": [
@@ -94,34 +112,7 @@
     "serial block face scanning electron microscopy",
     "tomography"
   ],
-  "bioimage:harvested": "2026-09-22T18:58:58+00:00",
+  "bioimage:harvested": "2026-09-25T17:40:51+00:00",
   "bioimage:source_csv": "https://github.com/ome/ome2024-ngff-challenge/blob/main/samples/ebi-ngff-challenge-samples.csv",
-  "title": "BIA / EBI — OME 2024 NGFF challenge",
-  "extent": {
-    "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
-    "temporal": {"interval": [["2026-09-22T18:58:58Z", "2026-09-22T18:58:58Z"]]}
-  },
-  "license": "various",
-  "summaries": {
-    "license": ["CC-BY-4.0"],
-    "bioimage:ngff_version": ["0.5"],
-    "bioimage:size_bytes": {"minimum": 441756, "maximum": 13779527717},
-    "bioimage:size_z": {"minimum": 1, "maximum": 1966},
-    "bioimage:size_y": {"minimum": 512, "maximum": 39787},
-    "bioimage:size_x": {"minimum": 512, "maximum": 83663}
-  },
-  "assets": {
-    "items": {
-      "href": "./items.parquet",
-      "type": "application/vnd.apache.parquet",
-      "title": "Items as stac-geoparquet",
-      "roles": ["data"]
-    },
-    "studies": {
-      "href": "./studies.parquet",
-      "type": "application/vnd.apache.parquet",
-      "title": "Studies of this resource as a table (derived from the Collections and their RO-Crates)",
-      "roles": ["metadata"]
-    }
-  }
+  "title": "BIA / EBI — OME 2024 NGFF challenge"
 }

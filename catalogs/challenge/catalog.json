@@ -7,15 +7,15 @@
     {"rel": "root", "href": "./catalog.json", "type": "application/json"},
     {
       "rel": "child",
-      "href": "./idr/collection.json",
+      "href": "./bia/catalog.json",
       "type": "application/json",
-      "title": "IDR — OME 2024 NGFF challenge"
+      "title": "BIA / EBI — OME 2024 NGFF challenge"
     },
     {
       "rel": "child",
-      "href": "./bia/collection.json",
+      "href": "./idr/catalog.json",
       "type": "application/json",
-      "title": "BIA / EBI — OME 2024 NGFF challenge"
+      "title": "IDR — OME 2024 NGFF challenge"
     }
   ]
 }

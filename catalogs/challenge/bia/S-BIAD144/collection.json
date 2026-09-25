@@ -13,23 +13,40 @@
     {"rel": "item", "href": "./bia-hela-cells/bia-hela-cells.json", "type": "application/geo+json"},
     {
       "rel": "parent",
-      "href": "../collection.json",
+      "href": "../catalog.json",
       "type": "application/json",
       "title": "BIA / EBI — OME 2024 NGFF challenge"
     }
   ],
+  "stac_extensions": ["https://stac-extensions.github.io/file/v2.1.0/schema.json"],
   "title": "S-BIAD144 — HeLa cells",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
-    "temporal": {"interval": [["2026-09-22T18:58:58Z", "2026-09-22T18:58:58Z"]]}
+    "temporal": {"interval": [["2026-09-25T17:40:51Z", "2026-09-25T17:40:51Z"]]}
   },
   "license": "CC-BY-4.0",
+  "summaries": {
+    "license": ["CC-BY-4.0"],
+    "bioimage:ngff_version": ["0.5"],
+    "bioimage:size_bytes": {"minimum": 441756, "maximum": 441756},
+    "bioimage:size_z": {"minimum": 1, "maximum": 1},
+    "bioimage:size_y": {"minimum": 512, "maximum": 512},
+    "bioimage:size_x": {"minimum": 512, "maximum": 512}
+  },
   "assets": {
     "thumbnail": {
       "href": "./bia-hela-cells/thumbnail.png",
       "type": "image/png",
       "title": "Thumbnail of HeLa cells",
       "roles": ["thumbnail"]
+    },
+    "items": {
+      "href": "./items.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "Items as stac-geoparquet",
+      "file:size": 11732,
+      "file:checksum": "12203fefaaf7f45597af93a647335de0d5edaf9b8511de3481390d45a9253e50cd8c",
+      "roles": ["data"]
     }
   }
 }

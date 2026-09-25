@@ -120,6 +120,10 @@ def _(CHALLENGE, from_crate, json):
                 "crate_path": f"{resource}/{path.parent.name}/ro-crate-metadata.json" if crate_path.exists() else None,
                 "thumbnail": assets.get("thumbnail", {}).get("href"),
                 "items": sum(1 for link in collection["links"] if link["rel"] == "item"),
+                # the index to each study's own Parquet, relative to this studies.parquet, so it resolves
+                # in whichever bucket the resource is deployed to
+                "items_href": f"{path.parent.name}/items.parquet" if "items" in assets else None,
+                "wells_href": f"{path.parent.name}/wells.parquet" if "wells" in assets else None,
                 "has_crate": crate_path.exists(),
                 **{key: crate.get(key) for key in (
                     "organisms", "organism_terms", "imaging_methods", "imaging_method_terms",
@@ -128,7 +132,7 @@ def _(CHALLENGE, from_crate, json):
             }
             yield row
 
-    resources = sorted(p.parent.name for p in CHALLENGE.glob("*/collection.json"))
+    resources = sorted(p.parent.name for p in CHALLENGE.glob("*/catalog.json"))
     return resources, study_rows
 
 
@@ -141,7 +145,9 @@ def _(CHALLENGE, duckdb, json, mo, pathlib, resources, study_rows, tempfile):
         with tempfile.TemporaryDirectory() as scratch:
             source = pathlib.Path(scratch) / "studies.ndjson"
             source.write_text("".join(json.dumps(row) + "\n" for row in rows))
-            duckdb.sql(f"""COPY (SELECT * FROM read_json_auto('{source}') ORDER BY study)
+            # a column that is null in every row is read as JSON; the hrefs must stay strings across files
+            duckdb.sql(f"""COPY (SELECT * REPLACE (items_href::VARCHAR AS items_href, wells_href::VARCHAR AS wells_href)
+                                 FROM read_json_auto('{source}') ORDER BY study)
                            TO '{target}' (FORMAT parquet, COMPRESSION zstd)""")
         return rows, target
 
@@ -154,19 +160,14 @@ def _(CHALLENGE, duckdb, json, mo, pathlib, resources, study_rows, tempfile):
 
 
 @app.cell
-def _(CHALLENGE, mo, pystac, resources):
+def _(CHALLENGE, bb, mo, pystac, resources):
     for _resource in resources:
-        _collection = pystac.Collection.from_file(str(CHALLENGE / _resource / "collection.json"))
-        _collection.add_asset("studies", pystac.Asset(
-            href="./studies.parquet",
-            media_type="application/vnd.apache.parquet",
-            roles=["metadata"],
-            title="Studies of this resource as a table (derived from the Collections and their RO-Crates)",
-        ))
-        _collection.save_object(include_self_link=False,
-                                dest_href=str(CHALLENGE / _resource / "collection.json"))
-    mo.md("Registered as the `studies` asset on each resource Collection. The build notebooks rewrite "
-          "`collection.json`, so run this again after a rebuild.")
+        _catalog = pystac.Catalog.from_file(str(CHALLENGE / _resource / "catalog.json"))
+        bb.link_table(_catalog, "studies", CHALLENGE / _resource / "studies.parquet",
+                      "Studies of this resource as a table, indexing each study's own Parquet")
+        _catalog.save_object(include_self_link=False, dest_href=str(CHALLENGE / _resource / "catalog.json"))
+    mo.md("Linked as the `studies` table from each resource Catalog. The build notebooks rewrite "
+          "`catalog.json`, so run this again after a rebuild.")
     return
 
 

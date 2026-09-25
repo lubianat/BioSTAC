@@ -22,11 +22,12 @@
     },
     {
       "rel": "parent",
-      "href": "../collection.json",
+      "href": "../catalog.json",
       "type": "application/json",
       "title": "BIA / EBI — OME 2024 NGFF challenge"
     }
   ],
+  "stac_extensions": ["https://stac-extensions.github.io/file/v2.1.0/schema.json"],
   "title": "The sea spider Pycnogonum litorale overturns the paradigm of the absence of axial regeneration in molting animals",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
@@ -44,6 +45,14 @@
     "development",
     "segmentation"
   ],
+  "summaries": {
+    "license": ["CC-BY-4.0"],
+    "bioimage:ngff_version": ["0.5"],
+    "bioimage:size_bytes": {"minimum": 1429345492, "maximum": 1429345492},
+    "bioimage:size_z": {"minimum": 984, "maximum": 984},
+    "bioimage:size_y": {"minimum": 1005, "maximum": 1005},
+    "bioimage:size_x": {"minimum": 980, "maximum": 980}
+  },
   "assets": {
     "ro-crate": {
       "href": "./ro-crate-metadata.json",
@@ -55,6 +64,14 @@
       "href": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD606/38026912-4a13-406d-9751-3bdb444f729b/cd1c3ba0-dd52-4b7c-9244-53689fc9ee76.png",
       "type": "image/png",
       "roles": ["thumbnail"]
+    },
+    "items": {
+      "href": "./items.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "Items as stac-geoparquet",
+      "file:size": 12609,
+      "file:checksum": "12202bf34be922e6f7db8e200186eacb90d3e135778bd8f4b8944512b5f48e632ebc",
+      "roles": ["data"]
     }
   }
 }

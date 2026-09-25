@@ -18,17 +18,26 @@
     },
     {
       "rel": "parent",
-      "href": "../collection.json",
+      "href": "../catalog.json",
       "type": "application/json",
       "title": "BIA / EBI — OME 2024 NGFF challenge"
     }
   ],
+  "stac_extensions": ["https://stac-extensions.github.io/file/v2.1.0/schema.json"],
   "title": "170314, Five-day-old Col-0 Arabidopsis thaliana root, phloem pole unloading zone (339-381 um from the root tip)",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
     "temporal": {"interval": [["2020-10-23T00:00:00Z", "2020-10-23T00:00:00Z"]]}
   },
   "license": "CC0-1.0",
+  "summaries": {
+    "license": ["CC-BY-4.0"],
+    "bioimage:ngff_version": ["0.5"],
+    "bioimage:size_bytes": {"minimum": 13779527717, "maximum": 13779527717},
+    "bioimage:size_z": {"minimum": 1061, "maximum": 1061},
+    "bioimage:size_y": {"minimum": 3253, "maximum": 3253},
+    "bioimage:size_x": {"minimum": 3874, "maximum": 3874}
+  },
   "assets": {
     "ro-crate": {
       "href": "./ro-crate-metadata.json",
@@ -40,6 +49,14 @@
       "href": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10442/1acbf84b-5f05-4746-b85f-c70d140b6440/c6b8bd48-ae84-47fa-bc50-ee532a2dc1f8.png",
       "type": "image/png",
       "roles": ["thumbnail"]
+    },
+    "items": {
+      "href": "./items.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "Items as stac-geoparquet",
+      "file:size": 12442,
+      "file:checksum": "12208b7a084ad22a6e7cc759600792c8df29a793a4c726540637f749f2cb48b3adc8",
+      "roles": ["data"]
     }
   }
 }

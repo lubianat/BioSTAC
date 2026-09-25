@@ -18,17 +18,26 @@
     },
     {
       "rel": "parent",
-      "href": "../collection.json",
+      "href": "../catalog.json",
       "type": "application/json",
       "title": "BIA / EBI — OME 2024 NGFF challenge"
     }
   ],
+  "stac_extensions": ["https://stac-extensions.github.io/file/v2.1.0/schema.json"],
   "title": "FIB-SEM of parapodia from Platynereis dumerilii",
   "extent": {
     "spatial": {"bbox": [[0.0, 0.0, 0.0, 0.0]]},
     "temporal": {"interval": [["2020-02-07T00:00:00Z", "2020-02-07T00:00:00Z"]]}
   },
   "license": "CC0-1.0",
+  "summaries": {
+    "license": ["CC-BY-4.0"],
+    "bioimage:ngff_version": ["0.5"],
+    "bioimage:size_bytes": {"minimum": 11152056094, "maximum": 11152056094},
+    "bioimage:size_z": {"minimum": 1966, "maximum": 1966},
+    "bioimage:size_y": {"minimum": 3703, "maximum": 3703},
+    "bioimage:size_x": {"minimum": 3337, "maximum": 3337}
+  },
   "assets": {
     "ro-crate": {
       "href": "./ro-crate-metadata.json",
@@ -40,6 +49,14 @@
       "href": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10310/2e32dd1d-864b-449b-ae23-3fdc4abdb1e8/79965e61-3248-49f3-a4fd-407a3be350d5.png",
       "type": "image/png",
       "roles": ["thumbnail"]
+    },
+    "items": {
+      "href": "./items.parquet",
+      "type": "application/vnd.apache.parquet",
+      "title": "Items as stac-geoparquet",
+      "file:size": 12345,
+      "file:checksum": "1220aa41729f7f35dae0bcb040734c2f963b5b651078f8fd570075897502e1ae5129",
+      "roles": ["data"]
     }
   }
 }

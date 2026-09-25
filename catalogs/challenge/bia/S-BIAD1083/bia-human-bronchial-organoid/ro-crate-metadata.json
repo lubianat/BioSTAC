@@ -22,7 +22,7 @@
       "@type": "Dataset",
       "name": "Human bronchial organoid",
       "description": "Imaging of the infection of a human bronchial organoid by Pseudomonas aeruginosa",
-      "datePublished": "2026-09-22",
+      "datePublished": "2024-04-11",
       "hasPart": [
         {
           "@id": "https://livingobjects.ebi.ac.uk/bioimaging-01-pub/ebi-ngff-challenge-2024/7cc10a97-23f1-4e3e-80f2-d91dc39f2ab9.zarr/"
