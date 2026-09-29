@@ -54,6 +54,12 @@ function toRow(item, resource, resourceUrl) {
     modalityLabel: item["bioimage:imaging_method"]?.term_label,
     // the catalog's own PNG, or IDR's renderer where the challenge points at one
     thumbnail: href(item.assets.thumbnail),
+    // IDR's well annotations, which the Images + wells view filters on
+    gene: [item["idr:gene_symbol"], item["idr:gene_identifier"]].filter(Boolean).join(" ") || undefined,
+    compound: item["idr:compound_name"] ?? undefined,
+    sirna: item["idr:sirna_identifier"] ?? undefined,
+    control: item["idr:control_type"] ?? undefined,
+    cell_line: item["idr:cell_line"] ?? undefined,
     zarr_metadata: href(item.assets["zarr-metadata"]),
     ro_crate: href(item.assets["ro-crate"]),
   };

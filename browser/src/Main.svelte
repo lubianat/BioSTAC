@@ -20,27 +20,50 @@
   let totalBytes = 0;
   let showSourceColumn = false;
 
-  let filters = {
-    resource: "",
-    collection: "",
-    dimension: "",
-    organism: "",
-    modality: "",
-    text: "",
+  // a dropdown filter matches a row field exactly; a typed one (IDR annotations, too many values
+  // for a dropdown) matches any part of it
+  const SELECT_FIELDS = {
+    dimension: "dim_count", organism: "organismId", modality: "fbbiId", collection: "collection",
+    license: "license", control: "control", cell_line: "cell_line",
   };
+  const TYPED_FIELDS = { gene: "gene", compound: "compound", sirna: "sirna" };
+  const SIZES = ["x", "y", "z", "c", "t"].map((d) => ({ value: `size_${d}`, label: `Size: ${d.toUpperCase()}` }));
+  const BYTES = { value: "written", label: "Data size" };
+
+  let filters = { resource: "", text: "" };
 
   // what the list shows, as the bioimage:levels it includes; for HCS a well is the image unit
   const VIEWS = {
-    collection: { label: "Collections", levels: ["collection"] },
-    image: { label: "Images", levels: ["image"] },
-    plate: { label: "Plates", levels: ["plate"] },
-    wells: { label: "Images + wells", levels: ["image", "well"] },
+    collection: {
+      label: "Collections", levels: ["collection"],
+      selects: ["organism", "modality", "license"],
+      sorts: [BYTES, { value: "item_count", label: "Items" }],
+    },
+    image: {
+      label: "Images", levels: ["image"],
+      selects: ["dimension", "organism", "modality", "collection"],
+      sorts: [...SIZES, BYTES],
+    },
+    plate: {
+      label: "Plates", levels: ["plate"],
+      selects: ["organism", "modality", "collection"],
+      sorts: [{ value: "well_count", label: "Wells" }, BYTES],
+    },
+    wells: {
+      label: "Images + wells", levels: ["image", "well"],
+      selects: ["dimension", "organism", "modality", "collection", "control", "cell_line"],
+      typed: ["gene", "compound", "sirna"],
+      sorts: [...SIZES, BYTES],
+    },
   };
   let view = "image";
   let wells = "loading"; // 139k rows: fetched in the background once the rest is shown
 
   function setView(v) {
     view = v;
+    // a filter the new view does not show would still apply, invisibly: drop it
+    const shown = [...VIEWS[v].selects, ...(VIEWS[v].typed ?? []), "resource", "text", "collection"];
+    for (const key of Object.keys(filters)) if (!shown.includes(key)) delete filters[key];
     tableRows = applyFilters(ngffTable.getRows());
   }
 
@@ -76,20 +99,18 @@
   // Filtering
   // ────────────────────────────────────────────────────────────────
   function applyFilters(rows) {
-    const { resource, collection, dimension, organism, modality, text } =
-      filters;
-    const txt = text.toLowerCase();
+    const txt = filters.text.toLowerCase();
+    const selects = Object.entries(filters).filter(([k, v]) => v && SELECT_FIELDS[k]);
+    const typed = Object.entries(filters).filter(([k, v]) => v && TYPED_FIELDS[k]).map(([k, v]) => [k, v.toLowerCase()]);
     const levels = VIEWS[view].levels;
     rows = rows.filter((r) => levels.includes(r.level));
     if (rows.length !== viewRows.length || rows[0] !== viewRows[0]) viewRows = rows; // options follow only the view
     totalZarrs = rows.length;
 
     return rows.filter((r) => {
-      if (dimension && String(r.dim_count) !== dimension) return false;
-      if (organism && r.organismId !== organism) return false;
-      if (modality && r.fbbiId !== modality) return false;
-      if (resource && r.resource !== resource) return false;
-      if (collection && r.collection !== collection) return false;
+      if (filters.resource && r.resource !== filters.resource) return false;
+      for (const [k, v] of selects) if (String(r[SELECT_FIELDS[k]]) !== v) return false;
+      for (const [k, v] of typed) if (!r[TYPED_FIELDS[k]]?.toLowerCase().includes(v)) return false;
 
       if (txt && !r.haystack.includes(txt)) return false;
       return true;
@@ -126,30 +147,28 @@
   // ────────────────────────────────────────────────────────────────
   const distinct = (rows, key) => new Set(rows.map((r) => r[key]).filter((v) => v != null && v !== ""));
 
-  $: collectionOptions = Array.from(distinct(viewRows, "collection"))
-    .sort()
-    .map((v) => ({ value: String(v), label: `${v}` }));
-
-  $: dimensionOptions = Array.from(distinct(viewRows, "dim_count"))
-    .sort()
-    .map((v) => ({ value: String(v), label: `${v}D` }));
+  const plain = (key) =>
+    Array.from(distinct(viewRows, SELECT_FIELDS[key])).sort().map((v) => ({ value: String(v), label: String(v) }));
 
   $: organismIds = distinct(viewRows, "organismId");
   $: fbbiIds = distinct(viewRows, "fbbiId");
-  $: organismOptions = Object.entries($organismStore || {})
-    .filter(([id]) => organismIds.has(id))
-    .map(([id, name]) => ({ value: id, label: name }));
-
-  $: modalityOptions = Object.entries($imagingModalityStore || {})
-    .filter(([id]) => fbbiIds.has(id))
-    .map(([id, name]) => ({ value: id, label: name }));
-
-  $: filterOptions = {
-    dimension: dimensionOptions,
-    organism: organismOptions,
-    modality: modalityOptions,
-    collection: collectionOptions,
+  $: named = {
+    organism: Object.entries($organismStore || {}).filter(([id]) => organismIds.has(id)),
+    modality: Object.entries($imagingModalityStore || {}).filter(([id]) => fbbiIds.has(id)),
   };
+  $: filterOptions = Object.fromEntries(
+    VIEWS[view].selects.map((key) => [
+      key,
+      named[key]
+        ? named[key].map(([id, name]) => ({ value: id, label: name }))
+        : key === "dimension"
+          ? plain(key).map((o) => ({ ...o, label: `${o.value}D` }))
+          : plain(key),
+    ]),
+  );
+  $: typedOptions = Object.fromEntries(
+    (VIEWS[view].typed ?? []).map((key) => [key, Array.from(distinct(viewRows, TYPED_FIELDS[key])).sort()]),
+  );
 </script>
 
 <PreviewPopup />
@@ -185,11 +204,23 @@
 
         {#each Object.entries(filterOptions) as [key, options]}
           <FilterSelect
-            label={key}
-            value={filters[key]}
+            label={key.replace("_", " ")}
+            value={filters[key] ?? ""}
             {options}
             onChange={(v) => setFilter(key, v)}
           />
+        {/each}
+        {#each Object.entries(typedOptions) as [key, options]}
+          <input
+            class="typed"
+            list="{key}-options"
+            placeholder={key === "sirna" ? "siRNA" : key}
+            value={filters[key] ?? ""}
+            on:change={(e) => setFilter(key, e.target.value)}
+          />
+          <datalist id="{key}-options">
+            {#each options as option}<option value={option}></option>{/each}
+          </datalist>
         {/each}
         <div class="clear"></div>
 
@@ -198,12 +229,9 @@
           <select on:change={handleSort}>
             <option value="">--</option>
             <hr />
-            {#each ["x", "y", "z", "c", "t"] as dim}
-              <option value="size_{dim}">Size: {dim.toUpperCase()}</option>
+            {#each VIEWS[view].sorts as sort}
+              <option value={sort.value}>{sort.label}</option>
             {/each}
-            <hr />
-            <option value="written">Data Size (bytes)</option>
-            <option value="well_count">Wells</option>
           </select>
           <div>
             <ColumnSort {sortAscending} toggleAscending={toggleSortAscending} />
@@ -239,6 +267,17 @@
   .views button.active {
     background: var(--border-color);
     font-weight: bold;
+  }
+  input.typed {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.3rem 0.75rem;
+    font-size: 1rem;
+    margin: 3px 0;
+    background-color: var(--light-background);
+    border: 1px solid var(--border-color);
+    border-radius: 0.375rem;
   }
   .sidebarContainer {
     display: flex;
