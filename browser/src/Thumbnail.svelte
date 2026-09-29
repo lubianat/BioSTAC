@@ -10,14 +10,17 @@
   else if (thumbAspectRatio < 1) width = height * thumbAspectRatio;
 
   let loaded = !src; // no thumbnail (a well): nothing to wait for
+  let failed = false;
 </script>
 
 <div class="thumbWrapper" style="width:{width}px; height:{height}px;" class:spinner={!loaded}>
-  {#if src}
+  {#if !src || failed}
+    <div class="missing">No thumbnail available</div>
+  {:else}
     <img
       {src}
       on:load={() => (loaded = true)}
-      on:error={() => (loaded = true)}
+      on:error={() => (loaded = failed = true)}
       class:hidden={!loaded}
       style="width:{width}px; height:{height}px; object-fit:cover;"
       alt=""
@@ -31,6 +34,18 @@
   }
   .thumbWrapper {
     position: relative;
+  }
+  .missing {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #777;
+    background: rgba(128, 128, 128, 0.15);
+    border-radius: 4px;
   }
   img {
     box-shadow: 5px 4px 10px -5px #737373;
