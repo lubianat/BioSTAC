@@ -41,7 +41,7 @@
         >
       </div>
     </div>
-    <div class:hideOnSmall={!textFilter}>
+    <div class="description" class:hideOnSmall={!textFilter} title={rowData.description}>
       {@html rowData.description.replaceAll(
         textFilter,
         `<mark>${textFilter}</mark>`,
@@ -87,6 +87,13 @@
 </div>
 
 <style>
+  .description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
   .thumbWrapper {
     width: 120px;
     height: 120px;
