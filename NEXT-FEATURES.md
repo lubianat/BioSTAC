@@ -15,3 +15,5 @@
 
 
 – leverage the ontologies for filtering e.g. upper-level taxa and aggregating the fbbi terms. Maybe load ontologies as a parquet that can be joined. Maybe something else more efficient.
+
+– On-demand thumbnails: clicking the "No thumbnail available" placeholder renders a low-resolution level of the OME-Zarr in the browser (e.g. with ome-zarr.js), for wells and items without a pre-rendered PNG. Not by default: at scale that is one Zarr read per row.
