@@ -32,6 +32,7 @@
 
   let filters = { resource: "", text: "" };
   let viewRows = []; // every row of the current view, before the filters (declared before applyFilters first runs)
+  let facetCounts = {}; // dropdown -> value -> rows, under every other filter
 
   // what the list shows, as the bioimage:levels it includes; for HCS a well is the image unit
   const VIEWS = {
@@ -115,14 +116,30 @@
     if (rows.length !== viewRows.length || rows[0] !== viewRows[0]) viewRows = rows; // options follow only the view
     totalZarrs = rows.length;
 
-    return rows.filter((r) => {
-      if (filters.resource && r.resource !== filters.resource) return false;
-      for (const [k, v] of selects) if (String(r[SELECT_FIELDS[k]]) !== v) return false;
-      for (const [k, v] of typed) if (!r[TYPED_FIELDS[k]]?.toLowerCase().includes(v)) return false;
-
-      if (txt && !r.haystack.includes(txt)) return false;
-      return true;
-    });
+    // Crossfiltering in one pass: a dropdown's options are the values left by every *other* filter,
+    // so a row failing only that dropdown's own selection still counts toward it (and you can switch
+    // within it). Text, resource and typed fields are not dropdowns: failing them drops the row.
+    const facets = VIEWS[view].selects;
+    const counts = Object.fromEntries(facets.map((f) => [f, new Map()]));
+    const tally = (f, r) => {
+      const v = r[SELECT_FIELDS[f]];
+      if (v != null && v !== "") counts[f].set(String(v), (counts[f].get(String(v)) ?? 0) + 1);
+    };
+    const results = [];
+    for (const r of rows) {
+      if (filters.resource && r.resource !== filters.resource) continue;
+      if (typed.some(([k, v]) => !r[TYPED_FIELDS[k]]?.toLowerCase().includes(v))) continue;
+      if (txt && !r.haystack.includes(txt)) continue;
+      let failed = null;
+      let fails = 0;
+      for (const [k, v] of selects) if (String(r[SELECT_FIELDS[k]]) !== v && ++fails === 1) failed = k;
+      if (fails === 0) {
+        results.push(r);
+        for (const f of facets) tally(f, r);
+      } else if (fails === 1 && counts[failed]) tally(failed, r);
+    }
+    facetCounts = counts;
+    return results;
   }
 
   function setFilter(key, value) {
@@ -151,27 +168,19 @@
   }
 
   // ────────────────────────────────────────────────────────────────
-  // Derived options, from the whole view, so they don't churn with each filter
+  // Derived options: dropdowns from the facet counts, typed fields from the whole view
   // ────────────────────────────────────────────────────────────────
   const distinct = (rows, key) => new Set(rows.map((r) => r[key]).filter((v) => v != null && v !== ""));
 
-  const plain = (key) =>
-    Array.from(distinct(viewRows, SELECT_FIELDS[key])).sort().map((v) => ({ value: String(v), label: String(v) }));
-
-  $: organismIds = distinct(viewRows, "organismId");
-  $: fbbiIds = distinct(viewRows, "fbbiId");
-  $: named = {
-    organism: Object.entries($organismStore || {}).filter(([id]) => organismIds.has(id)),
-    modality: Object.entries($imagingModalityStore || {}).filter(([id]) => fbbiIds.has(id)),
-  };
+  // what the catalog calls an ontology id, else the value itself
+  $: names = { organism: $organismStore || {}, modality: $imagingModalityStore || {} };
+  const label = (names, key, value) => (key === "dimension" ? `${value}D` : (names[key]?.[value] ?? value));
   $: filterOptions = Object.fromEntries(
     VIEWS[view].selects.map((key) => [
       key,
-      named[key]
-        ? named[key].map(([id, name]) => ({ value: id, label: name }))
-        : key === "dimension"
-          ? plain(key).map((o) => ({ ...o, label: `${o.value}D` }))
-          : plain(key),
+      Array.from(facetCounts[key] ?? [])
+        .map(([value, n]) => ({ value, label: `${label(names, key, value)} (${n.toLocaleString()})` }))
+        .sort((a, b) => a.label.localeCompare(b.label)),
     ]),
   );
   $: typedOptions = Object.fromEntries(
