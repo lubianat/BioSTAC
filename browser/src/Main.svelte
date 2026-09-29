@@ -38,8 +38,15 @@
     collection: {
       label: "Collections", levels: ["collection"],
       selects: ["organism", "modality", "license"],
-      ranges: ["y", "x", "z", "c", "t"],
-      sorts: [BYTES, { value: "item_count", label: "Items" }],
+      // a collection holds many sizes: sort by the smallest or largest of its images
+      sorts: [
+        ...["y", "x", "z", "c", "t"].flatMap((d) => [
+          { value: `size_max_${d}`, label: `Max ${d.toUpperCase()}` },
+          { value: `size_min_${d}`, label: `Min ${d.toUpperCase()}` },
+        ]),
+        BYTES,
+        { value: "item_count", label: "Items" },
+      ],
     },
     image: {
       label: "Images", levels: ["image"],
@@ -64,8 +71,7 @@
   function setView(v) {
     view = v;
     // a filter the new view does not show would still apply, invisibly: drop it
-    const shown = [...VIEWS[v].selects, ...(VIEWS[v].typed ?? []), ...(VIEWS[v].ranges ?? []).map((a) => `range_${a}`),
-      "resource", "text", "collection"];
+    const shown = [...VIEWS[v].selects, ...(VIEWS[v].typed ?? []), "resource", "text", "collection"];
     for (const key of Object.keys(filters)) if (!shown.includes(key)) delete filters[key];
     tableRows = applyFilters(ngffTable.getRows());
   }
@@ -104,9 +110,6 @@
     const txt = filters.text.toLowerCase();
     const selects = Object.entries(filters).filter(([k, v]) => v && SELECT_FIELDS[k]);
     const typed = Object.entries(filters).filter(([k, v]) => v && TYPED_FIELDS[k]).map(([k, v]) => [k, v.toLowerCase()]);
-    const ranges = Object.entries(filters)
-      .filter(([k, v]) => k.startsWith("range_") && v && (v[0] !== "" || v[1] !== ""))
-      .map(([k, v]) => [k.slice(6), v]);
     const levels = VIEWS[view].levels;
     rows = rows.filter((r) => levels.includes(r.level));
     if (rows.length !== viewRows.length || rows[0] !== viewRows[0]) viewRows = rows; // options follow only the view
@@ -116,11 +119,6 @@
       if (filters.resource && r.resource !== filters.resource) return false;
       for (const [k, v] of selects) if (String(r[SELECT_FIELDS[k]]) !== v) return false;
       for (const [k, v] of typed) if (!r[TYPED_FIELDS[k]]?.toLowerCase().includes(v)) return false;
-      // a collection matches a size range when some of its images could: the ranges overlap
-      for (const [axis, [from, to]] of ranges) {
-        const [min, max] = r.size_range?.[axis] ?? [];
-        if (min === undefined || (from !== "" && max < from) || (to !== "" && min > to)) return false;
-      }
 
       if (txt && !r.haystack.includes(txt)) return false;
       return true;
@@ -232,16 +230,6 @@
             {#each options as option}<option value={option}></option>{/each}
           </datalist>
         {/each}
-        {#each VIEWS[view].ranges ?? [] as axis}
-          {@const range = filters[`range_${axis}`] ?? ["", ""]}
-          <div class="range">
-            <span>{axis.toUpperCase()}</span>
-            <input type="number" min="0" placeholder="from" value={range[0]}
-              on:change={(e) => setFilter(`range_${axis}`, [e.target.value === "" ? "" : +e.target.value, range[1]])} />
-            <input type="number" min="0" placeholder="to" value={range[1]}
-              on:change={(e) => setFilter(`range_${axis}`, [range[0], e.target.value === "" ? "" : +e.target.value])} />
-          </div>
-        {/each}
         <div class="clear"></div>
 
         <div>Sort by:</div>
@@ -287,23 +275,6 @@
   .views button.active {
     background: var(--border-color);
     font-weight: bold;
-  }
-  .range {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin: 3px 0;
-  }
-  .range span {
-    flex: 0 0 1.2em;
-  }
-  .range input {
-    flex: 1 1 0;
-    min-width: 0;
-    padding: 0.2rem 0.4rem;
-    border: 1px solid var(--border-color);
-    border-radius: 0.375rem;
-    background-color: var(--light-background);
   }
   input.typed {
     display: block;

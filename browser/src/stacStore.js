@@ -139,7 +139,7 @@ export async function loadStac(rootUrl) {
 }
 
 // ponytail: computed here from the loaded images and plates; move into studies.parquet once settled
-/** Give each collection row the smallest and largest size of its images, per axis. */
+/** Give each collection row the smallest and largest size of its images, per axis, for sorting and display. */
 function addSizeRanges() {
   const rows = ngffTable.getRows();
   const ranges = {};
@@ -153,6 +153,12 @@ function addSizeRanges() {
     }
   }
   ngffTable.store.update((table) =>
-    table.map((row) => (row.level === "collection" ? { ...row, size_range: ranges[row.collection] ?? {} } : row)),
+    table.map((row) => {
+      if (row.level !== "collection") return row;
+      const range = ranges[row.collection] ?? {};
+      // flat too, because sorting reads one field per row
+      const flat = Object.entries(range).flatMap(([axis, [min, max]]) => [[`size_min_${axis}`, min], [`size_max_${axis}`, max]]);
+      return { ...row, size_range: range, ...Object.fromEntries(flat) };
+    }),
   );
 }
