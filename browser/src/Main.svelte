@@ -31,6 +31,7 @@
   const BYTES = { value: "written", label: "Data size" };
 
   let filters = { resource: "", text: "" };
+  let viewRows = []; // every row of the current view, before the filters (declared before applyFilters first runs)
 
   // what the list shows, as the bioimage:levels it includes; for HCS a well is the image unit
   const VIEWS = {
@@ -87,7 +88,6 @@
   tableRows = applyFilters(ngffTable.getRows());
 
   let allRows = [];
-  let viewRows = []; // every row of the current view, before the filters
 
   // Single consolidated subscription
   ngffTable.subscribe((rows) => {

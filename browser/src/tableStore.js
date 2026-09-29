@@ -41,7 +41,7 @@ class NgffTable {
     });
 
     this.store.update((table) => {
-      table.push(...rows);
+      table = table.concat(rows); // not push(...rows): 139k arguments overflow the stack
       table.sort((a, b) => this.compareRows(a, b, true));
       return table;
     });
