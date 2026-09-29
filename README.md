@@ -145,6 +145,9 @@ resource's merged `items.parquet`. No Zarr is opened — the rows already carry 
 size and a thumbnail, so 1,908 images and plates arrive in a handful of requests, where the upstream
 gallery fetched a `zarr.json` per image. See [browser/README.md](browser/README.md).
 
+How far this carries (every row in the tab) and what replaces it at 1M–1B rows is in
+[SCALABILITY.md](SCALABILITY.md).
+
 ## Repository layout
 
 ```
