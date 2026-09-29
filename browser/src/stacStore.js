@@ -135,4 +135,24 @@ export async function loadStac(rootUrl) {
     }));
   });
   await Promise.all([loadTable("items"), loadTable("studies")]);
+  addSizeRanges();
+}
+
+// ponytail: computed here from the loaded images and plates; move into studies.parquet once settled
+/** Give each collection row the smallest and largest size of its images, per axis. */
+function addSizeRanges() {
+  const rows = ngffTable.getRows();
+  const ranges = {};
+  for (const row of rows) {
+    if (row.level === "collection") continue;
+    const range = (ranges[row.collection] ??= {});
+    for (const axis of AXES) {
+      const size = row[`size_${axis}`];
+      if (size == null || Number.isNaN(size)) continue;
+      range[axis] = [Math.min(size, range[axis]?.[0] ?? size), Math.max(size, range[axis]?.[1] ?? size)];
+    }
+  }
+  ngffTable.store.update((table) =>
+    table.map((row) => (row.level === "collection" ? { ...row, size_range: ranges[row.collection] ?? {} } : row)),
+  );
 }

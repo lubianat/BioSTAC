@@ -55,6 +55,13 @@
         <button on:click={() => onOpenCollection(rowData)}>Show {rowData.has_wells ? "plates" : "images"}</button>
       </div>
       {#if rowData.authors}<div>{rowData.authors}</div>{/if}
+      {#if rowData.size_range && Object.keys(rowData.size_range).length}
+        <div>
+          {#each Object.entries(rowData.size_range) as [axis, [min, max]]}
+            {axis.toUpperCase()}: {min === max ? min : `${min}–${max}`} &nbsp;
+          {/each}
+        </div>
+      {/if}
       <div>Data size: {filesizeformat(rowData.written)}</div>
     {:else}
     <OpenWith
