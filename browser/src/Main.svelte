@@ -33,6 +33,9 @@
   let filters = { resource: "", text: "" };
   let viewRows = []; // every row of the current view, before the filters (declared before applyFilters first runs)
   let facetCounts = {}; // dropdown -> value -> rows, under every other filter
+  // Crossfiltering costs a rows × dropdowns pass per change, so it is opt-in (see SCALABILITY.md)
+  let crossfilter = false;
+  let wholeViewCounts = null; // the counts when crossfilter is off, reset on view change
 
   // what the list shows, as the bioimage:levels it includes; for HCS a well is the image unit
   const VIEWS = {
@@ -71,6 +74,7 @@
 
   function setView(v) {
     view = v;
+    wholeViewCounts = null;
     // a filter the new view does not show would still apply, invisibly: drop it
     const shown = [...VIEWS[v].selects, ...(VIEWS[v].typed ?? []), "resource", "text", "collection"];
     for (const key of Object.keys(filters)) if (!shown.includes(key)) delete filters[key];
@@ -113,7 +117,8 @@
     const typed = Object.entries(filters).filter(([k, v]) => v && TYPED_FIELDS[k]).map(([k, v]) => [k, v.toLowerCase()]);
     const levels = VIEWS[view].levels;
     rows = rows.filter((r) => levels.includes(r.level));
-    if (rows.length !== viewRows.length || rows[0] !== viewRows[0]) viewRows = rows; // options follow only the view
+    const viewChanged = rows.length !== viewRows.length || rows[0] !== viewRows[0];
+    if (viewChanged) viewRows = rows;
     totalZarrs = rows.length;
 
     // Crossfiltering in one pass: a dropdown's options are the values left by every *other* filter,
@@ -126,6 +131,21 @@
       if (v != null && v !== "") counts[f].set(String(v), (counts[f].get(String(v)) ?? 0) + 1);
     };
     const results = [];
+    if (!crossfilter) {
+      // options from the whole view, counted once per view: the cheap default at scale
+      if (viewChanged || !wholeViewCounts) {
+        for (const r of rows) for (const f of facets) tally(f, r);
+        wholeViewCounts = counts;
+      }
+      facetCounts = wholeViewCounts;
+      return rows.filter(
+        (r) =>
+          (!filters.resource || r.resource === filters.resource) &&
+          !typed.some(([k, v]) => !r[TYPED_FIELDS[k]]?.toLowerCase().includes(v)) &&
+          (!txt || r.haystack.includes(txt)) &&
+          selects.every(([k, v]) => String(r[SELECT_FIELDS[k]]) === v),
+      );
+    }
     for (const r of rows) {
       if (filters.resource && r.resource !== filters.resource) continue;
       if (typed.some(([k, v]) => !r[TYPED_FIELDS[k]]?.toLowerCase().includes(v))) continue;
@@ -218,6 +238,14 @@
     <div class="sidebar">
       <div class="filters">
         <div style="white-space: nowrap;">Filter by:</div>
+        <label class="crossfilter" title="Each dropdown lists only what the other filters leave">
+          <input
+            type="checkbox"
+            bind:checked={crossfilter}
+            on:change={() => (tableRows = applyFilters(ngffTable.getRows()))}
+          />
+          Crossfilter
+        </label>
 
         {#each Object.entries(filterOptions) as [key, options]}
           <FilterSelect
@@ -293,6 +321,13 @@
     font-weight: bold;
   }
   /* laid out like FilterSelect: the field, then room for its clear button */
+  .crossfilter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 3px 0;
+    cursor: pointer;
+  }
   .typedWrapper {
     display: flex;
     align-items: center;
