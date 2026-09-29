@@ -29,19 +29,19 @@
     text: "",
   };
 
-  // what the list shows: one bioimage:level at a time, collections included
-  const VIEWS = { collection: "Collections", image: "Images", plate: "Plates", well: "Wells" };
+  // what the list shows, as the bioimage:levels it includes; for HCS a well is the image unit
+  const VIEWS = {
+    collection: { label: "Collections", levels: ["collection"] },
+    image: { label: "Images", levels: ["image"] },
+    plate: { label: "Plates", levels: ["plate"] },
+    wells: { label: "Images + wells", levels: ["image", "well"] },
+  };
   let view = "image";
-  let wells = "unloaded"; // "loading", "loaded": 139k rows, so fetched only when asked for
+  let wells = "loading"; // 139k rows: fetched in the background once the rest is shown
 
-  async function setView(v) {
+  function setView(v) {
     view = v;
     tableRows = applyFilters(ngffTable.getRows());
-    if (v === "well" && wells === "unloaded") {
-      wells = "loading";
-      await loadTable("wells");
-      wells = "loaded";
-    }
   }
 
   function openCollection(row) {
@@ -55,7 +55,10 @@
   // ────────────────────────────────────────────────────────────────
   // Data loading & subscription
   // ────────────────────────────────────────────────────────────────
-  getConfig().then((cfg) => loadStac(cfg.stac));
+  getConfig()
+    .then((cfg) => loadStac(cfg.stac))
+    .then(() => loadTable("wells"))
+    .then(() => (wells = "loaded"));
   tableRows = applyFilters(ngffTable.getRows());
 
   let allRows = [];
@@ -75,7 +78,8 @@
     const { resource, collection, dimension, organism, modality, text } =
       filters;
     const txt = text.toLowerCase();
-    rows = rows.filter((r) => r.level === view);
+    const levels = VIEWS[view].levels;
+    rows = rows.filter((r) => levels.includes(r.level));
     totalZarrs = rows.length;
 
     return rows.filter((r) => {
@@ -159,7 +163,7 @@
   <div class="summary">
     <PageTitle />
     <div class="views">
-      {#each Object.entries(VIEWS) as [key, label]}
+      {#each Object.entries(VIEWS) as [key, { label }]}
         <button class:active={view === key} on:click={() => setView(key)}>{label}</button>
       {/each}
     </div>
@@ -215,11 +219,8 @@
 
     <div class="results">
       <h3 style="margin-left: 15px">
-        {#if view === "well" && wells === "loading"}
-          Loading every well…
-        {:else}
-          Showing {tableRows.length} out of {totalZarrs} {VIEWS[view].toLowerCase()}
-        {/if}
+        Showing {tableRows.length} out of {totalZarrs} {VIEWS[view].label.toLowerCase()}
+        {#if view === "wells" && wells === "loading"}(loading wells…){/if}
       </h3>
       <ImageList {tableRows} textFilter={filters.text} onOpenCollection={openCollection} />
     </div>
