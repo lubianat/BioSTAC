@@ -30,7 +30,7 @@
         </dd>
         <dt>Collection</dt>
         <dd>
-          One study (<code>idr0004/</code>, <code>S-BIAD963/</code>): a Catalog
+          One collection (<code>idr0004/</code>, <code>S-BIAD963/</code>): a Catalog
           plus metadata — license, extent, summaries — and its RO-Crate.
           Collections are never nested.
         </dd>
@@ -48,7 +48,7 @@
       <svg
         viewBox="0 0 480 290"
         role="img"
-        aria-label="Root Catalog, then resource Catalog, then study Collection, then Item, then Asset; each study Collection has its Items as a Parquet asset, merged into one Parquet file linked from the resource Catalog"
+        aria-label="Root Catalog, then resource Catalog, then Collection, then Item, then Asset; each Collection has its Items as a Parquet asset, merged into one Parquet file linked from the resource Catalog"
       >
         <defs>
           <marker id="aboutArrow" viewBox="0 0 10 10" refX="9" refY="5"
@@ -72,7 +72,7 @@
         <line x1="395" y1="126" x2="395" y2="110" marker-end="url(#aboutArrow)" />
         <text x="402" y="122" class="note">merged</text>
         <text x="320" y="190" class="note">one row per Item:</text>
-        <text x="320" y="208" class="note">per study, and per</text>
+        <text x="320" y="208" class="note">per collection, and per</text>
         <text x="320" y="226" class="note">resource in one file</text>
       </svg>
       <p>
@@ -80,11 +80,11 @@
         <a href="https://github.com/stac-utils/stac-geoparquet" target="_blank"
           >stac-geoparquet</a
         >, one row each, which DuckDB or this gallery query in place over HTTP.
-        Each study carries its own <code>items.parquet</code> (and, for IDR
+        Each collection carries its own <code>items.parquet</code> (and, for IDR
         plates, <code>wells.parquet</code>); each resource links those merged into
         one file, so a query across a resource opens one file rather than one
-        per study. <code>studies.parquet</code> indexes the study files: filter
-        studies there, then read only theirs.
+        per collection. <code>studies.parquet</code> indexes the collection files: filter
+        collections there, then read only theirs.
       </p>
     </section>
     <hr />

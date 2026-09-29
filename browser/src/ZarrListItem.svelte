@@ -5,6 +5,7 @@
 
   export let rowData;
   export let textFilter;
+  export let onOpenCollection = () => {};
 
   import OpenWith from "./OpenWithViewers/index.svelte";
 
@@ -47,8 +48,17 @@
       )}
     </div>
 
+    {#if rowData.level === "collection"}
+      <div>
+        <a href={rowData.url} target="_blank" rel="noreferrer">{rowData.collection}</a> ·
+        {rowData.item_count} items · {rowData.license}
+        <button on:click={() => onOpenCollection(rowData)}>Show {rowData.has_wells ? "plates" : "images"}</button>
+      </div>
+      {#if rowData.authors}<div>{rowData.authors}</div>{/if}
+      <div>Data size: {filesizeformat(rowData.written)}</div>
+    {:else}
     <OpenWith
-      source={rowData.url}
+      source={rowData.level === "well" ? rowData.url.replace(/\/[^/]+\/[^/]+$/, "") : rowData.url}
       dtype={ome_zarr_data_type}
       version={ome_zarr_version}
     />
@@ -65,6 +75,7 @@
       {/each}
     </div>
     <div>Data size: {filesizeformat(rowData.written)}</div>
+    {/if}
   </div>
 </div>
 

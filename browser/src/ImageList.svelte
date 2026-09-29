@@ -4,6 +4,7 @@
 
   export let tableRows;
   export let textFilter;
+  export let onOpenCollection;
 
   function getItemKey(index) {
     return tableRows[index].url;
@@ -31,7 +32,6 @@
     prevScrollOffset = event.detail.offset;
   }
 
-  $: rowsKey = (tableRows ?? []).map((r) => r?.url ?? r?.index ?? "").join("|");
 </script>
 
 <svelte:window bind:innerHeight bind:scrollY={pageScrollY} />
@@ -42,7 +42,7 @@
   style:height="{innerHeight}px"
   class="imageListContainer"
 >
-  {#key rowsKey}
+  {#key tableRows}
     <VirtualList
       width="100%"
       height={innerHeight}
@@ -52,7 +52,7 @@
       on:afterScroll={afterScroll}
     >
       <div slot="item" let:index let:style {style} class="row">
-        <ZarrListItem rowData={tableRows[index]} {textFilter} />
+        <ZarrListItem rowData={tableRows[index]} {textFilter} {onOpenCollection} />
       </div>
     </VirtualList>
   {/key}

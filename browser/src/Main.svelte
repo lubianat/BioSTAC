@@ -7,7 +7,7 @@
   import PageTitle from "./PageTitle.svelte";
   import FilterSelect from "./FilterSelect.svelte";
   import SourceChips from "./SourceChips.svelte";
-  import { loadStac } from "./stacStore";
+  import { loadStac, loadTable } from "./stacStore";
   import { getConfig } from "./util";
 
   import form_select_bg_img from "/selectCaret.svg";
@@ -23,12 +23,31 @@
   let filters = {
     resource: "",
     collection: "",
-    level: "",
     dimension: "",
     organism: "",
     modality: "",
     text: "",
   };
+
+  // what the list shows: one bioimage:level at a time, collections included
+  const VIEWS = { collection: "Collections", image: "Images", plate: "Plates", well: "Wells" };
+  let view = "image";
+  let wells = "unloaded"; // "loading", "loaded": 139k rows, so fetched only when asked for
+
+  async function setView(v) {
+    view = v;
+    tableRows = applyFilters(ngffTable.getRows());
+    if (v === "well" && wells === "unloaded") {
+      wells = "loading";
+      await loadTable("wells");
+      wells = "loaded";
+    }
+  }
+
+  function openCollection(row) {
+    filters.collection = row.collection;
+    setView(row.has_wells ? "plate" : "image");
+  }
 
   let sortedBy = "";
   let sortAscending = false;
@@ -45,7 +64,6 @@
   ngffTable.subscribe((rows) => {
     allRows = rows; // This ensures allRows is always in sync
     tableRows = applyFilters(rows);
-    totalZarrs = rows.length;
     totalBytes = rows.reduce((acc, r) => acc + (parseInt(r.written) || 0), 0);
     showSourceColumn = rows.some((r) => r.source);
   });
@@ -54,27 +72,17 @@
   // Filtering
   // ────────────────────────────────────────────────────────────────
   function applyFilters(rows) {
-    const { resource, collection, level, dimension, organism, modality, text } =
+    const { resource, collection, dimension, organism, modality, text } =
       filters;
     const txt = text.toLowerCase();
-    if (
-      resource == "" &&
-      collection == "" &&
-      level == "" &&
-      dimension == "" &&
-      organism == "" &&
-      modality == "" &&
-      text == ""
-    ) {
-      return rows;
-    }
+    rows = rows.filter((r) => r.level === view);
+    totalZarrs = rows.length;
 
     return rows.filter((r) => {
       if (dimension && String(r.dim_count) !== dimension) return false;
       if (organism && r.organismId !== organism) return false;
       if (modality && r.fbbiId !== modality) return false;
       if (resource && r.resource !== resource) return false;
-      if (level && r.level !== level) return false;
       if (collection && r.collection !== collection) return false;
 
       if (
@@ -82,7 +90,8 @@
         !(
           r.url?.toLowerCase().includes(txt) ||
           r.description?.toLowerCase().includes(txt) ||
-          r.name?.toLowerCase().includes(txt)
+          r.name?.toLowerCase().includes(txt) ||
+          r.search?.toLowerCase().includes(txt)
         )
       )
         return false;
@@ -116,12 +125,6 @@
   // Derived options
   // ────────────────────────────────────────────────────────────────
 
-  $: levelOptions = Array.from(
-    new Set(tableRows.map((r) => String(r.level)).filter(Boolean)),
-  )
-    .sort()
-    .map((v) => ({ value: String(v), label: `${v}` }));
-
   $: collectionOptions = Array.from(
     new Set(tableRows.map((r) => String(r.collection)).filter(Boolean)),
   )
@@ -147,7 +150,6 @@
     organism: organismOptions,
     modality: modalityOptions,
     collection: collectionOptions,
-    level: levelOptions,
   };
 </script>
 
@@ -156,12 +158,17 @@
 <main style="--form-select-bg-img: url('{form_select_bg_img}')">
   <div class="summary">
     <PageTitle />
+    <div class="views">
+      {#each Object.entries(VIEWS) as [key, label]}
+        <button class:active={view === key} on:click={() => setView(key)}>{label}</button>
+      {/each}
+    </div>
     <SourceChips value={filters.resource} onChange={(v) => setFilter("resource", v)} />
     <div class="textInputWrapper">
       <input
         bind:value={filters.text}
         on:input={filterText}
-        placeholder="Filter by Name or Description"
+        placeholder="Type to filter"
         name="textFilter"
       />
       <button
@@ -208,14 +215,35 @@
 
     <div class="results">
       <h3 style="margin-left: 15px">
-        Showing {tableRows.length} out of {totalZarrs} images
+        {#if view === "well" && wells === "loading"}
+          Loading every well…
+        {:else}
+          Showing {tableRows.length} out of {totalZarrs} {VIEWS[view].toLowerCase()}
+        {/if}
       </h3>
-      <ImageList {tableRows} textFilter={filters.text} />
+      <ImageList {tableRows} textFilter={filters.text} onOpenCollection={openCollection} />
     </div>
   </div>
 </main>
 
 <style>
+  .views {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  .views button {
+    padding: 4px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--light-background);
+    cursor: pointer;
+  }
+  .views button.active {
+    background: var(--border-color);
+    font-weight: bold;
+  }
   .sidebarContainer {
     display: flex;
     flex-direction: row;

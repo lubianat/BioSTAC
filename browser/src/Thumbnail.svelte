@@ -9,7 +9,7 @@
   if (thumbAspectRatio > 1) height = width / thumbAspectRatio;
   else if (thumbAspectRatio < 1) width = height * thumbAspectRatio;
 
-  let loaded = false;
+  let loaded = !src; // no thumbnail (a well): nothing to wait for
 </script>
 
 <div class="thumbWrapper" style="width:{width}px; height:{height}px;" class:spinner={!loaded}>
