@@ -41,7 +41,7 @@
         >
       </div>
     </div>
-    <div class="description" class:hideOnSmall={!textFilter} title={rowData.description}>
+    <div class="description" class:oneLine={rowData.level === "collection"} class:hideOnSmall={!textFilter} title={rowData.description}>
       {@html rowData.description.replaceAll(
         textFilter,
         `<mark>${textFilter}</mark>`,
@@ -54,7 +54,6 @@
         {rowData.item_count} items · {rowData.license}
         <button on:click={() => onOpenCollection(rowData)}>Show {rowData.has_wells ? "plates" : "images"}</button>
       </div>
-      {#if rowData.authors}<div>{rowData.authors}</div>{/if}
       {#if rowData.size_range && Object.keys(rowData.size_range).length}
         <div>
           {#each Object.entries(rowData.size_range) as [axis, [min, max]]}
@@ -93,6 +92,10 @@
     line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+  .description.oneLine {
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
   }
   .thumbWrapper {
     width: 120px;
