@@ -322,7 +322,9 @@
   }
 
   .sidebar {
-    flex: 250px 0 0;
+    flex: 0 0 250px;
+    min-width: 0;
+    box-sizing: border-box;
     padding: 10px;
   }
   .results {
