@@ -228,13 +228,20 @@
           />
         {/each}
         {#each Object.entries(typedOptions) as [key, options]}
-          <input
-            class="typed"
-            list="{key}-options"
-            placeholder={key === "sirna" ? "siRNA" : key}
-            value={filters[key] ?? ""}
-            on:change={(e) => setFilter(key, e.target.value)}
-          />
+          <div class="typedWrapper">
+            <input
+              class="typed"
+              list="{key}-options"
+              placeholder={key === "sirna" ? "idr:siRNA" : `idr:${key}`}
+              value={filters[key] ?? ""}
+              on:change={(e) => setFilter(key, e.target.value)}
+            />
+            <button
+              title="Clear Filter"
+              style="visibility:{filters[key] ? 'visible' : 'hidden'}"
+              on:click={() => setFilter(key, "")}>&times;</button
+            >
+          </div>
           <datalist id="{key}-options">
             {#each options as option}<option value={option}></option>{/each}
           </datalist>
@@ -285,12 +292,26 @@
     background: var(--border-color);
     font-weight: bold;
   }
+  /* laid out like FilterSelect: the field, then room for its clear button */
+  .typedWrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .typedWrapper button {
+    background: transparent;
+    border: none;
+    padding: 2px;
+    font-size: 24px;
+    cursor: pointer;
+  }
   input.typed {
     display: block;
     width: 100%;
-    box-sizing: border-box;
+    box-sizing: border-box; /* as a select is by default, so both are the same width */
     padding: 0.3rem 0.75rem;
     font-size: 1rem;
+    line-height: 1.5;
     margin: 3px 0;
     background-color: var(--light-background);
     border: 1px solid var(--border-color);
