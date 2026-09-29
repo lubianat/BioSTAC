@@ -62,6 +62,7 @@
   tableRows = applyFilters(ngffTable.getRows());
 
   let allRows = [];
+  let viewRows = []; // every row of the current view, before the filters
 
   // Single consolidated subscription
   ngffTable.subscribe((rows) => {
@@ -80,6 +81,7 @@
     const txt = text.toLowerCase();
     const levels = VIEWS[view].levels;
     rows = rows.filter((r) => levels.includes(r.level));
+    if (rows.length !== viewRows.length || rows[0] !== viewRows[0]) viewRows = rows; // options follow only the view
     totalZarrs = rows.length;
 
     return rows.filter((r) => {
@@ -89,16 +91,7 @@
       if (resource && r.resource !== resource) return false;
       if (collection && r.collection !== collection) return false;
 
-      if (
-        txt &&
-        !(
-          r.url?.toLowerCase().includes(txt) ||
-          r.description?.toLowerCase().includes(txt) ||
-          r.name?.toLowerCase().includes(txt) ||
-          r.search?.toLowerCase().includes(txt)
-        )
-      )
-        return false;
+      if (txt && !r.haystack.includes(txt)) return false;
       return true;
     });
   }
@@ -108,8 +101,11 @@
     tableRows = applyFilters(ngffTable.getRows());
   }
 
+  // over 139k wells a keystroke per filter pass is too many: wait for a pause
+  let textTimer;
   function filterText(e) {
-    setFilter("text", e.target.value);
+    clearTimeout(textTimer);
+    textTimer = setTimeout(() => setFilter("text", e.target.value), 200);
   }
 
   // ────────────────────────────────────────────────────────────────
@@ -126,27 +122,26 @@
   }
 
   // ────────────────────────────────────────────────────────────────
-  // Derived options
+  // Derived options, from the whole view, so they don't churn with each filter
   // ────────────────────────────────────────────────────────────────
+  const distinct = (rows, key) => new Set(rows.map((r) => r[key]).filter((v) => v != null && v !== ""));
 
-  $: collectionOptions = Array.from(
-    new Set(tableRows.map((r) => String(r.collection)).filter(Boolean)),
-  )
+  $: collectionOptions = Array.from(distinct(viewRows, "collection"))
     .sort()
     .map((v) => ({ value: String(v), label: `${v}` }));
 
-  $: dimensionOptions = Array.from(
-    new Set(tableRows.map((r) => String(r.dim_count)).filter(Boolean)),
-  )
+  $: dimensionOptions = Array.from(distinct(viewRows, "dim_count"))
     .sort()
     .map((v) => ({ value: String(v), label: `${v}D` }));
 
+  $: organismIds = distinct(viewRows, "organismId");
+  $: fbbiIds = distinct(viewRows, "fbbiId");
   $: organismOptions = Object.entries($organismStore || {})
-    .filter(([id]) => tableRows.some((r) => r.organismId === id))
+    .filter(([id]) => organismIds.has(id))
     .map(([id, name]) => ({ value: id, label: name }));
 
   $: modalityOptions = Object.entries($imagingModalityStore || {})
-    .filter(([id]) => tableRows.some((r) => r.fbbiId === id))
+    .filter(([id]) => fbbiIds.has(id))
     .map(([id, name]) => ({ value: id, label: name }));
 
   $: filterOptions = {

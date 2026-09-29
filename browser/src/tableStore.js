@@ -33,6 +33,8 @@ class NgffTable {
           0,
         );
       }
+      // what the text filter searches, lowercased once rather than on every keystroke
+      row.haystack = [row.name, row.description, row.search, row.url].filter(Boolean).join(" ").toLowerCase();
       // add index for sorting
       row.index = Math.random() * (1 + index);
       return row;
