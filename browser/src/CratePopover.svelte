@@ -27,14 +27,17 @@
   {#if details}
     {#await details}
       <p>Loading…</p>
-    {:then { item, crate, crateUrl }}
+    {:then { item, crate, crateUrl, crateJson }}
       <section>
         <h3>Study: {crate.name}</h3>
         <p>
-          <a href={crateUrl} target="_blank" rel="noreferrer">ro-crate-metadata.json</a> ·
           <a href={EXPLORER + encodeURIComponent(crateUrl)} target="_blank" rel="noreferrer">open in RO-Crate Explorer</a>
           {#if isUrl(crate.url)} · <a href={crate.url} target="_blank" rel="noreferrer">study page</a>{/if}
         </p>
+        <details class="crate" open>
+          <summary>ro-crate-metadata.json <span class="note">the study's RO-Crate, as published</span></summary>
+          <pre>{crateJson}</pre>
+        </details>
         <table>
           {#each [["Identifier", crate.identifier], ["Published", crate.datePublished], ["License", crate.license],
                   ["Authors", crate.authors], ["Organisms", crate.organisms], ["Imaging methods", crate.methods],
@@ -46,6 +49,7 @@
           {/each}
         </table>
         {#if crate.description}<p class="description">{crate.description}</p>{/if}
+
       </section>
       {#if item}
         <section>
@@ -90,6 +94,35 @@
   td:first-child {
     white-space: nowrap;
     color: #555;
+  }
+  pre {
+    font-size: 0.8rem;
+    background: #f6f6f6;
+    padding: 8px;
+    overflow-x: auto;
+    max-height: 60vh;
+  }
+  .crate {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin: 8px 0 12px;
+  }
+  .crate summary {
+    cursor: pointer;
+    padding: 6px 10px;
+    font-family: monospace;
+    font-weight: bold;
+    background: #eef;
+  }
+  .crate pre {
+    margin: 0;
+    max-height: 40vh;
+  }
+  .note {
+    font-family: sans-serif;
+    font-weight: normal;
+    color: #555;
+    font-size: 0.85rem;
   }
   .description {
     white-space: pre-line;

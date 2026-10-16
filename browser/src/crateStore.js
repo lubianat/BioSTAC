@@ -179,20 +179,23 @@ export async function loadDetails(row) {
   if (!files.has(study.listUrl)) {
     files.set(study.listUrl, asyncBufferFromUrl({ url: study.listUrl }).then(cachedAsyncBuffer));
   }
-  if (!crates.has(study.crateUrl)) crates.set(study.crateUrl, crateGraph(study.crateUrl));
-  const [item, { root, byId }] = await Promise.all([
+  if (!crates.has(study.crateUrl)) crates.set(study.crateUrl, getJson(study.crateUrl));
+  const [item, json] = await Promise.all([
     row.listRow == null
       ? null
       : files.get(study.listUrl).then((file) =>
           parquetReadObjects({ file, compressors, rowStart: row.listRow, rowEnd: row.listRow + 1 })).then((r) => r[0]),
     crates.get(study.crateUrl),
   ]);
+  const byId = Object.fromEntries(json["@graph"].map((node) => [node["@id"], node]));
+  const root = byId["./"];
   // a reference resolves to its node where the crate has one: authors, taxa, publications
   const nodes = (key) => values(root[key]).map((v) => (v?.["@id"] ? byId[v["@id"]] ?? v : v));
   const named = (key) => nodes(key).map((n) => n?.name ?? n?.scientificName ?? n?.["@id"] ?? n).filter(Boolean);
   return {
     item,
     crateUrl: study.crateUrl,
+    crateJson: JSON.stringify(json, null, 2),
     crate: {
       name: root.name,
       identifier: root.identifier,
