@@ -1,0 +1,49 @@
+{
+  "@context": "https://w3id.org/ro/crate/1.2/context",
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "Crick — OME 2024 NGFF challenge",
+      "description": "Images submitted by the Francis Crick Institute to the OME 2024 NGFF challenge.",
+      "datePublished": "2026-10-16",
+      "license": {"@id": "https://creativecommons.org/publicdomain/zero/1.0/"},
+      "identifier": "crick",
+      "hasPart": [{"@id": "crick/"}, {"@id": "study-list.parquet"}],
+      "isBasedOn": [{"@id": "https://www.crick.ac.uk/"}]
+    },
+    {
+      "@id": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "@type": "CreativeWork",
+      "name": "CC0-1.0"
+    },
+    {
+      "@id": "crick/",
+      "@type": "Dataset",
+      "name": "crick — Benchmark SBF SEM data of HeLa cells",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "crick/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "crick/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "https://www.crick.ac.uk/", "@type": "CreativeWork", "name": "Francis Crick Institute"},
+    {
+      "@id": "study-list.parquet",
+      "@type": "File",
+      "name": "study-list.parquet",
+      "description": "Studies of this resource, one row each, naming each study's crate and item-list.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "5581",
+      "sha256": "2b413834f58373db38cf241cc1560a5dbb869f94f38d4ebc27299d2f6853486a"
+    }
+  ]
+}

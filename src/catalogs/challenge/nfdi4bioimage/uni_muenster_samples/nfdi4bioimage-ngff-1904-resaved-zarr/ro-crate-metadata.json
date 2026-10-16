@@ -1,0 +1,71 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"}
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "Maria Bohnert",
+      "description": "Training Set for NonPunctate Classes (Vacuolar membrane, Nucleus, Nucleolus, Nuclear periphery, Mitochondria, Eisosomes, Cell periphery, Cytosol, Vacuole, ER, Bud neck, Bud tip",
+      "datePublished": "2026-10-16",
+      "hasPart": [
+        {"@id": "https://radosgw.public.os2.wwu.de/ngff/1904_resaved.zarr/"},
+        {"@id": "https://radosgw.public.os2.wwu.de/ngff/1904_resaved.zarr/zarr.json"},
+        {"@id": "https://radosgw.public.os2.wwu.de/ngff/1904_resaved.zarr/ro-crate-metadata.json"},
+        {"@id": "thumbnail.png"}
+      ],
+      "isPartOf": {"@id": "../"},
+      "thumbnailUrl": [{"@id": "thumbnail.png"}],
+      "license": {"@id": "https://creativecommons.org/licenses/by-nc/4.0/"},
+      "about": [{"@id": "obo:NCBITaxon_4932"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00000246"}]
+    },
+    {
+      "@id": "https://radosgw.public.os2.wwu.de/ngff/1904_resaved.zarr/",
+      "@type": "Dataset",
+      "name": "OME-Zarr",
+      "encodingFormat": "application/vnd.zarr",
+      "contentSize": "4221870813"
+    },
+    {
+      "@id": "https://radosgw.public.os2.wwu.de/ngff/1904_resaved.zarr/zarr.json",
+      "@type": "File",
+      "name": "OME-Zarr metadata",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@id": "https://radosgw.public.os2.wwu.de/ngff/1904_resaved.zarr/ro-crate-metadata.json",
+      "@type": "File",
+      "name": "Image RO-Crate (NGFF challenge)",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "thumbnail.png", "@type": "File", "name": "Thumbnail", "encodingFormat": "image/png"},
+    {"@id": "obo:NCBITaxon_4932", "@type": "Taxon", "scientificName": "Saccharomyces cerevisiae"},
+    {"@id": "obo:FBbi_00000246", "@type": "DefinedTerm", "name": "fluorescence microscopy"},
+    {
+      "@id": "../",
+      "@type": "CreativeWork",
+      "name": "uni_muenster_samples — Burkhard Kasper",
+      "subjectOf": {"@id": "../ro-crate-metadata.json"}
+    },
+    {
+      "@id": "../ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    }
+  ]
+}

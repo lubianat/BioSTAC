@@ -1,0 +1,45 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"}
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "S-BIAD144 — HeLa cells",
+      "description": "S-BIAD144. No GIDE study crate is available for this study.",
+      "datePublished": "2026-10-15",
+      "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
+      "url": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD144",
+      "about": [{"@id": "obo:NCBITaxon_9601"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00000251"}],
+      "identifier": "S-BIAD144",
+      "thumbnailUrl": {"@id": "bia-hela-cells/thumbnail.png"},
+      "hasPart": [{"@id": "item-list.parquet"}]
+    },
+    {"@id": "obo:NCBITaxon_9601", "@type": "Taxon", "scientificName": "Pongo abelii"},
+    {"@id": "obo:FBbi_00000251", "@type": "DefinedTerm", "name": "confocal microscopy"},
+    {
+      "@id": "item-list.parquet",
+      "@type": "File",
+      "name": "item-list.parquet",
+      "description": "Items of this study, one row each",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "7577",
+      "sha256": "3ce885b016bdbbe6b0e55fb011418528888a044d53417136e45cbb46858e2d1a"
+    }
+  ]
+}

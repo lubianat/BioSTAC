@@ -1,0 +1,77 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"}
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "48-Susaki-MouseBrainCUBIC/Fig3E_Thy1-YFP-H",
+      "description": "Light-sheet fluorescence microscopy (LSFM) images of Thy1-YFP-H transgenic mouse brain",
+      "datePublished": "2026-10-16",
+      "hasPart": [
+        {
+          "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/6b003c94-9e1d-4fe2-99e0-628e5be2321d.zarr/"
+        },
+        {
+          "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/6b003c94-9e1d-4fe2-99e0-628e5be2321d.zarr/zarr.json"
+        },
+        {
+          "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/6b003c94-9e1d-4fe2-99e0-628e5be2321d.zarr/ro-crate-metadata.json"
+        },
+        {"@id": "thumbnail.png"}
+      ],
+      "isPartOf": {"@id": "../"},
+      "thumbnailUrl": [{"@id": "thumbnail.png"}],
+      "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
+      "about": [{"@id": "obo:NCBITaxon_10090"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00000251"}]
+    },
+    {
+      "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/6b003c94-9e1d-4fe2-99e0-628e5be2321d.zarr/",
+      "@type": "Dataset",
+      "name": "OME-Zarr",
+      "encodingFormat": "application/vnd.zarr",
+      "contentSize": "3574991399"
+    },
+    {
+      "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/6b003c94-9e1d-4fe2-99e0-628e5be2321d.zarr/zarr.json",
+      "@type": "File",
+      "name": "OME-Zarr metadata",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/6b003c94-9e1d-4fe2-99e0-628e5be2321d.zarr/ro-crate-metadata.json",
+      "@type": "File",
+      "name": "Image RO-Crate (NGFF challenge)",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "thumbnail.png", "@type": "File", "name": "Thumbnail", "encodingFormat": "image/png"},
+    {"@id": "obo:NCBITaxon_10090", "@type": "Taxon", "scientificName": "Mus musculus"},
+    {"@id": "obo:FBbi_00000251", "@type": "DefinedTerm", "name": "confocal microscopy"},
+    {
+      "@id": "../",
+      "@type": "CreativeWork",
+      "name": "ssbd — 48-Susaki-MouseBrainCUBIC/Fig3A_R26-pCAG-nuc-3xmKate2",
+      "subjectOf": {"@id": "../ro-crate-metadata.json"}
+    },
+    {
+      "@id": "../ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    }
+  ]
+}

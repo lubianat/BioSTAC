@@ -1,0 +1,81 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"}
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "2-Kyoda-WormEmbryoRNAi/wt_N2_030303_01",
+      "description": "3D time-lapse microscopy images about nuclear division dynamics in wild-type embryo",
+      "datePublished": "2026-10-16",
+      "hasPart": [
+        {
+          "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/f4331e06-dd38-46fd-ab2c-c53bf070db7f.zarr/"
+        },
+        {
+          "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/f4331e06-dd38-46fd-ab2c-c53bf070db7f.zarr/zarr.json"
+        },
+        {
+          "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/f4331e06-dd38-46fd-ab2c-c53bf070db7f.zarr/ro-crate-metadata.json"
+        },
+        {"@id": "thumbnail.png"}
+      ],
+      "isPartOf": {"@id": "../"},
+      "thumbnailUrl": [{"@id": "thumbnail.png"}],
+      "license": {"@id": "https://creativecommons.org/licenses/by-sa/4.0/"},
+      "about": [{"@id": "obo:NCBITaxon_6239"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00000245"}]
+    },
+    {
+      "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/f4331e06-dd38-46fd-ab2c-c53bf070db7f.zarr/",
+      "@type": "Dataset",
+      "name": "OME-Zarr",
+      "encodingFormat": "application/vnd.zarr",
+      "contentSize": "2683755276"
+    },
+    {
+      "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/f4331e06-dd38-46fd-ab2c-c53bf070db7f.zarr/zarr.json",
+      "@type": "File",
+      "name": "OME-Zarr metadata",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/f4331e06-dd38-46fd-ab2c-c53bf070db7f.zarr/ro-crate-metadata.json",
+      "@type": "File",
+      "name": "Image RO-Crate (NGFF challenge)",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "thumbnail.png", "@type": "File", "name": "Thumbnail", "encodingFormat": "image/png"},
+    {"@id": "obo:NCBITaxon_6239", "@type": "Taxon", "scientificName": "Caenorhabditis elegans"},
+    {
+      "@id": "obo:FBbi_00000245",
+      "@type": "DefinedTerm",
+      "name": "differential interference contrast microscopy"
+    },
+    {
+      "@id": "../",
+      "@type": "CreativeWork",
+      "name": "ssbd — 48-Susaki-MouseBrainCUBIC/Fig3A_R26-pCAG-nuc-3xmKate2",
+      "subjectOf": {"@id": "../ro-crate-metadata.json"}
+    },
+    {
+      "@id": "../ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    }
+  ]
+}

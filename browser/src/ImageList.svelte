@@ -7,7 +7,9 @@
   export let onOpenCollection;
 
   function getItemKey(index) {
-    return tableRows[index].url;
+    // url alone is not unique across levels and studies, and two studies may share a web page
+    const row = tableRows[index];
+    return `${row.level}:${row.collection}:${row.url}`;
   }
 
   let listContainer;

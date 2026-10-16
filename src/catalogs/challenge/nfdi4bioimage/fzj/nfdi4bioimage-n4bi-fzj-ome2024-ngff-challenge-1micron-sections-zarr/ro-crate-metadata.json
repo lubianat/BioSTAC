@@ -1,0 +1,77 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"}
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "Selected 1 micron scans of BigBrain histological sections",
+      "description": "This dataset contains selected microscopic scans of tissue sections at 1 micron in-plane resolution from the BigBrain, a whole brain 3D reconstruction of a human postmortem brain. Each image is provided both in its original histological space, as well as aligned to the corresponding coronal section of the 3D-reconstructed BigBrain space. The images were acquired by rescanning the original histological sections of the BigBrain model at an in-plane resolution of 1µm. The sections were aligned to their corresponding coronal planes in the 20µm 3D-reconstructed BigBrain space using 2D non-linear transformations, and allow to identify microscopic features at the cellular level due to their increased resolution.",
+      "datePublished": "2026-10-16",
+      "hasPart": [
+        {
+          "@id": "https://radosgw.public.os.wwu.de/n4bi-fzj/ome2024-ngff-challenge/1micron_sections.zarr/"
+        },
+        {
+          "@id": "https://radosgw.public.os.wwu.de/n4bi-fzj/ome2024-ngff-challenge/1micron_sections.zarr/zarr.json"
+        },
+        {
+          "@id": "https://radosgw.public.os.wwu.de/n4bi-fzj/ome2024-ngff-challenge/1micron_sections.zarr/ro-crate-metadata.json"
+        },
+        {"@id": "thumbnail.png"}
+      ],
+      "isPartOf": {"@id": "../"},
+      "thumbnailUrl": [{"@id": "thumbnail.png"}],
+      "license": {"@id": "https://creativecommons.org/licenses/by-nc-sa/4.0/"},
+      "about": [{"@id": "obo:NCBITaxon_9606"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00000243"}]
+    },
+    {
+      "@id": "https://radosgw.public.os.wwu.de/n4bi-fzj/ome2024-ngff-challenge/1micron_sections.zarr/",
+      "@type": "Dataset",
+      "name": "OME-Zarr",
+      "encodingFormat": "application/vnd.zarr",
+      "contentSize": "945395498496"
+    },
+    {
+      "@id": "https://radosgw.public.os.wwu.de/n4bi-fzj/ome2024-ngff-challenge/1micron_sections.zarr/zarr.json",
+      "@type": "File",
+      "name": "OME-Zarr metadata",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@id": "https://radosgw.public.os.wwu.de/n4bi-fzj/ome2024-ngff-challenge/1micron_sections.zarr/ro-crate-metadata.json",
+      "@type": "File",
+      "name": "Image RO-Crate (NGFF challenge)",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "thumbnail.png", "@type": "File", "name": "Thumbnail", "encodingFormat": "image/png"},
+    {"@id": "obo:NCBITaxon_9606", "@type": "Taxon", "scientificName": "Homo sapiens"},
+    {"@id": "obo:FBbi_00000243", "@type": "DefinedTerm", "name": "bright-field microscopy"},
+    {
+      "@id": "../",
+      "@type": "CreativeWork",
+      "name": "fzj — Cellular level 3D reconstructed volume at 1µm resolution within the BigBrain occipital cortex (area V1)",
+      "subjectOf": {"@id": "../ro-crate-metadata.json"}
+    },
+    {
+      "@id": "../ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    }
+  ]
+}

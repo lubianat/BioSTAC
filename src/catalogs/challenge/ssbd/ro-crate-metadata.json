@@ -1,0 +1,49 @@
+{
+  "@context": "https://w3id.org/ro/crate/1.2/context",
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "SSBD — OME 2024 NGFF challenge",
+      "description": "Images submitted by SSBD (RIKEN) to the OME 2024 NGFF challenge.",
+      "datePublished": "2026-10-16",
+      "license": {"@id": "https://creativecommons.org/publicdomain/zero/1.0/"},
+      "identifier": "ssbd",
+      "hasPart": [{"@id": "ssbd/"}, {"@id": "study-list.parquet"}],
+      "isBasedOn": [{"@id": "https://ssbd.riken.jp/"}]
+    },
+    {
+      "@id": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "@type": "CreativeWork",
+      "name": "CC0-1.0"
+    },
+    {
+      "@id": "ssbd/",
+      "@type": "Dataset",
+      "name": "ssbd — 48-Susaki-MouseBrainCUBIC/Fig3A_R26-pCAG-nuc-3xmKate2",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "ssbd/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "ssbd/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "https://ssbd.riken.jp/", "@type": "CreativeWork", "name": "SSBD"},
+    {
+      "@id": "study-list.parquet",
+      "@type": "File",
+      "name": "study-list.parquet",
+      "description": "Studies of this resource, one row each, naming each study's crate and item-list.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "5361",
+      "sha256": "c30d9313f4d53be09668053bfd915e978fa9d210cc527b9851ee804d97cb286f"
+    }
+  ]
+}

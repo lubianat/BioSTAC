@@ -4,10 +4,11 @@
   import ColumnSort from "./ColumnSort.svelte";
   import ImageList from "./ImageList.svelte";
   import PreviewPopup from "./PreviewPopup.svelte";
+  import CratePopover from "./CratePopover.svelte";
   import PageTitle from "./PageTitle.svelte";
   import FilterSelect from "./FilterSelect.svelte";
   import SourceChips from "./SourceChips.svelte";
-  import { loadStac, loadTable } from "./stacStore";
+  import { loadCatalog, loadTable } from "./crateStore";
   import { getConfig } from "./util";
 
   import form_select_bg_img from "/selectCaret.svg";
@@ -33,14 +34,14 @@
   let filters = { resource: "", text: "" };
   let viewRows = []; // every row of the current view, before the filters (declared before applyFilters first runs)
   let facetCounts = {}; // dropdown -> value -> rows, under every other filter
-  // Crossfiltering costs a rows × dropdowns pass per change, so it is opt-in (see SCALABILITY.md)
+  // Crossfiltering costs a rows × dropdowns pass per change, so it is opt-in
   let crossfilter = false;
   let wholeViewCounts = null; // the counts when crossfilter is off, reset on view change
 
   // what the list shows, as the bioimage:levels it includes; for HCS a well is the image unit
   const VIEWS = {
     collection: {
-      label: "Collections", levels: ["collection"],
+      label: "Studies", levels: ["collection"],
       selects: ["organism", "modality", "license"],
       // a collection holds many sizes: sort by the smallest or largest of its images
       sorts: [
@@ -93,7 +94,7 @@
   // Data loading & subscription
   // ────────────────────────────────────────────────────────────────
   getConfig()
-    .then((cfg) => loadStac(cfg.stac))
+    .then((cfg) => loadCatalog(cfg.crate))
     .then(() => loadTable("wells"))
     .then(() => (wells = "loaded"));
   tableRows = applyFilters(ngffTable.getRows());
@@ -209,6 +210,7 @@
 </script>
 
 <PreviewPopup />
+<CratePopover />
 
 <main style="--form-select-bg-img: url('{form_select_bg_img}')">
   <div class="summary">
@@ -249,7 +251,7 @@
 
         {#each Object.entries(filterOptions) as [key, options]}
           <FilterSelect
-            label={key.replace("_", " ")}
+            label={key === "collection" ? "study" : key.replace("_", " ")}
             value={filters[key] ?? ""}
             {options}
             onChange={(v) => setFilter(key, v)}

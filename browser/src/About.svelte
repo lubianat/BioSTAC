@@ -15,40 +15,36 @@
   >
   <div class="content">
     <section>
-      <h2>About BioSTAC</h2>
+      <h2>1. The RO-BioSTAC specification</h2>
       <p>
-        BioSTAC borrows <a href="https://stacspec.org" target="_blank">STAC</a>,
-        the SpatioTemporal Asset Catalog used for satellite imagery, to describe
-        bioimages. The OME-Zarrs stay where their resources host them; BioSTAC
-        publishes only metadata about them, in four kinds of object:
+        BioSTAC describes bioimages as nested
+        <a href="https://www.researchobject.org/ro-crate/" target="_blank">RO-Crates</a>,
+        with Parquet lists for search. The OME-Zarrs stay where their resources host them;
+        BioSTAC publishes only metadata about them, at three levels:
       </p>
       <dl>
         <dt>Catalog</dt>
         <dd>
-          Organizes, holds no data: the root <code>catalog.json</code>, and one
-          per resource (<code>idr/</code>, <code>bia/</code>).
+          Organizes, holds no data: the root crate, and one per resource
+          (<code>idr/</code>, <code>bia/</code>). A resource crate nests its study crates
+          and lists <code>study-list.parquet</code>, one row per study.
         </dd>
-        <dt>Collection</dt>
+        <dt>Study</dt>
         <dd>
-          One collection (<code>idr0004/</code>, <code>S-BIAD963/</code>): a Catalog
-          plus metadata — license, extent, summaries — and its RO-Crate.
-          Collections are never nested.
+          One study (<code>idr0004/</code>, <code>S-BIAD963/</code>): the crate its source
+          publishes, or one BioSTAC writes, listing one file, <code>item-list.parquet</code>.
+          Studies are never nested.
         </dd>
         <dt>Item</dt>
         <dd>
-          One OME-Zarr image or plate, with its organism, imaging method and
-          size.
-        </dd>
-        <dt>Asset</dt>
-        <dd>
-          The files an Item or Collection points to: the OME-Zarr itself, at IDR
-          or BIA, a thumbnail, the RO-Crate, a Parquet table.
+          One OME-Zarr — an image, a plate, or a plate's well — as a row of that list, with
+          its organism, imaging method and size, and absolute URLs to the Zarr and its own crate.
         </dd>
       </dl>
       <svg
-        viewBox="0 0 480 290"
+        viewBox="0 0 480 200"
         role="img"
-        aria-label="Root Catalog, then resource Catalog, then Collection, then Item, then Asset; each Collection has its Items as a Parquet asset, merged into one Parquet file linked from the resource Catalog"
+        aria-label="Root crate, then resource crate with study-list.parquet, then study crate with item-list.parquet, whose rows point by absolute URL to OME-Zarrs"
       >
         <defs>
           <marker id="aboutArrow" viewBox="0 0 10 10" refX="9" refY="5"
@@ -56,40 +52,77 @@
             <path d="M0,0 L10,5 L0,10 z" fill="currentColor" />
           </marker>
         </defs>
-        {#each [["Catalog", "catalog.json"], ["Catalog", "idr/catalog.json"], ["Collection", "idr0004/collection.json"], ["Item", "<image>.json"], ["Asset", "OME-Zarr, at IDR"]] as [kind, file], i}
-          <rect x="10" y={10 + i * 58} width="270" height="40" rx="6" />
-          <text x="22" y={35 + i * 58}><tspan class="kind">{kind}</tspan> {file}</text>
-          {#if i < 4}
-            <line x1="145" y1={50 + i * 58} x2="145" y2={66 + i * 58} marker-end="url(#aboutArrow)" />
+        {#each [["Catalog", "ro-crate-metadata.json", "study-list.parquet"], ["Study", "ro-crate-metadata.json", "item-list.parquet"], ["Item", "example.zarr/", "at IDR, BIA, …"]] as [kind, file, list], i}
+          <rect x="10" y={10 + i * 66} width="250" height="44" rx="6" />
+          <text x="22" y={37 + i * 66}><tspan class="kind">{kind}</tspan> {file}</text>
+          <rect x="300" y={10 + i * 66} width="170" height="44" rx="6" class={i < 2 ? "parquet" : ""} />
+          <text x="312" y={37 + i * 66}>{list}</text>
+          {#if i < 2}
+            <line x1="135" y1={54 + i * 66} x2="135" y2={74 + i * 66} marker-end="url(#aboutArrow)" />
+            <line x1="385" y1={54 + i * 66} x2="385" y2={74 + i * 66} class="dashed" marker-end="url(#aboutArrow)" />
           {/if}
         {/each}
-        <rect x="320" y="68" width="150" height="40" rx="6" class="parquet" />
-        <text x="332" y="93">items.parquet</text>
-        <line x1="280" y1="88" x2="318" y2="88" class="dashed" marker-end="url(#aboutArrow)" />
-        <rect x="320" y="126" width="150" height="40" rx="6" class="parquet" />
-        <text x="332" y="151">items.parquet</text>
-        <line x1="280" y1="146" x2="318" y2="146" class="dashed" marker-end="url(#aboutArrow)" />
-        <line x1="395" y1="126" x2="395" y2="110" marker-end="url(#aboutArrow)" />
-        <text x="402" y="122" class="note">merged</text>
-        <text x="320" y="190" class="note">one row per Item:</text>
-        <text x="320" y="208" class="note">per collection, and per</text>
-        <text x="320" y="226" class="note">resource in one file</text>
       </svg>
       <p>
-        The JSON tree can be walked link by link. The same Items are also
-        <a href="https://github.com/stac-utils/stac-geoparquet" target="_blank"
-          >stac-geoparquet</a
-        >, one row each, which DuckDB or this gallery query in place over HTTP.
-        Each collection carries its own <code>items.parquet</code> (and, for IDR
-        plates, <code>wells.parquet</code>); each resource links those merged into
-        one file, so a query across a resource opens one file rather than one
-        per collection. <code>studies.parquet</code> indexes the collection files: filter
-        collections there, then read only theirs.
+        The crates can be walked link by link with any RO-Crate tool. The lists are what this
+        gallery and DuckDB query in place over HTTP: filter studies in
+        <code>study-list.parquet</code>, then read only their <code>item-list.parquet</code>.
+        Each list holds images and plates first and wells after, so the gallery reads the wells
+        of IDR's plates only when you ask for them.
       </p>
     </section>
     <hr />
     <section>
-      <h2>About the OME-NGFF Challenge</h2>
+      <h2>2. The demo website</h2>
+      <p>
+        This gallery is a static site with no server or database of its own. Your browser
+        does all the work, fetching the catalog straight from where it is published.
+      </p>
+      <dl>
+        <dt>Front end</dt>
+        <dd>
+          <a href="https://svelte.dev" target="_blank">Svelte</a>, built with
+          <a href="https://vitejs.dev" target="_blank">Vite</a> into plain HTML, JS and CSS.
+          A GitHub Actions workflow builds it on every push to <code>main</code> and
+          publishes it to GitHub Pages.
+        </dd>
+        <dt>Catalog hosting</dt>
+        <dd>
+          The crates and Parquet lists are files in a
+          <a href="https://huggingface.co/buckets/tiagolubiana/RO-BioSTAC_demo" target="_blank"
+            >Hugging Face bucket</a
+          >, uploaded with <code>hf buckets sync</code>. Hugging Face serves them over
+          HTTPS with CORS and range requests, so they need no API in front.
+          <code>config.yaml</code> names the root crate; point it at another one to show
+          another catalog.
+        </dd>
+        <dt>Reading Parquet</dt>
+        <dd>
+          <a href="https://github.com/hyparam/hyparquet" target="_blank">hyparquet</a>, a
+          pure-JavaScript Parquet reader (with
+          <a href="https://github.com/hyparam/hyparquet-compressors" target="_blank"
+            >hyparquet-compressors</a
+          >) — no DuckDB, no WebAssembly. It reads a file's footer, then fetches only the row
+          groups it needs over HTTP range requests, so IDR's wells stay unfetched until you
+          ask for them.
+        </dd>
+        <dt>Search</dt>
+        <dd>
+          Filtering, sorting and the virtual-scrolled list run in memory over the loaded
+          rows. Nothing opens a Zarr to build the list: shape, organism, imaging method, size
+          and thumbnail are already columns of the Parquet.
+        </dd>
+        <dt>Viewing</dt>
+        <dd>
+          Opening an image hands its OME-Zarr URL to an external viewer, which reads the
+          Zarr directly from IDR or the BioImage Archive. The images never pass through
+          BioSTAC.
+        </dd>
+      </dl>
+    </section>
+    <hr />
+    <section>
+      <h2>3. The OME-NGFF Challenge</h2>
       <p>
         The <a href="https://github.com/ome/ome2024-ngff-challenge" target="_blank"
           >2024 OME-NGFF challenge</a

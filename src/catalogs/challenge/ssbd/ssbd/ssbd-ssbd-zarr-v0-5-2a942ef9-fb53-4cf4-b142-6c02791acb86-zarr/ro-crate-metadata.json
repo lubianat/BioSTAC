@@ -1,0 +1,81 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"}
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "163-Wang-MitochondrialDyn/Fig5AC_Mitochondrial_MitoPB",
+      "description": "Time-lapse STED imaging of mitochondrial dynamics in MitoPB Yellow-labeled cells",
+      "datePublished": "2026-10-16",
+      "hasPart": [
+        {
+          "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/2a942ef9-fb53-4cf4-b142-6c02791acb86.zarr/"
+        },
+        {
+          "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/2a942ef9-fb53-4cf4-b142-6c02791acb86.zarr/zarr.json"
+        },
+        {
+          "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/2a942ef9-fb53-4cf4-b142-6c02791acb86.zarr/ro-crate-metadata.json"
+        },
+        {"@id": "thumbnail.png"}
+      ],
+      "isPartOf": {"@id": "../"},
+      "thumbnailUrl": [{"@id": "thumbnail.png"}],
+      "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
+      "about": [{"@id": "obo:NCBITaxon_9606"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00000334"}]
+    },
+    {
+      "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/2a942ef9-fb53-4cf4-b142-6c02791acb86.zarr/",
+      "@type": "Dataset",
+      "name": "OME-Zarr",
+      "encodingFormat": "application/vnd.zarr",
+      "contentSize": "167121046"
+    },
+    {
+      "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/2a942ef9-fb53-4cf4-b142-6c02791acb86.zarr/zarr.json",
+      "@type": "File",
+      "name": "OME-Zarr metadata",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/2a942ef9-fb53-4cf4-b142-6c02791acb86.zarr/ro-crate-metadata.json",
+      "@type": "File",
+      "name": "Image RO-Crate (NGFF challenge)",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "thumbnail.png", "@type": "File", "name": "Thumbnail", "encodingFormat": "image/png"},
+    {"@id": "obo:NCBITaxon_9606", "@type": "Taxon", "scientificName": "Homo sapiens"},
+    {
+      "@id": "obo:FBbi_00000334",
+      "@type": "DefinedTerm",
+      "name": "stimulated emission depletion (STED)"
+    },
+    {
+      "@id": "../",
+      "@type": "CreativeWork",
+      "name": "ssbd — 48-Susaki-MouseBrainCUBIC/Fig3A_R26-pCAG-nuc-3xmKate2",
+      "subjectOf": {"@id": "../ro-crate-metadata.json"}
+    },
+    {
+      "@id": "../ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    }
+  ]
+}

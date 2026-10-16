@@ -1,0 +1,183 @@
+{
+  "@context": "https://w3id.org/ro/crate/1.2/context",
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "BIA / EBI — OME 2024 NGFF challenge",
+      "description": "Images submitted by the BioImage Archive (EMBL-EBI) to the OME 2024 NGFF challenge. Harvested from the challenge sample list; the OME-Zarr data stays on EBI servers.",
+      "datePublished": "2026-10-15",
+      "license": {"@id": "https://creativecommons.org/publicdomain/zero/1.0/"},
+      "identifier": "bia",
+      "hasPart": [
+        {"@id": "EMPIAR-10310/"},
+        {"@id": "EMPIAR-10392/"},
+        {"@id": "EMPIAR-10442/"},
+        {"@id": "EMPIAR-11830/"},
+        {"@id": "S-BIAD1083/"},
+        {"@id": "S-BIAD144/"},
+        {"@id": "S-BIAD464/"},
+        {"@id": "S-BIAD501/"},
+        {"@id": "S-BIAD606/"},
+        {"@id": "S-BIAD963/"},
+        {"@id": "study-list.parquet"}
+      ],
+      "isBasedOn": [
+        {
+          "@id": "https://github.com/ome/ome2024-ngff-challenge/blob/main/samples/ebi-ngff-challenge-samples.csv"
+        },
+        {"@id": "https://www.ebi.ac.uk/bioimage-archive/"}
+      ]
+    },
+    {
+      "@id": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "@type": "CreativeWork",
+      "name": "CC0-1.0"
+    },
+    {
+      "@id": "EMPIAR-10310/",
+      "@type": "Dataset",
+      "name": "FIB-SEM of parapodia from Platynereis dumerilii",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "EMPIAR-10310/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "EMPIAR-10310/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "EMPIAR-10392/",
+      "@type": "Dataset",
+      "name": "EMPIAR-10392 — Pladmodium falciparum schizont at parasitophorous vacuolar membrane (PVM) rupture",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "EMPIAR-10392/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "EMPIAR-10392/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "EMPIAR-10442/",
+      "@type": "Dataset",
+      "name": "170314, Five-day-old Col-0 Arabidopsis thaliana root, phloem pole unloading zone (339-381 um from the root tip)",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "EMPIAR-10442/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "EMPIAR-10442/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "EMPIAR-11830/",
+      "@type": "Dataset",
+      "name": "EMPIAR-11830 — C. reinhardtii tomogram",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "EMPIAR-11830/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "EMPIAR-11830/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "S-BIAD1083/",
+      "@type": "Dataset",
+      "name": "Pseudomonas aeruginosa breaches respiratory epithelia through goblet cell invasion in a microtissue model",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "S-BIAD1083/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "S-BIAD1083/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "S-BIAD144/",
+      "@type": "Dataset",
+      "name": "S-BIAD144 — HeLa cells",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "S-BIAD144/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "S-BIAD144/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "S-BIAD464/",
+      "@type": "Dataset",
+      "name": "S-BIAD464 — Calcium wave dynamics",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "S-BIAD464/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "S-BIAD464/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "S-BIAD501/",
+      "@type": "Dataset",
+      "name": "S-BIAD501 — Histopathology image of rat liver",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "S-BIAD501/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "S-BIAD501/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "S-BIAD606/",
+      "@type": "Dataset",
+      "name": "The sea spider Pycnogonum litorale overturns the paradigm of the absence of axial regeneration in molting animals",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "S-BIAD606/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "S-BIAD606/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "S-BIAD963/",
+      "@type": "Dataset",
+      "name": "The Benchtop mesoSPIM: a next-generation open-source light-sheet microscope for large cleared samples",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "S-BIAD963/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "S-BIAD963/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "https://github.com/ome/ome2024-ngff-challenge/blob/main/samples/ebi-ngff-challenge-samples.csv",
+      "@type": "CreativeWork",
+      "name": "Challenge sample list"
+    },
+    {
+      "@id": "https://www.ebi.ac.uk/bioimage-archive/",
+      "@type": "CreativeWork",
+      "name": "BioImage Archive"
+    },
+    {
+      "@id": "study-list.parquet",
+      "@type": "File",
+      "name": "study-list.parquet",
+      "description": "Studies of this resource, one row each, naming each study's crate and item-list.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "10780",
+      "sha256": "aa038e1ad8f97aa0f9a096b9f3529670b33b98d7c60c3e1127b2da5e5c04d32f"
+    }
+  ]
+}

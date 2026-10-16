@@ -1,0 +1,45 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"}
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "S-BIAD464 — Calcium wave dynamics",
+      "description": "S-BIAD464. No GIDE study crate is available for this study.",
+      "datePublished": "2026-10-15",
+      "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
+      "url": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD464",
+      "about": [{"@id": "obo:NCBITaxon_3701"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00000251"}],
+      "identifier": "S-BIAD464",
+      "thumbnailUrl": {"@id": "bia-calcium-wave-dynamics/thumbnail.png"},
+      "hasPart": [{"@id": "item-list.parquet"}]
+    },
+    {"@id": "obo:NCBITaxon_3701", "@type": "Taxon", "scientificName": "Arabidopsis"},
+    {"@id": "obo:FBbi_00000251", "@type": "DefinedTerm", "name": "confocal microscopy"},
+    {
+      "@id": "item-list.parquet",
+      "@type": "File",
+      "name": "item-list.parquet",
+      "description": "Items of this study, one row each",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "7872",
+      "sha256": "6cbbc45939b84e19ad6127bf9657d7b506963aea1367ba7bc8a1a865a6b3ca9e"
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 <script>
   // One chip per resource the catalog publishes, named by the catalog itself: the
-  // Collection id on the chip, its title and description in the tooltip.
+  // Resource id on the chip, its title and description in the tooltip.
   // Picking one filters the list; picking it again clears the filter.
-  import { resourceStore } from "./stacStore";
+  import { resourceStore } from "./crateStore";
 
   export let value = "";
   export let onChange;

@@ -1,0 +1,81 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"}
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "141-Sato-CellMorphology/Fig3a_FIB-SEM_synapse",
+      "description": "Single FIB-SEM images of spine synapse in wild-type (C57BL/6J) mice",
+      "datePublished": "2026-10-16",
+      "hasPart": [
+        {
+          "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/2b9f8ab8-5e53-434e-bb08-89e54c232ad8.zarr/"
+        },
+        {
+          "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/2b9f8ab8-5e53-434e-bb08-89e54c232ad8.zarr/zarr.json"
+        },
+        {
+          "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/2b9f8ab8-5e53-434e-bb08-89e54c232ad8.zarr/ro-crate-metadata.json"
+        },
+        {"@id": "thumbnail.png"}
+      ],
+      "isPartOf": {"@id": "../"},
+      "thumbnailUrl": [{"@id": "thumbnail.png"}],
+      "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
+      "about": [{"@id": "obo:NCBITaxon_10090"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00050000"}]
+    },
+    {
+      "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/2b9f8ab8-5e53-434e-bb08-89e54c232ad8.zarr/",
+      "@type": "Dataset",
+      "name": "OME-Zarr",
+      "encodingFormat": "application/vnd.zarr",
+      "contentSize": "3926923"
+    },
+    {
+      "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/2b9f8ab8-5e53-434e-bb08-89e54c232ad8.zarr/zarr.json",
+      "@type": "File",
+      "name": "OME-Zarr metadata",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@id": "https://dmss3gw.riken.jp/ssbd/zarr/v0.5/2b9f8ab8-5e53-434e-bb08-89e54c232ad8.zarr/ro-crate-metadata.json",
+      "@type": "File",
+      "name": "Image RO-Crate (NGFF challenge)",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "thumbnail.png", "@type": "File", "name": "Thumbnail", "encodingFormat": "image/png"},
+    {"@id": "obo:NCBITaxon_10090", "@type": "Taxon", "scientificName": "Mus musculus"},
+    {
+      "@id": "obo:FBbi_00050000",
+      "@type": "DefinedTerm",
+      "name": "focused ion beam scanning electron microscopy"
+    },
+    {
+      "@id": "../",
+      "@type": "CreativeWork",
+      "name": "ssbd — 48-Susaki-MouseBrainCUBIC/Fig3A_R26-pCAG-nuc-3xmKate2",
+      "subjectOf": {"@id": "../ro-crate-metadata.json"}
+    },
+    {
+      "@id": "../ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    }
+  ]
+}

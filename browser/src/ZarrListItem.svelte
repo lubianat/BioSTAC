@@ -1,6 +1,7 @@
 <script>
   import { filesizeformat } from "./util";
   import { ngffTable } from "./tableStore";
+  import { detailsRow } from "./crateStore";
   import Thumbnail from "./Thumbnail.svelte";
 
   export let rowData;
@@ -70,7 +71,8 @@
     />
     <div>
       {rowData.level}{#if rowData.well_count}, {rowData.well_count} wells{/if} ·
-      {rowData.collection} · OME-NGFF {rowData.ngff_version}
+      <button class="link" title="This item's row and its study's RO-Crate" on:click={() => detailsRow.set(rowData)}
+        >{rowData.collection} (study RO-Crate)</button> · OME-NGFF {rowData.ngff_version}
     </div>
     <div>
       Array dimensions:
@@ -86,6 +88,15 @@
 </div>
 
 <style>
+  .link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+  }
   .description {
     display: -webkit-box;
     -webkit-line-clamp: 3;

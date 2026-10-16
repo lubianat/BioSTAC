@@ -1,192 +1,75 @@
 # BioSTAC
 
-A small demo of [STAC](https://stacspec.org) catalogs for bioimaging data.
+A catalog of bioimaging data made of RO-Crates and Parquet lists. It is tried out on the
+[OME 2024 NGFF challenge](https://ome.github.io/ome2024-ngff-challenge/) submissions. The format is
+described in [SPECIFICATION.md](SPECIFICATION.md).
 
-STAC (SpatioTemporal Asset Catalog) is a simple JSON format for describing data files and the metadata used
-to find them. It comes from the Earth observation community. This repository tries it on OME-Zarr images,
-first on a handful of [IDR samples](https://idr.github.io/ome-ngff-samples/), then on the
-[OME 2024 NGFF challenge](https://ome.github.io/ome2024-ngff-challenge/) submissions.
+The catalog is published at
+`https://huggingface.co/buckets/tiagolubiana/RO-BioSTAC_demo/resolve/challenge/ro-crate-metadata.json`
+and browsed with the gallery in `browser/`.
 
-Nothing here copies pixel data. Every Item points at the original OME-Zarr where it already lives.
+BioSTAC started as a [STAC](https://stacspec.org) catalog. That version is kept, still runnable, in
+`src/stac_legacy/`.
 
-## Setup
+## Layout
+
+```
+SPECIFICATION.md   the format
+browser/           the gallery (Svelte, forked from zowser), reads the published catalog
+src/               the builder: marimo notebooks, run in order
+  10_bia_catalog.py      BIA, 10 images
+  14_idr_catalog.py      IDR, 1,898 images and plates
+  15_plate_wells.py      adds 139,286 IDR plate wells, with IDR annotations
+  19_other_catalogs.py   JAX, NFDI4BIOIMAGE, Webknossos, Crick
+  16_study_parquet.py    study-list.parquet per resource (run last)
+  13_ro_crate.py         checks the BIA crates against their item lists
+  17_search_deployed.py  queries the published catalog over HTTPS
+  biostac_build.py       shared build steps
+  deploy.sh              uploads catalogs/challenge to the bucket
+  catalogs/challenge/    the output (idr/ is not in git)
+  stac_legacy/           the STAC version, frozen
+```
+
+## Running
 
 ```bash
-uv venv
-uv pip install -r requirements.txt
-git submodule update --init      # the challenge repository, read in place
+uv venv && uv pip install -r src/requirements.txt
+git submodule update --init                       # the challenge's sample lists
+cd src
+../.venv/bin/python 10_bia_catalog.py             # or: ../.venv/bin/marimo edit 10_bia_catalog.py
+../.venv/bin/python 14_idr_catalog.py             # ~15 min cold, <1 min warm (build_cache/)
+../.venv/bin/python 15_plate_wells.py
+../.venv/bin/python 19_other_catalogs.py          # JAX is slow on a cold cache
+../.venv/bin/python 16_study_parquet.py
+./deploy.sh
 ```
 
-The notebooks are [marimo](https://marimo.io) notebooks:
+Gallery: `cd browser && npm install && npm run dev`. Its `config.yaml` names the catalog to read.
 
-```bash
-.venv/bin/marimo edit 01_basic_catalog.py
-```
+To check the crates: `uv run --with roc-validator rocrate-validator validate --profile-identifier
+ro-crate-1.2 --requirement-severity REQUIRED src/catalogs/challenge`.
 
-## The warm-up
+Known-good result: `idr:gene_symbol = 'PAU8'` finds idr0004, plate P101, well A2. That is the same hit
+IDR's own search gives.
 
-`samples.csv` lists 33 IDR OME-Zarr samples, versions 0.4 and 0.5. Each row becomes one Item.
+## Things that bit us
 
-| Notebook | What it shows |
-|---|---|
-| `01_basic_catalog.py` | A minimal catalog: one Item per OME-Zarr, with data, thumbnail and OME-XML assets. |
-| `02_browse.py` | Browsing it: a thumbnail grid that opens images in Vizarr, and a link to STAC Browser. |
-| `03_extended_catalog.py` | Searchable properties, one Collection per OME-NGFF version, schema validation. |
-| `04_search.py` | Searching it locally with CQL2, the STAC filter language. No server. |
-| `05_api.py` | Searching the same catalog through a real STAC API. |
+- OME-NGFF's `field_count` is the *maximum* number of fields per well, not the count. Wells, not fields,
+  are the smallest unit indexed.
+- GIDE's JSON-LD context cannot be listed by URL next to RO-Crate's ("recursive context inclusion"), so
+  crates inline the GIDE terms they use.
+- DuckDB: `level` is a reserved word. A glob over item lists needs `union_by_name := true`.
+- marimo: variable names are global across cells, so prefix cell-local ones with `_`.
+- hyparquet returns BigInt for integer columns.
+- ro-crate-py adds a trailing `/` to `Dataset` ids, so Zarr ids end in `/`.
+- One challenge image is tagged *Pongo abelii* where *Homo sapiens* is meant. Terms are only as good as the
+  submission.
 
-Notebook 5 needs that API running:
+## Next
 
-```bash
-docker compose -f api/docker-compose.yml up -d   # http://localhost:8082
-api/load.sh                                       # load catalogs/extended/ into it
-```
-
-## The pilot: the OME 2024 NGFF challenge
-
-The pilot builds one catalog over the challenge submissions, with a Catalog per contributing resource and
-a Collection per study, so that the resources can live in separate buckets and still be searched together.
-Collections are one level deep, as [MINI-PORTOLAN.md](MINI-PORTOLAN.md) asks: a resource only organizes,
-the study holds the data.
-
-```bash
-.venv/bin/marimo edit 10_bia_catalog.py     # BIA / EMBL-EBI, 10 images
-.venv/bin/marimo edit 14_idr_catalog.py     # IDR, 1,898 images and plates
-```
-
-Both builds read the challenge's own sample lists, fetch each image's `zarr.json` and RO-Crate for the
-OME-NGFF version, axes, specimen and imaging method, and cache everything under `build_cache/` so re-runs
-are offline. Items carry the experimental [`bioimage` extension](extensions/bioimage/). Items are grouped
-by study, and where [GIDE](https://github.com/foundingGIDE/gide-data-deliverable) or
-[IDR](https://github.com/German-BioImaging/idr_study_crates) publish a study RO-Crate, the study takes its
-title, authors, license and thumbnail from it — and **ships that crate** beside its `collection.json`.
-
-`catalogs/challenge/idr/` is not in git: 146 MB, built locally in about a minute from a warm cache.
-
-### Readable as STAC or as RO-Crate
-
-```bash
-.venv/bin/marimo edit 13_ro_crate.py
-```
-
-Every Item has an **RO-Crate twin** next to it, describing the same image: its remote parts, its taxon and
-imaging method, its license, the study it belongs to. The Item links to the crate with `rel: alternate`,
-the crate points back with `seeAlso`, and the crates nest the way the Collections do — a study crate lists
-each image folder as a nested crate, each image crate points at its parent.
-
-```
-catalogs/challenge/catalog.json
-└─ bia/catalog.json                             the resource (links items.parquet, studies.parquet)
-   └─ S-BIAD963/
-      ├─ collection.json                        a study, as STAC (+ its own items.parquet)
-      ├─ ro-crate-metadata.json                 the same study, as RO-Crate
-      └─ bia-mouse-cns-mesospim/
-         ├─ bia-mouse-cns-mesospim.json         an image, as STAC
-         ├─ ro-crate-metadata.json              the same image, as RO-Crate
-         └─ thumbnail.png
-```
-
-The whole tree passes the REQUIRED checks of the RO-Crate 1.2 profile, and the notebook checks that the
-two views agree on title, license, taxon, imaging method and data location for every image.
-
-### Four levels, four tables
-
-Each study Collection also gets a [stac-geoparquet](https://github.com/stac-utils/stac-geoparquet) file,
-`items.parquet` (and `wells.parquet` for IDR plate studies), as an asset of its `collection.json`. Each
-resource Catalog links the same rows merged into one file, so a query across a resource opens one file
-rather than one per study; the merged file is only ever built from the study files. A Catalog has no
-assets, so these are `rel: alternate` links, told apart by `bioimage:table` (`items`, `studies`, `wells`).
-`studies.parquet` also indexes each study's own files (`items_href`, `wells_href`): filter studies there,
-then read only theirs. The JSON stays canonical; the Parquet makes the catalog queryable with no STAC
-library and no server, and it is what a federated query reads across buckets.
-
-```bash
-.venv/bin/marimo edit 11_parquet_build.py   # items.parquet per study, merged per resource (before 15)
-.venv/bin/marimo edit 12_parquet_query.py   # queries them with DuckDB and rustac
-.venv/bin/marimo edit 15_plate_wells.py     # wells.parquet: 139,286 wells of the 635 plates
-.venv/bin/marimo edit 16_study_parquet.py   # studies.parquet: one row per study, from its crate
-```
-
-Every row says what it is in `bioimage:level` — `image`, `plate` or `well` — so all of them can be searched
-together and told apart afterwards.
-
-**A plate is one Item, and its wells are rows.** IDR's screen annotations are keyed by plate and well, and
-the field images of a well share them, so the well is the smallest unit that carries anything to search.
-Each well row adds a curated part of those annotations, the [`idr:` extension](extensions/idr/): gene,
-siRNA, compound, cell line, control type, phenotypes. IDR's tables are not republished.
-
-This is what makes IDR-style search work on the catalog. `idr:gene_symbol = 'PAU8'` returns idr0004 plate
-P101 well A2 — the same hit IDR's own search gives.
-
-### Searching what is actually published
-
-```bash
-.venv/bin/marimo edit 17_search_deployed.py
-```
-
-The closing notebook knows one thing, the URL of the deployed root catalog, and discovers the rest: it
-crawls the federation with pystac, takes the Parquet hrefs from the catalog itself, and queries them over
-HTTPS with DuckDB. Nothing local is read. The buckets serve range requests, so a query fetches only the
-column chunks it names.
-
-Its queries are grouped by how many files each one needs, because that is the point of a federated catalog:
-the gene search reads one file, the plate-to-well join reads two, the count by level reads them all, and
-the study join reaches four files in two buckets. Six queries, about 15 seconds over the network.
-
-### Browsing it
-
-```bash
-cd browser && npm install && npm run dev
-```
-
-`browser/` is the challenge's own gallery, forked from [zowser](https://github.com/lubianat/zowser) and
-rewired to read this catalog: its `config.yaml` names the root URL, and it follows that to each
-resource's merged `items.parquet`. No Zarr is opened — the rows already carry shape, organism, imaging method,
-size and a thumbnail, so 1,908 images and plates arrive in a handful of requests, where the upstream
-gallery fetched a `zarr.json` per image. See [browser/README.md](browser/README.md).
-
-How far this carries (every row in the tab) and what replaces it at 1M–1B rows is in
-[SCALABILITY.md](SCALABILITY.md).
-
-## Repository layout
-
-```
-samples.csv                     input: IDR OME-Zarr samples (v0.4, v0.5)
-01_ … 05_*.py                   notebooks (IDR samples warm-up)
-10_bia_catalog.py               pilot: BIA source
-14_idr_catalog.py               pilot: IDR source
-15_plate_wells.py               plate wells as Parquet rows, annotated from IDR
-16_study_parquet.py             studies as a table, from the Collections and their crates (an index)
-17_search_deployed.py           queries the published catalog from its root URL
-11_parquet_build.py             writes stac-geoparquet per study, and merges it per resource
-12_parquet_query.py             queries it with DuckDB and rustac
-13_ro_crate.py                  reads the same tree as RO-Crate; checks the two views agree
-biostac_build.py                build steps shared by the BIA and IDR notebooks
-readable_stac_io.py             writes STAC JSON with short objects on one line
-extensions/                     experimental STAC extensions: ome-ngff, bioimage, idr
-catalogs/                       basic/ and extended/ (warm-up), challenge/ (pilot)
-browser/                        the challenge gallery, reading this catalog's Parquet
-api/                            Docker setup and loader for the STAC API
-ome2024-ngff-challenge/         submodule: the challenge repo and its sample lists
-build_cache/                    cached zarr.json / RO-Crate / OLS4 responses
-```
-
-[AGENTS.md](AGENTS.md) has the operational detail: build costs, the conventions the catalog relies on,
-and the mistakes already made.
-
-## Notes on fitting microscopy into STAC
-
-STAC was designed for geospatial data, so a few things need a workaround:
-
-- **Geometry.** Items may have `geometry: null`, and pystac and STAC Browser accept that, but the databases
-  behind STAC APIs require one. Every Item sits at a placeholder point (0,0). It is not a location.
-- **Spatial extent.** Collections must declare one. They use the same placeholder.
-- **One parent per Item.** An Item belongs to one Collection, so only one grouping can be the hierarchy.
-  Here that is the study. Everything else is a searchable property.
-- **Empty values.** Some images have no Z, C or T size. A local CQL2 search counts comparisons on missing
-  values as "no match"; the API leaves missing properties out of its results.
-
-Two things the sources themselves taught us, kept here because they are about the data and not about this
-repository: OME-NGFF's `field_count` is the *maximum* number of fields in any well of a plate, not the
-count in each; and ontology terms are only as good as the submission — one challenge image is tagged
-*Pongo abelii* where *Homo sapiens* is meant.
+- Add the remaining challenge datasets; align with
+  [bioparquet](https://github.com/AllenNeuralDynamics/bioparquet-sandbox).
+- Query the lists in place (DuckDB-wasm) instead of loading every row into the tab.
+- Filter by higher-level taxa and imaging-method groups using the ontologies.
+- Render thumbnails on demand for rows without one.
+- Viewer buttons in the gallery still hardcode NGFF 0.5.

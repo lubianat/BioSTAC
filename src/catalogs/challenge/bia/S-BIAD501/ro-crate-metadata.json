@@ -1,0 +1,45 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"}
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "S-BIAD501 — Histopathology image of rat liver",
+      "description": "S-BIAD501. No GIDE study crate is available for this study.",
+      "datePublished": "2026-10-15",
+      "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
+      "url": "https://www.ebi.ac.uk/biostudies/BioImages/studies/S-BIAD501",
+      "about": [{"@id": "obo:NCBITaxon_10116"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00000243"}],
+      "identifier": "S-BIAD501",
+      "thumbnailUrl": {"@id": "bia-histopathology-image-of-rat-liver/thumbnail.png"},
+      "hasPart": [{"@id": "item-list.parquet"}]
+    },
+    {"@id": "obo:NCBITaxon_10116", "@type": "Taxon", "scientificName": "Rattus norvegicus"},
+    {"@id": "obo:FBbi_00000243", "@type": "DefinedTerm", "name": "bright-field microscopy"},
+    {
+      "@id": "item-list.parquet",
+      "@type": "File",
+      "name": "item-list.parquet",
+      "description": "Items of this study, one row each",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "8268",
+      "sha256": "c64e1e1c97ab5847e4ee814bd308dc24e332fca83a0931b5c8f9aa6fd0d40d2a"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"}
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "dataset name",
+      "description": "dataset description",
+      "datePublished": "2026-10-16",
+      "hasPart": [
+        {
+          "@id": "https://radosgw.public.os.wwu.de/ta3-bucket/150421_DBE_L3_C155xCherryDlgS97/stiched_1.ims.zarr/"
+        },
+        {
+          "@id": "https://radosgw.public.os.wwu.de/ta3-bucket/150421_DBE_L3_C155xCherryDlgS97/stiched_1.ims.zarr/zarr.json"
+        },
+        {
+          "@id": "https://radosgw.public.os.wwu.de/ta3-bucket/150421_DBE_L3_C155xCherryDlgS97/stiched_1.ims.zarr/ro-crate-metadata.json"
+        }
+      ],
+      "isPartOf": {"@id": "../"},
+      "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
+      "about": [{"@id": "obo:NCBITaxon_7227"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00000369"}]
+    },
+    {
+      "@id": "https://radosgw.public.os.wwu.de/ta3-bucket/150421_DBE_L3_C155xCherryDlgS97/stiched_1.ims.zarr/",
+      "@type": "Dataset",
+      "name": "OME-Zarr",
+      "encodingFormat": "application/vnd.zarr",
+      "contentSize": "4846235826"
+    },
+    {
+      "@id": "https://radosgw.public.os.wwu.de/ta3-bucket/150421_DBE_L3_C155xCherryDlgS97/stiched_1.ims.zarr/zarr.json",
+      "@type": "File",
+      "name": "OME-Zarr metadata",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@id": "https://radosgw.public.os.wwu.de/ta3-bucket/150421_DBE_L3_C155xCherryDlgS97/stiched_1.ims.zarr/ro-crate-metadata.json",
+      "@type": "File",
+      "name": "Image RO-Crate (NGFF challenge)",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "obo:NCBITaxon_7227", "@type": "Taxon", "scientificName": "Drosophila melanogaster"},
+    {
+      "@id": "obo:FBbi_00000369",
+      "@type": "DefinedTerm",
+      "name": "selective plane illumination fluorescence microscopy"
+    },
+    {
+      "@id": "../",
+      "@type": "CreativeWork",
+      "name": "lin_samples — 150715_DBE_Drosi_CherryCAAX_nSybGal4/L3_nsybG4xcherryCAAXmerged.ims.zarr",
+      "subjectOf": {"@id": "../ro-crate-metadata.json"}
+    },
+    {
+      "@id": "../ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    }
+  ]
+}

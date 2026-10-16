@@ -1,0 +1,8 @@
+marimo
+duckdb
+zarr>=3
+numpy
+pillow
+fsspec
+aiohttp  # zarr reads https through fsspec
+rocrate

@@ -1,0 +1,117 @@
+{
+  "@context": "https://w3id.org/ro/crate/1.2/context",
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "BioSTAC — OME 2024 NGFF challenge",
+      "description": "An RO-Crate catalog over the OME 2024 NGFF challenge data: one nested crate per resource, each listing its studies in study-list.parquet, each study its images in item-list.parquet.",
+      "datePublished": "2026-10-16",
+      "license": {"@id": "https://creativecommons.org/publicdomain/zero/1.0/"},
+      "hasPart": [
+        {"@id": "bia/"},
+        {"@id": "crick/"},
+        {"@id": "idr/"},
+        {"@id": "jax/"},
+        {"@id": "nfdi4bioimage/"},
+        {"@id": "ssbd/"},
+        {"@id": "webknossos/"}
+      ]
+    },
+    {
+      "@id": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "@type": "CreativeWork",
+      "name": "CC0-1.0"
+    },
+    {
+      "@id": "bia/",
+      "@type": "Dataset",
+      "name": "BIA / EBI — OME 2024 NGFF challenge",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "bia/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "bia/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "crick/",
+      "@type": "Dataset",
+      "name": "Crick — OME 2024 NGFF challenge",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "crick/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "crick/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "idr/",
+      "@type": "Dataset",
+      "name": "IDR — OME 2024 NGFF challenge",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "idr/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "idr/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "jax/",
+      "@type": "Dataset",
+      "name": "JAX — OME 2024 NGFF challenge",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "jax/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "jax/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "nfdi4bioimage/",
+      "@type": "Dataset",
+      "name": "NFDI4BIOIMAGE — OME 2024 NGFF challenge",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "nfdi4bioimage/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "nfdi4bioimage/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "ssbd/",
+      "@type": "Dataset",
+      "name": "SSBD — OME 2024 NGFF challenge",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "ssbd/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "ssbd/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "webknossos/",
+      "@type": "Dataset",
+      "name": "Webknossos — OME 2024 NGFF challenge",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "webknossos/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "webknossos/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    }
+  ]
+}

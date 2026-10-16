@@ -1,0 +1,72 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"}
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "Rat brain",
+      "description": "Rat brain cleared using 3DISCO protocol and imaged using light sheet microscopy.",
+      "datePublished": "2026-10-16",
+      "hasPart": [
+        {"@id": "https://radosgw.public.os.wwu.de/ta3-bucket/a114.zarr/"},
+        {"@id": "https://radosgw.public.os.wwu.de/ta3-bucket/a114.zarr/zarr.json"},
+        {"@id": "https://radosgw.public.os.wwu.de/ta3-bucket/a114.zarr/ro-crate-metadata.json"}
+      ],
+      "isPartOf": {"@id": "../"},
+      "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
+      "about": [{"@id": "obo:NCBITaxon_10117"}],
+      "measurementMethod": [{"@id": "obo:OBI_0003098"}]
+    },
+    {
+      "@id": "https://radosgw.public.os.wwu.de/ta3-bucket/a114.zarr/",
+      "@type": "Dataset",
+      "name": "OME-Zarr",
+      "encodingFormat": "application/vnd.zarr",
+      "contentSize": "37860247330"
+    },
+    {
+      "@id": "https://radosgw.public.os.wwu.de/ta3-bucket/a114.zarr/zarr.json",
+      "@type": "File",
+      "name": "OME-Zarr metadata",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@id": "https://radosgw.public.os.wwu.de/ta3-bucket/a114.zarr/ro-crate-metadata.json",
+      "@type": "File",
+      "name": "Image RO-Crate (NGFF challenge)",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "obo:NCBITaxon_10117", "@type": "Taxon", "scientificName": "Rattus rattus"},
+    {
+      "@id": "obo:OBI_0003098",
+      "@type": "DefinedTerm",
+      "name": "lightsheet fluorescence microscopy assay"
+    },
+    {
+      "@id": "../",
+      "@type": "CreativeWork",
+      "name": "lin_samples — 150715_DBE_Drosi_CherryCAAX_nSybGal4/L3_nsybG4xcherryCAAXmerged.ims.zarr",
+      "subjectOf": {"@id": "../ro-crate-metadata.json"}
+    },
+    {
+      "@id": "../ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    }
+  ]
+}

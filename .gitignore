@@ -1,5 +1,7 @@
 .venv/
 __marimo__/
 __pycache__/
-build_cache/
-catalogs/challenge/idr/
+src/build_cache/
+src/catalogs/challenge/idr/
+src/catalogs/challenge/jax/
+.claude/

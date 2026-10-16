@@ -1,0 +1,45 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.2/context",
+    {
+      "obo": "http://purl.obolibrary.org/obo/",
+      "dwc": "http://rs.tdwg.org/dwc/terms/",
+      "dwciri": "http://rs.tdwg.org/dwc/iri/",
+      "scientificName": {"@id": "dwc:scientificName"},
+      "measurementMethod": {"@id": "dwciri:measurementMethod"}
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "EMPIAR-11830 — C. reinhardtii tomogram",
+      "description": "EMPIAR-11830. No GIDE study crate is available for this study.",
+      "datePublished": "2026-10-15",
+      "license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
+      "url": "https://www.ebi.ac.uk/empiar/EMPIAR-11830/",
+      "about": [{"@id": "obo:NCBITaxon_3055"}],
+      "measurementMethod": [{"@id": "obo:FBbi_00001004"}],
+      "identifier": "EMPIAR-11830",
+      "thumbnailUrl": {"@id": "bia-c-reinhardtii-tomogram/thumbnail.png"},
+      "hasPart": [{"@id": "item-list.parquet"}]
+    },
+    {"@id": "obo:NCBITaxon_3055", "@type": "Taxon", "scientificName": "Chlamydomonas reinhardtii"},
+    {"@id": "obo:FBbi_00001004", "@type": "DefinedTerm", "name": "tomography"},
+    {
+      "@id": "item-list.parquet",
+      "@type": "File",
+      "name": "item-list.parquet",
+      "description": "Items of this study, one row each",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "7996",
+      "sha256": "fcb88bd6018f3d7dd445c1d04fa1db78edc5c80a9124778fe12e5444b3f59862"
+    }
+  ]
+}

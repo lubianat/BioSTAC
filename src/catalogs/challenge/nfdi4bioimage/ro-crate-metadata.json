@@ -1,0 +1,78 @@
+{
+  "@context": "https://w3id.org/ro/crate/1.2/context",
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+      "about": {"@id": "./"}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "NFDI4BIOIMAGE — OME 2024 NGFF challenge",
+      "description": "Images submitted by NFDI4BIOIMAGE partners (Jülich, Göttingen, Münster, Magdeburg) to the OME 2024 NGFF challenge.",
+      "datePublished": "2026-10-16",
+      "license": {"@id": "https://creativecommons.org/publicdomain/zero/1.0/"},
+      "identifier": "nfdi4bioimage",
+      "hasPart": [
+        {"@id": "fzj/"},
+        {"@id": "uni_muenster_samples/"},
+        {"@id": "lin_samples/"},
+        {"@id": "study-list.parquet"}
+      ],
+      "isBasedOn": [{"@id": "https://nfdi4bioimage.de/"}]
+    },
+    {
+      "@id": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "@type": "CreativeWork",
+      "name": "CC0-1.0"
+    },
+    {
+      "@id": "fzj/",
+      "@type": "Dataset",
+      "name": "fzj — Cellular level 3D reconstructed volume at 1µm resolution within the BigBrain occipital cortex (area V1)",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "fzj/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "fzj/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "uni_muenster_samples/",
+      "@type": "Dataset",
+      "name": "uni_muenster_samples — Burkhard Kasper",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "uni_muenster_samples/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "uni_muenster_samples/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {
+      "@id": "lin_samples/",
+      "@type": "Dataset",
+      "name": "lin_samples — 150715_DBE_Drosi_CherryCAAX_nSybGal4/L3_nsybG4xcherryCAAXmerged.ims.zarr",
+      "conformsTo": {"@id": "https://w3id.org/ro/crate"},
+      "subjectOf": {"@id": "lin_samples/ro-crate-metadata.json"}
+    },
+    {
+      "@id": "lin_samples/ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "encodingFormat": "application/ld+json"
+    },
+    {"@id": "https://nfdi4bioimage.de/", "@type": "CreativeWork", "name": "NFDI4BIOIMAGE"},
+    {
+      "@id": "study-list.parquet",
+      "@type": "File",
+      "name": "study-list.parquet",
+      "description": "Studies of this resource, one row each, naming each study's crate and item-list.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "6279",
+      "sha256": "98098b37fffc1306ea79e325acf28a82e8be29b418ecd81acd6b755e71c22054"
+    }
+  ]
+}
